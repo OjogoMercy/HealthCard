@@ -1,9 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import {COLORS} from "./src/constants/THEME"
 module.exports = {
-  content: [],
+  content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'health-green': '#2e7d32',
+      },
+    },
   },
   plugins: [],
 }
-
