@@ -14,36 +14,32 @@ export const FontStyles = {
 }
 
 export const COLORS = {
-  primary: '#9B5DE5',
-  primary2: '#DEC9F6',
-  primary3: '#6A37B0',
-  primary4: '#AF7AEC',
+  primary: '#2E7D32',
+  secondary: '#81C784',
   lightGreen: 'rgba(247, 253, 250, 1)',
   lightGreen2: 'rgba(229, 249, 227, 1)',
-  blue: 'rgba(12, 39, 189, 1)',
-  blue2: 'rgba(0, 30, 197, 0.1)',
-  blue3: 'rgba(0, 30, 197, 0.1)',
+  alert:"#D32F2F",
   black: 'rgba(0, 0, 0, 1)',
-  black2: 'rgba(0, 0, 0, 0.2)',
   white: 'rgba(255, 255, 255, 1)',
   gray: '#747674',
   gray2: '#ccc',
   gray3: '#323F4B',
   gray4: 'rgba(33, 33, 33, 0.08)',
   pink: 'rgba(235, 87, 87, 1)',
-  red: 'rgba(211, 0, 0, 1)',
   red2: ' rgba(255, 210, 210, 1)',
   inputContainer: '#EBDFFA',
   formBg: '#EBDFFA33',
   inputText: '#2E14219E',
   orange: '#FFAF42',
-  accent: '#EBDFFA80',
+  accent: '#FFA726', //Nutrition alerts, meal logging, calls to action.
   veryLightGray: '#cccccc1a',
   lightPurple: '#F0EFFF',
   overlay: '#cccccc1a',
   opacity: 'rgba(0, 0, 0, 0.2)',
   promptInput: '#FFE8B2',
   promptBackground: '#FFF6E0',
+  background:"#F9FAFB",
+  mutedText:"#6B7280"
 }
 
 export const SIZES = {
