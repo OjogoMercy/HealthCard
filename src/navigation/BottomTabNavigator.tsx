@@ -5,7 +5,7 @@ import images from '../assets/images'
 import ProfileScreen from '../screens/BottomScreens/Profile/ProfileScreen'
 import Notifications from '../screens/BottomScreens/NotificationScreens/Notifications'
 import LeaderBoard from '../screens/BottomScreens/NotificationScreens/Notifications'
-import Shop from '../screens/BottomScreens/ShopScreens/Shop'
+import Shop from '../screens/BottomScreens/VaccineScreens/VaccineScreen'
 import { COLORS, SIZES } from '../constants/THEME'
 import MainNavigator from './MainNavigator'
 

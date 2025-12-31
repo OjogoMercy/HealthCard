@@ -29,13 +29,6 @@ const styles = StyleSheet.create({
     padding: SIZES.base * 1.5,
     alignItems: 'center',
     marginVertical: SIZES.base * 2,
-    borderBottomColor: COLORS.primary3,
-    borderBottomWidth: 4,
-    borderBottomLeftRadius: SIZES.padding,
-    borderBottomRightRadius: SIZES.padding,
-    borderLeftWidth: 2,
-    borderLeftColor: COLORS.primary3,
-    borderRightColor: COLORS.primary3,
-    borderRightWidth: 0.5,
+ 
   },
 })
