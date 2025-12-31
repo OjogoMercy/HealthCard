@@ -11,6 +11,9 @@ export const FontStyles = {
   ABCItalic: 'ABeeZee-Italic',
   ABCRegular: 'ABeeZee-Regular',
   ComicSans: 'Comic Sans MS',
+  heading: 'Inter_700Bold',
+    body: 'SourceSans3_400Regular',
+    numeric: 'SpaceMono_400Regular',
 }
 
 export const COLORS = {
@@ -82,48 +85,48 @@ export const FONTS = {
     lineHeight: screenHeight * 0.05,
   },
   h1bold: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.h1,
     lineHeight: screenHeight * 0.05,
   },
   h2: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.h2,
     lineHeight: screenHeight * 0.038,
   },
   h2bold: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.h2,
     lineHeight: screenHeight * 0.038,
   },
   h3: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.h3,
     lineHeight: screenHeight * 0.03,
   },
   h3bold: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.h3,
     lineHeight: screenHeight * 0.025,
   },
   h4: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.body,
     fontSize: SIZES.h4,
     lineHeight: screenHeight * 0.025,
     fontWeight:'200'
   },
   h4bold: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.body,
     fontSize: SIZES.h4,
     lineHeight: screenHeight * 0.025,
   },
   h5: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.body,
     fontSize: SIZES.h5,
     lineHeight: screenHeight * 0.02,
   },
   h5bold: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.body,
     fontSize: SIZES.h5,
     lineHeight: screenHeight * 0.025,
   },
@@ -138,12 +141,12 @@ export const FONTS = {
     lineHeight: screenHeight * 0.025,
   },
   body1: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.heading,
     fontSize: SIZES.body1,
     lineHeight: 36,
   },
   body2: {
-    fontFamily: FontStyles.ComicSans,
+    fontFamily: FontStyles.body,
     fontSize: SIZES.body2,
     lineHeight: 30,
   },
