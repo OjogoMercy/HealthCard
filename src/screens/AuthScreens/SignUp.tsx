@@ -5,7 +5,7 @@ import { ThemedText } from '../../constants/ThemedText'
 import { COLORS,  SCREEN_WIDTH,  SIZES } from '../../constants/THEME'
 import CustomInput from '../../components/CustomInput'
 import PrimaryButton from '../../components/PrimaryButton'
-import images from '../../assets/images'
+import {images} from '../../constants/images'
 import { useNavigation } from '@react-navigation/native'
 
 const SignUp = () => {
@@ -32,7 +32,7 @@ const SignUp = () => {
       <PrimaryButton title='Sign Up'  onPress={()=> navigation.navigate('Login')}/>
       <View
         style={styles.row}>
-        <Image source={images.google} style={{ height: SIZES.h1, width: SIZES.h1, resizeMode: 'contain' }} />
+        <Image source={images.icon} style={{ height: SIZES.h1, width: SIZES.h1, resizeMode: 'contain' }} />
         <ThemedText style={{ fontSize: 15, fontWeight: 'bold' }}>Continue with Google</ThemedText>
       </View>
       <ThemedText style={{fontSize:12, textAlign:'center',marginBottom:SIZES.padding}}>Already have an account?<Text style={{color:COLORS.primary}} onPress={()=> navigation.navigate('Login')}>Login</Text></ThemedText>

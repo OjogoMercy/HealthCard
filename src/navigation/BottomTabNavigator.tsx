@@ -1,13 +1,13 @@
 import React from 'react'
 import { Platform, ColorValue, Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import images from '../assets/images'
+import { images } from '../constants/images'
 import ProfileScreen from '../screens/BottomScreens/Profile/ProfileScreen'
-import Notifications from '../screens/BottomScreens/NotificationScreens/Notifications'
-import LeaderBoard from '../screens/BottomScreens/NotificationScreens/Notifications'
 import Shop from '../screens/BottomScreens/VaccineScreens/VaccineScreen'
 import { COLORS, SIZES } from '../constants/THEME'
-import MainNavigator from './MainNavigator'
+import VaccineScreen from '../screens/IntroSlider/VaccineScreen'
+import CareScreen from '../screens/BottomScreens/CareScreens/CareScreen.tsx'
+import HomeScreen from '../screens/BottomScreens/Home/HomeScreen'
 
 type RootTabParamList = {
   Home: undefined
@@ -43,37 +43,37 @@ export default function BottomTabNavigator() {
           paddingTop: 6,
         },
 
-        tabBarIcon: ({ color }) => {
-          let iconSource
+        // tabBarIcon: ({ color }) => {
+        //   let iconSource
 
-          if (route.name === 'Main') {
-            iconSource = images.Home
-          } else if (route.name === 'Profile') {
-            iconSource = images.Profile
-          } else if (route.name === 'Notifications') {
-            iconSource = images.bell
-          } else if (route.name === 'Leaderboard') {
-            iconSource = images.trophy
-          } else if (route.name === 'Shop') {
-            iconSource = images.Cart
-          }
-          return (
-            <Image
-              source={iconSource}
-              style={{ width: SIZES.h2, height: SIZES.h2, tintColor: color }}
-            />
-          )
-        },
+        //   if (route.name === 'Main') {
+        //     iconSource = images.Home
+        //   } else if (route.name === 'Profile') {
+        //     iconSource = images.Profile
+        //   } else if (route.name === 'Notifications') {
+        //     iconSource = images.bell
+        //   } else if (route.name === 'Leaderboard') {
+        //     iconSource = images.trophy
+        //   } else if (route.name === 'Shop') {
+        //     iconSource = images.Cart
+        //   }
+        //   return (
+        //     <Image
+        //       source={iconSource}
+        //       style={{ width: SIZES.h2, height: SIZES.h2, tintColor: color }}
+        //     />
+        //   )
+        // },
       })}>
-      <Tab.Screen name="Main" component={MainNavigator} options={{ title: 'Main' }} />
-      <Tab.Screen name="Leaderboard" component={LeaderBoard} options={{ title: 'Leaderboard' }} />
+      <Tab.Screen name="Main" component={HomeScreen} options={{ title: 'Main' }} />
+      <Tab.Screen name="Leaderboard" component={CareScreen} options={{ title: 'Leaderboard' }} />
 
-      <Tab.Screen name="Shop" component={Shop} options={{ title: 'Shop' }} />
+      <Tab.Screen name="Shop" component={VaccineScreen} options={{ title: 'Shop' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
 
       <Tab.Screen
         name="Notifications"
-        component={Notifications}
+        component={ProfileScreen}
         options={{ title: 'Notifications' }}
       />
     </Tab.Navigator>

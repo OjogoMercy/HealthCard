@@ -3,6 +3,7 @@ import { StatusBar, StyleSheet, View } from "react-native";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 
 import { useNavigation } from "@react-navigation/native";
+import { Colors } from "@/constants/theme";
 
 interface WrapViewProps {
   children: React.ReactNode;
@@ -29,6 +30,6 @@ const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
 export default WrapView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", backgroundColor: "white" },
+  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.background},
  
 });
