@@ -40,28 +40,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  logo: {
-    height: SIZES.navTitle * 3,
-    width: SCREEN_WIDTH * 0.3,
-    resizeMode: "contain",
-  },
-  profile: {
-    height: SIZES.navTitle,
-    width: SIZES.navTitle,
-    borderRadius: SIZES.h1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: COLORS.primary,
-    padding: SIZES.base,
-  },
-  profileIcon: {
-    height: SIZES.h2,
-    width: SIZES.h2,
-    resizeMode: "contain",
-    tintColor: "white",
-  },
   contentWrapper: {
-    width: SCREEN_WIDTH * 0.9,
-    alignItems: "flex-start",
+    width: SCREEN_WIDTH,
+    alignItems: "center",
+    paddingTop: SIZES.padding * 2,
   },
 });

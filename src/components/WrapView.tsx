@@ -29,21 +29,6 @@ const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
 export default WrapView;
 
 const styles = StyleSheet.create({
-  profile: {
-    height: SIZES.navTitle,
-    width: SIZES.navTitle,
-    borderRadius: SIZES.h1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: COLORS.primary,
-    padding: SIZES.base,
-  },
   container: { flex: 1, alignItems: "center", backgroundColor: "white" },
-  header: {
-    flexDirection: "row",
-    paddingHorizontal: SIZES.h3,
-    justifyContent: "space-between",
-    width: SCREEN_WIDTH * 1,
-    alignItems: "center",
-  },
+ 
 });
