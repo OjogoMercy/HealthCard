@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthNavigator from './AuthNavigator';
 import BottomTabNavigator from './BottomTabNavigator';
@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function RootNavigator() {
 
   return (
+    <NavigationIndependentTree>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false, animation:'slide_from_right'}} initialRouteName='Intro'>       
           <Stack.Screen name="Main" component={BottomTabNavigator} />
@@ -26,5 +27,6 @@ export default function RootNavigator() {
     
       </Stack.Navigator>
     </NavigationContainer>
+    </NavigationIndependentTree>
   );
 }

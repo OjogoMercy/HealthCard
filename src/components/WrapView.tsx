@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 
@@ -13,6 +13,14 @@ interface WrapViewProps {
 }
 const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
   const navigation = useNavigation<any>();
+  
+useEffect(()=> {
+  StatusBar.setBarStyle('dark-content');
+  setTimeout(() => {
+navigation.navigate('FirstScreen')
+  }, 3000);
+})
+
 
   return (
     <View style={[styles.container]}>
@@ -30,6 +38,6 @@ const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
 export default WrapView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.background},
+  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.background,justifyContent:'center'},
  
 });

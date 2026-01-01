@@ -8,8 +8,7 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native';
-// import MaterialIcons from "vector-icons/MaterialIcons";
-// import Ionicons from "vector-icons/Ionicons";
+
 import {COLORS, SIZES, FONTS} from '../constants/THEME';
 type Props = {
   label?: string;

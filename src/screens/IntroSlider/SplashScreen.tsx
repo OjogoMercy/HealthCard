@@ -9,7 +9,7 @@ const SplashScreen = () => {
     <WrapView>
       <Image
         source={images.logo}
-        style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH }}
+        style={{ width: SCREEN_WIDTH * 0.4, height: SCREEN_WIDTH * 0.35, resizeMode:'contain' }}
       />
     </WrapView>
   );

@@ -12,7 +12,8 @@ import React, { useEffect, useRef } from 'react'
 import { ThemedText } from '../constants/ThemedText'
 import { COLORS, SIZES, SCREEN_WIDTH, SCREEN_HEIGHT } from '../constants/THEME'
 import { StatusBar } from 'react-native'
-import images from '../assets/images'
+
+import { images } from '../constants/images' 
 import { useSharedValue } from 'react-native-reanimated'
 interface ModalProps {
   correctModalVisible: boolean
@@ -66,35 +67,7 @@ const CustomModal = ({
       <TouchableWithoutFeedback onPress={() => setCorrectModalVisible(false)}>
         <View style={styles.modalBackdrop}>
           <StatusBar backgroundColor={'rgba(255, 255, 255, 0.5)'} />
-          <View style={[styles.modalContent, { backgroundColor: 'white' }]}>
-            <Image
-              source={images.ribbon}
-              style={{ height: SIZES.padding * 2.5, width: '120%', marginTop: -SIZES.base }}
-            />
-            <ThemedText type="text2bold" style={{ color: 'white', position: 'absolute', top: 10 }}>
-              Question {Num}
-            </ThemedText>
-            <Image
-              source={images.ModalBg}
-              style={{ height: SCREEN_HEIGHT * 0.23, width: SCREEN_WIDTH * 0.7 }}
-            />
-            <ThemedText
-              type="text1bold"
-              style={{ fontWeight: 'bold', position: 'absolute', bottom: 80 }}>
-              Correct!
-            </ThemedText>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                position: 'absolute',
-                bottom: 50,
-              }}>
-              <View style={styles.line} />
-              <Text style={{ marginTop: -SIZES.base }}>🔷</Text>
-              <View style={styles.line} />
-            </View>
-          </View>
+          
         </View>
       </TouchableWithoutFeedback>
     </Modal>
