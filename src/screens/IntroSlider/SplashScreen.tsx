@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import WrapView from "@/src/components/WrapView";
+import React from "react";
+import { Image, StyleSheet } from "react-native";
+import { images } from "../../constants/images";
+import { SCREEN_WIDTH } from "../../constants/THEME";
 
 const SplashScreen = () => {
   return (
-    <View>
-      <Text>SplashScreen</Text>
-    </View>
-  )
-}
+    <WrapView>
+      <Image
+        source={images.logo}
+        style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH }}
+      />
+    </WrapView>
+  );
+};
 
-export default SplashScreen
+export default SplashScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

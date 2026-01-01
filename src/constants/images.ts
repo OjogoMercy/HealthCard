@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 
-const Images: { [key: string]: ImageSourcePropType } = {
+export const images = {
   icon: require("../assets/images/icon.png"),
   logo: require("../assets/images/logo.png"),
   mamaIntro: require("../assets/images/mamaIntro.png"),
@@ -10,6 +10,3 @@ const Images: { [key: string]: ImageSourcePropType } = {
   slide6: require("../assets/images/slide6.png"),
   splashIcon: require("../assets/images/splash-icon.png"),
 };
-
-export { Images };
-export default Images;
