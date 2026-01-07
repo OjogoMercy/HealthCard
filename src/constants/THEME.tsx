@@ -55,7 +55,7 @@ export const SIZES = {
   // font sizes
   navTitle: screenHeight * 0.04375,
   h1: screenHeight * 0.0375,
-  h2: screenHeight * 0.0275,
+  h2: screenHeight * 0.0285,
   h3: screenHeight * 0.0225,
   h4: screenHeight * 0.0175,
   h5: screenHeight * 0.015,
