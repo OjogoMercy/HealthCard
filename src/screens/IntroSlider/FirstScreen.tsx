@@ -13,14 +13,14 @@ import { Image, StyleSheet, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
 const FirstScreen = ({ onDone }) => {
+  const scrollX = useRef(new Animated.Value(0)).current;
   const sliderRef = useRef(null);
-  const FOOTER_HEIGHT = SCREEN_HEIGHT * 0.25;
 
   const slides = [
     {
       key: "1",
       title: "Welcome to HealthCard",
-      text: "Your Partner In Nurturing A Healthy ,Happy Child. Supporting you through every step of your childs care",
+      text: "Your partner in nurturing a healthy, happy child. Supporting you through every step of your childs care",
       image: images.mamaIntro,
       footerText:"Trusted.Simple"
     },
@@ -35,7 +35,7 @@ const FirstScreen = ({ onDone }) => {
       key: "3",
       title: "Post-Natal Care Shouldn’t End at Birth",
       text: "After delivery, many mothers miss vital follow-ups like growth checks, nutrition tracking, and developmental assessments.",
-      image: images.slide3,
+      image: images.slide2,
       footerText:"Consistency Matters"
     },
     {
@@ -55,7 +55,7 @@ const FirstScreen = ({ onDone }) => {
     {
       key: "6",
       title: "Simple Care. Smarter Decisions.",
-      text: "Get reminders, track nutrition, and stay informed—so you can focus on what matters most: your child’s well-being.",
+      text: "Get reminders, track nutrition, and stay informed so you can focus on what matters most: your child’s well-being.",
       image: images.slide6,
       footerText:"Let's Get Started"
     },
@@ -86,16 +86,17 @@ const renderPagination = (activeIndex) => {
               ? onDone()
               : sliderRef.current?.goToSlide(activeIndex + 1)
           }
+          style={{elevation:5}}
         />
       </View>
-      {/* <ThemedText type="text3bold" style={{fontWeight: 'bold'}}></ThemedText> */}
+      <ThemedText type="text3bold" style={{fontWeight: 'bold'}}></ThemedText>
     </View>
   );
 };
 
 
   return (
-    <View style={{ flex: 1 , alignItems:'center', justifyContent:'center', }}>
+    <View style={{ flex:1, backgroundColor: COLORS.white }}>
       <AppIntroSlider
         ref={sliderRef}
         data={slides}
@@ -106,10 +107,10 @@ const renderPagination = (activeIndex) => {
             <ThemedText type="text2" style={styles.title}>
               {item.title}
             </ThemedText>
-            <ThemedText type="text4" style={styles.description}>
+            <ThemedText type="text3" style={styles.description}>
               {item.text}
             </ThemedText>
-            <ThemedText type="text3bold" style={{color:COLORS.accent}}>{item.footerText}</ThemedText>
+            <ThemedText type="text2bold" style={{color:COLORS.accent, textTransform:'lowercase'}}>{item.footerText}</ThemedText>
           </View>
         )}
       />
@@ -132,21 +133,23 @@ const styles = StyleSheet.create({
     width: SIZES.width * 0.7,
     height: SIZES.height * 0.35,
     marginBottom: SIZES.padding,
+    alignSelf: "center",
   },
   title: {
     fontWeight: "bold",
-    marginBottom: SIZES.base,
+    marginVertical: SIZES.base,
+    fontSize:SCREEN_HEIGHT* 0.032,
   },
   description: {
     color: COLORS.inputText,
+    marginVertical: SIZES.base *2
     },
 paginationContainer: {
   position: 'absolute',
-  bottom: SIZES.padding * 2,
+  bottom: SIZES.base,
   left: 0,
   right: 0,
   alignItems: 'center',
-  backgroundColor:'red'
 },
 
   paginationDots: {
@@ -157,15 +160,17 @@ paginationContainer: {
     alignItems: "center",
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: SIZES.base,
+    height: SIZES.base,
+    borderRadius: SIZES.base / 2,
     backgroundColor: COLORS.gray,
-    marginHorizontal: 4,
+    marginHorizontal: SIZES.base / 2,
+    opacity: 0.7,
   },
   activeDot: {
     backgroundColor: COLORS.primary,
-    width: 25,
+    width: SIZES.navTitle,
+    opacity:1
   },
   buttonWrapper: {
     width: SCREEN_WIDTH * 0.85,
