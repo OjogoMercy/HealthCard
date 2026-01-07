@@ -1,5 +1,4 @@
 import PrimaryButton from "@/src/components/PrimaryButton";
-import WrapView from "@/src/components/WrapView";
 import { images } from "@/src/constants/images";
 import {
   COLORS,
@@ -9,7 +8,7 @@ import {
 } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import React, { useRef } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Animated, Image, StyleSheet, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
 const FirstScreen = ({ onDone }) => {
@@ -22,97 +21,129 @@ const FirstScreen = ({ onDone }) => {
       title: "Welcome to HealthCard",
       text: "Your partner in nurturing a healthy, happy child. Supporting you through every step of your childs care",
       image: images.mamaIntro,
-      footerText:"Trusted.Simple"
+      footerText: "Trusted.Simple",
     },
     {
       key: "2",
       title: "Every Child Deserves a Healthy Start",
       text: "Many children face malnutrition and missed healthcare simply because support is hard to access. We’re here to change that.",
       image: images.slide3,
-      footerText:"Early Care Matters"
+      footerText: "Early Care Matters",
     },
     {
       key: "3",
       title: "Post-Natal Care Shouldn’t End at Birth",
       text: "After delivery, many mothers miss vital follow-ups like growth checks, nutrition tracking, and developmental assessments.",
       image: images.slide2,
-      footerText:"Consistency Matters"
+      footerText: "Consistency Matters",
     },
     {
       key: "4",
       title: "Built for Busy and Underserved Moms",
       text: "Whether you’re a working mom with little time or a mother with limited internet access, HealthCard is designed to work for you.",
       image: images.slide4,
-      footerText:"Care Within Reach"
+      footerText: "Care Within Reach",
     },
     {
       key: "5",
       title: "Never Miss a Vaccine Again",
       text: "Your child’s immunization schedule, digitized. Get reminders based on your child’s date of birth, just like the green card, but safer.",
       image: images.slide5,
-      footerText:"Get Digital Reminders"
+      footerText: "Get Digital Reminders",
     },
     {
       key: "6",
       title: "Simple Care. Smarter Decisions.",
       text: "Get reminders, track nutrition, and stay informed so you can focus on what matters most: your child’s well-being.",
       image: images.slide6,
-      footerText:"Let's Get Started"
+      footerText: "Let's Get Started",
     },
   ];
 
-const renderPagination = (activeIndex) => {
-  const isLastSlide = activeIndex === slides.length - 1;
+  const renderPagination = (activeIndex) => {
+    const isLastSlide = activeIndex === slides.length - 1;
 
-  return (
-    <View style={styles.paginationContainer}>
-      <View style={styles.paginationDots}>
-        {slides.map((_, i) => (
-          <View
-            key={i}
-            style={[
-              styles.dot,
-              i === activeIndex && styles.activeDot
-            ]}
+    return (
+      <View style={styles.paginationContainer}>
+        <View style={styles.paginationDots}>
+          {slides.map((_, i) => (
+            <View
+              key={i}
+              style={[styles.dot, i === activeIndex && styles.activeDot]}
+            />
+          ))}
+        </View>
+
+        <View style={styles.buttonWrapper}>
+          <PrimaryButton
+            title={isLastSlide ? "Get Started" : "Next"}
+            onPress={() =>{
+              if(isLastSlide) {onDone()
+
+              }else{
+                 Animated.timing(scrollX, {
+            toValue:activeIndex  +1,
+            useNativeDriver: true,
+            duration:300
+          }).start();
+
+          sliderRef.current?.goToSlide(activeIndex + 1);
+              }
+            }}
+            style={{ elevation: 5 }}
           />
-        ))}
+        </View>
+        <ThemedText
+          type="text3bold"
+          style={{ fontWeight: "bold" }}
+        ></ThemedText>
       </View>
-
-      <View style={styles.buttonWrapper}>
-        <PrimaryButton
-          title={isLastSlide ? "Get Started" : "Next"}
-          onPress={() =>
-            isLastSlide
-              ? onDone()
-              : sliderRef.current?.goToSlide(activeIndex + 1)
-          }
-          style={{elevation:5}}
-        />
-      </View>
-      <ThemedText type="text3bold" style={{fontWeight: 'bold'}}></ThemedText>
-    </View>
-  );
-};
-
+    );
+  };
 
   return (
-    <View style={{ flex:1, backgroundColor: COLORS.white }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <AppIntroSlider
         ref={sliderRef}
         data={slides}
         renderPagination={renderPagination}
-        renderItem={({ item }) => (
-          <View style={styles.slide}>
-            <Image source={item.image} style={styles.image} />
-            <ThemedText type="text2" style={styles.title}>
-              {item.title}
-            </ThemedText>
-            <ThemedText type="text3" style={styles.description}>
-              {item.text}
-            </ThemedText>
-            <ThemedText type="text2bold" style={{color:COLORS.accent, textTransform:'lowercase'}}>{item.footerText}</ThemedText>
-          </View>
-        )}
+        onSlideChange={(index) => {
+          Animated.timing(scrollX, {
+            toValue: index,
+            useNativeDriver: true,
+            duration:200
+          }).start();
+        }}
+        renderItem={({ item, index }) => {
+          const opacity = scrollX.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [0, 1, 0],
+          });
+
+          const translateY = scrollX.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [20, 0, 20],
+          });
+          return (
+            <Animated.View
+              style={[styles.slide, { opacity, transform: [{ translateY }] }]}
+            >
+              <Image source={item.image} style={styles.image} />
+              <ThemedText type="text2" style={styles.title}>
+                {item.title}
+              </ThemedText>
+              <ThemedText type="text3" style={styles.description}>
+                {item.text}
+              </ThemedText>
+              <ThemedText
+                type="text2bold"
+                style={{ color: COLORS.accent, textTransform: "lowercase" }}
+              >
+                {item.footerText}
+              </ThemedText>
+            </Animated.View>
+          );
+        }}
       />
     </View>
   );
@@ -138,19 +169,19 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     marginVertical: SIZES.base,
-    fontSize:SCREEN_HEIGHT* 0.032,
+    fontSize: SCREEN_HEIGHT * 0.032,
   },
   description: {
     color: COLORS.inputText,
-    marginVertical: SIZES.base *2
-    },
-paginationContainer: {
-  position: 'absolute',
-  bottom: SIZES.base,
-  left: 0,
-  right: 0,
-  alignItems: 'center',
-},
+    marginVertical: SIZES.base * 2,
+  },
+  paginationContainer: {
+    position: "absolute",
+    bottom: SIZES.base,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
 
   paginationDots: {
     flexDirection: "row",
@@ -170,7 +201,7 @@ paginationContainer: {
   activeDot: {
     backgroundColor: COLORS.primary,
     width: SIZES.navTitle,
-    opacity:1
+    opacity: 1,
   },
   buttonWrapper: {
     width: SCREEN_WIDTH * 0.85,
