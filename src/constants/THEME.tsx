@@ -85,27 +85,27 @@ export const FONTS = {
     lineHeight: screenHeight * 0.05,
   },
   h1bold: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.h1,
     lineHeight: screenHeight * 0.05,
   },
   h2: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.h2,
     lineHeight: screenHeight * 0.038,
   },
   h2bold: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.h2,
     lineHeight: screenHeight * 0.038,
   },
   h3: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.h3,
     lineHeight: screenHeight * 0.03,
   },
   h3bold: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.h3,
     lineHeight: screenHeight * 0.025,
   },
@@ -141,7 +141,7 @@ export const FONTS = {
     lineHeight: screenHeight * 0.025,
   },
   body1: {
-    fontFamily: FontStyles.heading,
+    fontFamily: FontStyles.ABCRegular,
     fontSize: SIZES.body1,
     lineHeight: 36,
   },

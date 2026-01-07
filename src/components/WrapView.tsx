@@ -14,12 +14,6 @@ interface WrapViewProps {
 const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
   const navigation = useNavigation<any>();
   
-useEffect(()=> {
-  StatusBar.setBarStyle('dark-content');
-  setTimeout(() => {
-navigation.navigate('FirstScreen')
-  }, 3000);
-})
 
 
   return (
@@ -38,6 +32,6 @@ navigation.navigate('FirstScreen')
 export default WrapView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.background,justifyContent:'center'},
+  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.background,justifyContent:'center', padding:SIZES.padding },
  
 });

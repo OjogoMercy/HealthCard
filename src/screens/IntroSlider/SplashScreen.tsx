@@ -1,10 +1,19 @@
 import WrapView from "@/src/components/WrapView";
-import React from "react";
-import { Image, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { Image, StatusBar, StyleSheet } from "react-native";
 import { images } from "../../constants/images";
 import { SCREEN_WIDTH } from "../../constants/THEME";
+import { useNavigation } from "expo-router";
 
 const SplashScreen = () => {
+  const navigation = useNavigation();
+  useEffect(()=> {
+    StatusBar.setBarStyle('dark-content');
+    setTimeout(() => {
+  navigation.navigate('FirstScreen')
+    }, 3000);
+  })
+  
   return (
     <WrapView>
       <Image
