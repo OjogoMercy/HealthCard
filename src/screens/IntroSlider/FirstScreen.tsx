@@ -1,6 +1,6 @@
 import WrapView from "@/src/components/WrapView";
 import { images } from "@/src/constants/images";
-import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH } from "@/src/constants/THEME";
+import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -19,38 +19,57 @@ const FirstScreen = () => {
       },
     {
       key: "2",
-      title: "Explore Features",
-      text: "Discover amazing features that make our app stand out",
+      title: "Every Child Deserves a Healthy Start",
+      text: "Many children face malnutrition and missed healthcare simply because support is hard to access. We’re here to change that.",
       image:images.slide3
       },
     {
       key: "3",
-      title: "Get Started",
-      text: "Start using our app and enjoy the benefits it offers",
-      image:images.mamaIntro
+      title: "Post-Natal Care Shouldn’t End at Birth",
+      text: "After delivery, many mothers miss vital follow-ups like growth checks, nutrition tracking, and developmental assessments.",
+      image:images.slide3
       },
+      {
+        key:'4',
+        title:"Built for Busy and Underserved Moms",
+        text:"Whether you’re a working mom with little time or a mother with limited internet access, HealthCard is designed to work for you.",
+        image:images.slide4,
+      },
+      {
+        key:'5',
+        title:"Never Miss a Vaccine Again",
+        text:"Your child’s immunization schedule, digitized. Get reminders based on your child’s date of birth, just like the green card, but safer.",
+        image:images.slide5,
+      },
+      {
+        key:'6',
+        title:'Simple Care. Smarter Decisions.',
+        text:'Get reminders, track nutrition, and stay informed—so you can focus on what matters most: your child’s well-being.',
+        image:images.slide6
+      }
   ];
   return (
     <WrapView>
-      <Image
-        source={images.mamaIntro}
-        style={{
-          height: SCREEN_HEIGHT * 0.4,
-          width: SCREEN_WIDTH * 0.8,
-          resizeMode: "contain",
-        }}
+      <AppIntroSlider
+      data={slides}
+      renderItem ={({item}) => (
+        <View style={styles.slide}>
+          <Image source={item.image}/>
+          <ThemedText type="text2" style={{color: COLORS.primary}}>{item.title}</ThemedText>
+          <ThemedText type="text4" style={{color:COLORS.background}}>{item.text}</ThemedText>
+        </View>
+      )}
+      
       />
-      <ThemedText type="text2bold"></ThemedText>
-      <ThemedText type="text4">
-        {" "}
-      </ThemedText>
-      <ThemedText type="text3bold" style={{ color: COLORS.accent }}>
-        Trusted.Simple
-      </ThemedText>
     </WrapView>
   );
 };
 
 export default FirstScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  slide:{
+    alignItems:"center",
+    padding:SIZES.padding
+  }
+});
