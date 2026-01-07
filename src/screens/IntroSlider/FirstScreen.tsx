@@ -8,7 +8,7 @@ import {
 } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import React, { useRef } from "react";
-import { Animated, Image, StyleSheet, View } from "react-native";
+import { Animated, Image, StatusBar, StyleSheet, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
 const FirstScreen = ({ onDone }) => {
@@ -84,7 +84,7 @@ const FirstScreen = ({ onDone }) => {
                  Animated.timing(scrollX, {
             toValue:activeIndex  +1,
             useNativeDriver: true,
-            duration:300
+            duration:400
           }).start();
 
           sliderRef.current?.goToSlide(activeIndex + 1);
@@ -103,6 +103,7 @@ const FirstScreen = ({ onDone }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <StatusBar backgroundColor={'white'} />
       <AppIntroSlider
         ref={sliderRef}
         data={slides}
@@ -111,7 +112,7 @@ const FirstScreen = ({ onDone }) => {
           Animated.timing(scrollX, {
             toValue: index,
             useNativeDriver: true,
-            duration:200
+            duration:150
           }).start();
         }}
         renderItem={({ item, index }) => {
@@ -122,7 +123,7 @@ const FirstScreen = ({ onDone }) => {
 
           const translateY = scrollX.interpolate({
             inputRange: [index - 1, index, index + 1],
-            outputRange: [20, 0, 20],
+            outputRange: [0, 0, 0],
           });
           return (
             <Animated.View
