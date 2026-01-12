@@ -102,7 +102,7 @@ const FirstScreen = ({ onDone }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>         
       <StatusBar backgroundColor={'white'} />
       <AppIntroSlider
         ref={sliderRef}
@@ -112,7 +112,7 @@ const FirstScreen = ({ onDone }) => {
           Animated.timing(scrollX, {
             toValue: index,
             useNativeDriver: true,
-            duration:150
+            duration:400
           }).start();
         }}
         renderItem={({ item, index }) => {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     backgroundColor: COLORS.primary,
-    width: SIZES.navTitle,
+    width: SIZES.padding,
     opacity: 1,
   },
   buttonWrapper: {
