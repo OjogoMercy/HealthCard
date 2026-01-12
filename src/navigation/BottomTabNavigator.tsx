@@ -1,35 +1,33 @@
-import React from 'react'
-import { Platform, ColorValue, Image } from 'react-native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { images } from '../constants/images'
-import ProfileScreen from '../screens/BottomScreens/Profile/ProfileScreen'
-import Shop from '../screens/BottomScreens/VaccineScreens/VaccineScreen'
-import { COLORS, SIZES } from '../constants/THEME'
-import VaccineScreen from '../screens/IntroSlider/VaccineScreen'
-import CareScreen from '../screens/BottomScreens/CareScreens/CareScreen.tsx'
-import HomeScreen from '../screens/BottomScreens/Home/HomeScreen'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { ColorValue, Platform } from "react-native";
+import { COLORS } from "../constants/THEME";
+import CareScreen from "../screens/BottomScreens/CareScreens/CareScreen.tsx";
+import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
+import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
+import VaccineScreen from "../screens/BottomScreens/VaccineScreens/VaccineScreen";
 
 type RootTabParamList = {
-  Home: undefined
-  Shop: undefined
-  Profile: undefined
-  Notifications: undefined
-  Leaderboard: undefined
-  Main: undefined
-}
+  Home: undefined;
+  Shop: undefined;
+  Profile: undefined;
+  Notifications: undefined;
+  Leaderboard: undefined;
+  Main: undefined;
+};
 
-const Tab = createBottomTabNavigator<RootTabParamList>()
+const Tab = createBottomTabNavigator<RootTabParamList>();
 export default function BottomTabNavigator() {
-  const activeTintColor: ColorValue = COLORS.primary
-  const inactiveTintColor: ColorValue = '#8e8e93'
+  const activeTintColor: ColorValue = COLORS.primary;
+  const inactiveTintColor: ColorValue = "#8e8e93";
 
   return (
     <Tab.Navigator
       initialRouteName="Main"
       screenOptions={({ route }) => ({
-        animation: 'fade',
+        animation: "fade",
         transitionSpec: {
-          animation: 'timing',
+          animation: "timing",
           config: {
             duration: 250,
           },
@@ -37,9 +35,12 @@ export default function BottomTabNavigator() {
         headerShown: false,
         tabBarActiveTintColor: activeTintColor,
         tabBarInactiveTintColor: inactiveTintColor,
-        tabBarLabelStyle: { paddingBottom: Platform.OS === 'android' ? 2 : 4, fontSize: 10 },
+        tabBarLabelStyle: {
+          paddingBottom: Platform.OS === "android" ? 2 : 4,
+          fontSize: 10,
+        },
         tabBarStyle: {
-          height: Platform.OS === 'android' ? 58 : 80,
+          height: Platform.OS === "android" ? 58 : 80,
           paddingTop: 6,
         },
 
@@ -64,18 +65,35 @@ export default function BottomTabNavigator() {
         //     />
         //   )
         // },
-      })}>
-      <Tab.Screen name="Main" component={HomeScreen} options={{ title: 'Main' }} />
-      <Tab.Screen name="Leaderboard" component={CareScreen} options={{ title: 'Leaderboard' }} />
+      })}
+    >
+      <Tab.Screen
+        name="Main"
+        component={HomeScreen}
+        options={{ title: "Main" }}
+      />
+      <Tab.Screen
+        name="Leaderboard"
+        component={CareScreen}
+        options={{ title: "Leaderboard" }}
+      />
 
-      <Tab.Screen name="Shop" component={VaccineScreen} options={{ title: 'Shop' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+      <Tab.Screen
+        name="Shop"
+        component={VaccineScreen}
+        options={{ title: "Shop" }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: "Profile" }}
+      />
 
       <Tab.Screen
         name="Notifications"
         component={ProfileScreen}
-        options={{ title: 'Notifications' }}
+        options={{ title: "Notifications" }}
       />
     </Tab.Navigator>
-  )
+  );
 }

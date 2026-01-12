@@ -38,24 +38,6 @@ export function ThemedText({
   onPress,
   ...rest
 }: ThemedTextProps) {
-  // useEffect(() => {
-  //   const getStoredLanguage = async () => {
-  //     try {
-  //       const storedLanguage = await EncryptedStorage.getItem(
-  //         'selectedLanguage',
-  //       );
-  //       if (storedLanguage) {
-  //         setLanguage(storedLanguage);
-  //         i18n.changeLanguage(storedLanguage);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching stored language:', error);
-  //     }
-  //   };
-
-  //   getStoredLanguage();
-  // }, [i18n]);
-
   const translatedText = typeof children === 'string' ? children : children
 
   return (
@@ -95,18 +77,22 @@ const styles = StyleSheet.create({
   text1: {
     ...FONTS.h1,
     color: COLORS.black,
+    fontWeight: FONTS.h1.fontWeight as any,
   },
   text1bold: {
     ...FONTS.h1bold,
     color: COLORS.black,
+    fontWeight: FONTS.h1bold.fontWeight as any,
   },
   text2: {
     ...FONTS.h2,
     color: COLORS.black,
+    fontWeight: FONTS.h2.fontWeight as any,
   },
   text2bold: {
     ...FONTS.h2bold,
     color: COLORS.black,
+    fontWeight: FONTS.h2bold.fontWeight as any,
   },
   text2boldwhite: {
     ...FONTS.h2bold,
@@ -116,6 +102,7 @@ const styles = StyleSheet.create({
   text3: {
     ...FONTS.h3,
     color: COLORS.black,
+    fontWeight: FONTS.h3.fontWeight as any,
   },
   text3bold: {
     ...FONTS.h3bold,
@@ -130,18 +117,22 @@ const styles = StyleSheet.create({
   text3gray: {
     ...FONTS.h3,
     color: COLORS.gray,
+    fontWeight: FONTS.h3.fontWeight as any,
   },
   text3white: {
     ...FONTS.h3,
     color: COLORS.white,
+    fontWeight: FONTS.h3.fontWeight as any,
   },
   text3green: {
     ...FONTS.h3,
     color: COLORS.primary,
+    fontWeight: FONTS.h3.fontWeight as any,
   },
   text4: {
     ...FONTS.h4,
     color: COLORS.black,
+    fontWeight: FONTS.h4.fontWeight as any,
   },
   text4bold: {
     ...FONTS.h4bold,
@@ -151,14 +142,17 @@ const styles = StyleSheet.create({
   text4gray: {
     ...FONTS.h4,
     color: COLORS.gray,
+    fontWeight: FONTS.h4.fontWeight as any,
   },
   text4white: {
     ...FONTS.h4,
     color: COLORS.white,
+    fontWeight: FONTS.h4.fontWeight as any,
   },
   text4green: {
     ...FONTS.h4,
     color: COLORS.primary,
+    fontWeight: FONTS.h4.fontWeight as any,
   },
   text4greenbold: {
     ...FONTS.h4bold,
@@ -168,6 +162,7 @@ const styles = StyleSheet.create({
   text5: {
     ...FONTS.h5,
     color: COLORS.black,
+    fontWeight: FONTS.h5.fontWeight as any,
   },
   text5bold: {
     ...FONTS.h5bold,
@@ -177,9 +172,11 @@ const styles = StyleSheet.create({
   text5white: {
     ...FONTS.h5,
     color: COLORS.white,
+    fontWeight: FONTS.h5.fontWeight as any,
   },
   text6: {
     ...FONTS.h6,
     color: COLORS.black,
+    fontWeight: FONTS.h6.fontWeight as any,
   },
 })
