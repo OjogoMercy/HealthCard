@@ -7,12 +7,12 @@ import {
 } from "lucide-react-native";
 import React from "react";
 import { ColorValue, Platform } from "react-native";
+import { AnimatedIconWrapper } from "../components/AnimatedIconWrapper";
 import { COLORS } from "../constants/THEME";
 import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
 import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
 import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
-
 type RootTabParamList = {
   Home: undefined;
   Immunisation: undefined;
@@ -25,58 +25,46 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 export default function BottomTabNavigator() {
   const activeTintColor: ColorValue = COLORS.primary;
   const inactiveTintColor: ColorValue = "#8e8e93";
+  const glowColor = COLORS.secondary + "45";
 
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        animation: "fade",
-        transitionSpec: {
-          animation: "timing",
-          config: {
-            duration: 200,
-          },
-        },
         headerShown: false,
         tabBarActiveTintColor: activeTintColor,
         tabBarInactiveTintColor: inactiveTintColor,
         tabBarLabelStyle: {
-          paddingBottom: Platform.OS === "android" ? 2 : 4,
           fontSize: 10,
-          fontWeight: "500",
+          fontWeight: "600",
+          marginTop: 4,
         },
         tabBarStyle: {
-          height: Platform.OS === "android" ? 65 : 85,
-          paddingTop: 8,
+          height: Platform.OS === "android" ? 70 : 90,
+          paddingTop: 10,
           backgroundColor: "white",
-          borderTopWidth: 0.5,
-          borderTopColor: "#E5E7EB",
-          elevation: 8,
+          borderTopWidth: 0,
+          elevation: 10,
           shadowColor: "#000",
-          shadowOffset: { width: 0, height: -2 },
+          shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.05,
           shadowRadius: 10,
         },
         tabBarIcon: ({ color, size, focused }) => {
           const iconProps = {
             color: color,
-            size: size,
-            strokeWidth: 2,
-            fill: focused ? color : "none",
+            size: 22,
+            strokeWidth: focused ? 2.5 : 2,
           };
 
-          switch (route.name) {
-            case "Home":
-              return <Home {...iconProps} />;
-            case "CheckIn":
-              return <ClipboardCheck {...iconProps} />;
-            case "Immunisation":
-              return <ShieldCheck {...iconProps} />;
-            case "Profile":
-              return <UserCircle {...iconProps} />;
-            default:
-              return null;
-          }
+          return (
+            <AnimatedIconWrapper focused={focused} glowColor="#a0f0a4ff" 
+              {route.name === "Home" && <Home {...iconProps} />}
+              {route.name === "CheckIn" && <ClipboardCheck {...iconProps} />}
+              {route.name === "Immunisation" && <ShieldCheck {...iconProps} />}
+              {route.name === "Profile" && <UserCircle {...iconProps} />}
+            </AnimatedIconWrapper>
+          );
         },
       })}
     >
