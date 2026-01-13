@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { ColorValue, Platform } from "react-native";
 import { COLORS } from "../constants/THEME";
-import CareScreen from "../screens/BottomScreens/CareScreens/CareScreen.tsx";
+import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
 import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
-import VaccineScreen from "../screens/BottomScreens/VaccineScreens/VaccineScreen";
+import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
 
 type RootTabParamList = {
   Home: undefined;
@@ -29,7 +29,7 @@ export default function BottomTabNavigator() {
         transitionSpec: {
           animation: "timing",
           config: {
-            duration: 250,
+            duration: 200,
           },
         },
         headerShown: false,
@@ -74,13 +74,13 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen
         name="Leaderboard"
-        component={CareScreen}
+        component={CheckIn}
         options={{ title: "Leaderboard" }}
       />
 
       <Tab.Screen
         name="Shop"
-        component={VaccineScreen}
+        component={Immunisation}
         options={{ title: "Shop" }}
       />
       <Tab.Screen
