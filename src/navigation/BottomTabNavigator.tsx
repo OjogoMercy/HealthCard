@@ -1,4 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  ClipboardCheck,
+  Home,
+  ShieldCheck,
+  UserCircle,
+} from "lucide-react-native";
 import React from "react";
 import { ColorValue, Platform } from "react-native";
 import { COLORS } from "../constants/THEME";
@@ -9,21 +15,20 @@ import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
 
 type RootTabParamList = {
   Home: undefined;
-  Shop: undefined;
+  Immunisation: undefined;
   Profile: undefined;
-  Notifications: undefined;
-  Leaderboard: undefined;
-  Main: undefined;
+  CheckIn: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+
 export default function BottomTabNavigator() {
   const activeTintColor: ColorValue = COLORS.primary;
   const inactiveTintColor: ColorValue = "#8e8e93";
 
   return (
     <Tab.Navigator
-      initialRouteName="Main"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         animation: "fade",
         transitionSpec: {
@@ -38,61 +43,62 @@ export default function BottomTabNavigator() {
         tabBarLabelStyle: {
           paddingBottom: Platform.OS === "android" ? 2 : 4,
           fontSize: 10,
+          fontWeight: "500",
         },
         tabBarStyle: {
-          height: Platform.OS === "android" ? 58 : 80,
-          paddingTop: 6,
+          height: Platform.OS === "android" ? 65 : 85,
+          paddingTop: 8,
+          backgroundColor: "white",
+          borderTopWidth: 0.5,
+          borderTopColor: "#E5E7EB",
+          elevation: 8,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 10,
         },
+        tabBarIcon: ({ color, size, focused }) => {
+          const iconProps = {
+            color: color,
+            size: size,
+            strokeWidth: 2,
+            fill: focused ? color : "none",
+          };
 
-        // tabBarIcon: ({ color }) => {
-        //   let iconSource
-
-        //   if (route.name === 'Main') {
-        //     iconSource = images.Home
-        //   } else if (route.name === 'Profile') {
-        //     iconSource = images.Profile
-        //   } else if (route.name === 'Notifications') {
-        //     iconSource = images.bell
-        //   } else if (route.name === 'Leaderboard') {
-        //     iconSource = images.trophy
-        //   } else if (route.name === 'Shop') {
-        //     iconSource = images.Cart
-        //   }
-        //   return (
-        //     <Image
-        //       source={iconSource}
-        //       style={{ width: SIZES.h2, height: SIZES.h2, tintColor: color }}
-        //     />
-        //   )
-        // },
+          switch (route.name) {
+            case "Home":
+              return <Home {...iconProps} />;
+            case "CheckIn":
+              return <ClipboardCheck {...iconProps} />;
+            case "Immunisation":
+              return <ShieldCheck {...iconProps} />;
+            case "Profile":
+              return <UserCircle {...iconProps} />;
+            default:
+              return null;
+          }
+        },
       })}
     >
       <Tab.Screen
-        name="Main"
+        name="Home"
         component={HomeScreen}
-        options={{ title: "Main" }}
+        options={{ title: "Home" }}
       />
       <Tab.Screen
-        name="Leaderboard"
+        name="CheckIn"
         component={CheckIn}
-        options={{ title: "Leaderboard" }}
+        options={{ title: "Check-In" }}
       />
-
       <Tab.Screen
-        name="Shop"
+        name="Immunisation"
         component={Immunisation}
-        options={{ title: "Shop" }}
+        options={{ title: "Vaccines" }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ title: "Profile" }}
-      />
-
-      <Tab.Screen
-        name="Notifications"
-        component={ProfileScreen}
-        options={{ title: "Notifications" }}
       />
     </Tab.Navigator>
   );

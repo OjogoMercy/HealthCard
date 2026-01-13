@@ -7,6 +7,7 @@ import {
   SIZES,
 } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
+import { useNavigation } from "@react-navigation/native";
 import React, { useRef } from "react";
 import { Animated, Image, StatusBar, StyleSheet, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
@@ -59,7 +60,7 @@ const FirstScreen = ({ onDone }) => {
       footerText: "Let's Get Started",
     },
   ];
-
+  const navigation = useNavigation();
   const renderPagination = (activeIndex) => {
     const isLastSlide = activeIndex === slides.length - 1;
 
@@ -77,17 +78,17 @@ const FirstScreen = ({ onDone }) => {
         <View style={styles.buttonWrapper}>
           <PrimaryButton
             title={isLastSlide ? "Get Started" : "Next"}
-            onPress={() =>{
-              if(isLastSlide) {onDone()
+            onPress={() => {
+              if (isLastSlide) {
+                navigation.navigate("Main");
+              } else {
+                Animated.timing(scrollX, {
+                  toValue: activeIndex + 1,
+                  useNativeDriver: true,
+                  duration: 400,
+                }).start();
 
-              }else{
-                 Animated.timing(scrollX, {
-            toValue:activeIndex  +1,
-            useNativeDriver: true,
-            duration:400
-          }).start();
-
-          sliderRef.current?.goToSlide(activeIndex + 1);
+                sliderRef.current?.goToSlide(activeIndex + 1);
               }
             }}
             style={{ elevation: 5 }}
@@ -102,8 +103,8 @@ const FirstScreen = ({ onDone }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.white }}>         
-      <StatusBar backgroundColor={'white'} />
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <StatusBar backgroundColor={"white"} />
       <AppIntroSlider
         ref={sliderRef}
         data={slides}
@@ -112,7 +113,7 @@ const FirstScreen = ({ onDone }) => {
           Animated.timing(scrollX, {
             toValue: index,
             useNativeDriver: true,
-            duration:400
+            duration: 400,
           }).start();
         }}
         renderItem={({ item, index }) => {
