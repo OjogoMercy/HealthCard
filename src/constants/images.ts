@@ -10,4 +10,5 @@ export const images = {
   slide6: require("../assets/images/slide6.png"),
   splashIcon: require("../assets/images/splash-icon.png"),
   slide2: require("../assets/images/slide2.png"),
+  mom:require("../assets/images/mom.webp"),
 };

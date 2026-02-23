@@ -6,7 +6,8 @@ import {
   UserCircle,
 } from "lucide-react-native";
 import React from "react";
-import { ColorValue, Platform } from "react-native";
+import type { ColorValue } from "react-native";
+import { Platform } from "react-native";
 import { AnimatedIconWrapper } from "../components/AnimatedIconWrapper";
 import { COLORS } from "../constants/THEME";
 import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
@@ -58,7 +59,7 @@ export default function BottomTabNavigator() {
           };
 
           return (
-            <AnimatedIconWrapper focused={focused} glowColor="#a0f0a4ff" 
+            <AnimatedIconWrapper focused={focused} glowColor="#a0f0a4ff">
               {route.name === "Home" && <Home {...iconProps} />}
               {route.name === "CheckIn" && <ClipboardCheck {...iconProps} />}
               {route.name === "Immunisation" && <ShieldCheck {...iconProps} />}

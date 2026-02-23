@@ -23,14 +23,11 @@ const CustomHeader = ({
   const navigation = useNavigation<any>()
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: 'white' }}
+      style={{ flex: 1, backgroundColor: COLORS.background }}
       contentContainerStyle={{ alignItems: 'center' }}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
-    
-     
-
-      <View style={{}}>{children}</View>
+      <View style={{flex: 1, width: SCREEN_WIDTH,padding:SIZES.padding*1.2,alignItems:'center'}}>{children}</View>
     </ScrollView>
   )
 }
