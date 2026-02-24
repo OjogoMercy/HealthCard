@@ -8,6 +8,7 @@ import {
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -16,10 +17,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
   const Value = "67%";
+  const age = "6";
   const visits = "6 Weeks";
   const data = [
     {
@@ -40,12 +41,7 @@ const HomeScreen = () => {
       dueDate: "15th June 2024",
       status: "Due in 15 days",
     },
-    {
-      id: 4,
-      vaccine: "OPV 2",
-      dueDate: "15th July 2024",
-      status: "Due in 30 days",
-    },
+  
   ];
 
   return (
@@ -59,16 +55,20 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
-        <ThemedText type="text2">Hey there{" "}
+        <ThemedText type="text2" style={{ marginRight: "auto" }}>
+          {" "}
+          Hey{" "}
           <ThemedText type="text2bold" style={{ color: COLORS.accent }}>
-            Sarah</ThemedText>
+            Sarah
+          </ThemedText>
           😉
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons name="notifications" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <LinearGradient style={styles.card}
+      <LinearGradient
+        style={styles.card}
         colors={[COLORS.primary, COLORS.primary + "80"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -80,7 +80,7 @@ const HomeScreen = () => {
               width: SIZES.padding,
               borderRadius: SIZES.padding,
               backgroundColor: COLORS.accent,
-              marginRight:SIZES.base,
+              marginRight: SIZES.base,
             }}
           />
           <ThemedText type="text2bold" style={{ color: "white" }}>
@@ -100,11 +100,14 @@ const HomeScreen = () => {
         </ThemedText>
         <ThemedText type="text4white">
           Status:{" "}
-          <ThemedText style={{ fontWeight: "bold",color:COLORS.accent }} type="text4white">
+          <ThemedText
+            style={{ fontWeight: "bold", color: COLORS.accent }}
+            type="text4white"
+          >
             Due in 3 days
           </ThemedText>
         </ThemedText>
-        <View style={[styles.row,{marginVertical:SIZES.base}]}>
+        <View style={[styles.row, { marginVertical: SIZES.base }]}>
           <TouchableOpacity
             activeOpacity={0.5}
             style={[
@@ -158,9 +161,17 @@ const HomeScreen = () => {
         Progress
       </ThemedText>
       <View style={[styles.bigCard]}>
-        <View style={[styles.row,{marginVertical:SIZES.base/2}]}>
-        <Image/>
-          <ThemedText type="text3bold" style={{color:COLORS.primary}}>Michael</ThemedText>
+        <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
+          <View style={styles.profileContainer}>
+            <Image source={images.baby} style={styles.profileImage} />
+          </View>
+          <ThemedText
+            type="text3bold"
+            style={{ color: COLORS.primary, marginRight: "auto" }}
+          >
+            {" "}
+            Michael <ThemedText type="text4">| {age} months old</ThemedText>
+          </ThemedText>
         </View>
         <ThemedText type="text3">{Value} Vaccines completed</ThemedText>
         <View style={[styles.progressBar]}>
@@ -255,7 +266,7 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: COLORS.primary,
     borderRadius: SIZES.padding,
-    elevation:2
+    elevation: 2,
   },
   bigCard: {
     width: SCREEN_WIDTH * 0.9,
