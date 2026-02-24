@@ -74,16 +74,8 @@ const HomeScreen = () => {
         end={{ x: 1, y: 1 }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              height: SIZES.padding,
-              width: SIZES.padding,
-              borderRadius: SIZES.padding,
-              backgroundColor: COLORS.accent,
-              marginRight: SIZES.base,
-            }}
-          />
-          <ThemedText type="text2bold" style={{ color: "white" }}>
+         <Ionicons name="time" size={23} color={COLORS.accent} />
+          <ThemedText type="text2bold" style={{ color: "white", marginLeft: SIZES.base   }}>
             Next Immunisation
           </ThemedText>
         </View>
