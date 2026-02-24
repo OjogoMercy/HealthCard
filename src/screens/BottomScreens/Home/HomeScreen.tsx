@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
   const Value = "67%";
@@ -58,18 +59,20 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
-        <ThemedText type="text2">
-          Hey there{" "}
+        <ThemedText type="text2">Hey there{" "}
           <ThemedText type="text2bold" style={{ color: COLORS.accent }}>
-            Sarah
-          </ThemedText>
+            Sarah</ThemedText>
           😉
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons name="notifications" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <View style={styles.card}>
+      <LinearGradient style={styles.card}
+        colors={[COLORS.primary, COLORS.primary + "80"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View
             style={{
@@ -97,7 +100,7 @@ const HomeScreen = () => {
         </ThemedText>
         <ThemedText type="text4white">
           Status:{" "}
-          <ThemedText style={{ fontWeight: "bold" }} type="text4white">
+          <ThemedText style={{ fontWeight: "bold",color:COLORS.accent }} type="text4white">
             Due in 3 days
           </ThemedText>
         </ThemedText>
@@ -133,7 +136,7 @@ const HomeScreen = () => {
             </ThemedText>
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
       <View
         style={{
           height: SIZES.base * 1.2,
@@ -155,6 +158,10 @@ const HomeScreen = () => {
         Progress
       </ThemedText>
       <View style={[styles.bigCard]}>
+        <View style={[styles.row,{marginVertical:SIZES.base/2}]}>
+        <Image/>
+          <ThemedText type="text3bold" style={{color:COLORS.primary}}>Michael</ThemedText>
+        </View>
         <ThemedText type="text3">{Value} Vaccines completed</ThemedText>
         <View style={[styles.progressBar]}>
           <View style={[styles.progressFill, { width: Value }]}></View>
@@ -214,8 +221,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     alignItems: "center",
     justifyContent: "center",
-    height: SIZES.navTitle * 1.3,
-    width: SIZES.navTitle * 1.3,
+    height: SIZES.navTitle * 1.4,
+    width: SIZES.navTitle * 1.4,
   },
   profileImage: {
     height: "90%",
@@ -232,7 +239,6 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
   },
   card: {
-    backgroundColor: COLORS.primary,
     borderRadius: SIZES.navTitle,
     padding: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
