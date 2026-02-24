@@ -24,6 +24,7 @@ const CustomHeader = ({
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: COLORS.background }}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{ alignItems: 'center' }}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
