@@ -14,7 +14,7 @@ export default function PrimaryButton({ onPress, title, style, textStyle }: Prim
   return (
     <View>
       <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.button, style]}>
-        <ThemedText type="text4white" style={[textStyle]}>
+        <ThemedText type="text3white" style={[textStyle]}>
           {title}
         </ThemedText>
       </TouchableOpacity>
@@ -26,9 +26,10 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: COLORS.primary,
     borderRadius: SIZES.padding,
-    padding: SIZES.base * 1.5,
+    padding: SIZES.base * 1.7,
     alignItems: 'center',
     marginVertical: SIZES.base * 2,
+    elevation:3,
  
   },
 })

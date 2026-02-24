@@ -18,7 +18,7 @@ import {
 } from "react-native";
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
-  const Value = "70%";
+  const Value = "67%";
   const visits = "6 Weeks";
   const data = [
     {
@@ -38,6 +38,12 @@ const HomeScreen = () => {
       vaccine: "PCV 1",
       dueDate: "15th June 2024",
       status: "Due in 15 days",
+    },
+    {
+      id: 4,
+      vaccine: "OPV 2",
+      dueDate: "15th July 2024",
+      status: "Due in 30 days",
     },
   ];
 
@@ -64,35 +70,49 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.card}>
-        <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-          Next Vaccines
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              height: SIZES.padding,
+              width: SIZES.padding,
+              borderRadius: SIZES.padding,
+              backgroundColor: COLORS.accent,
+              marginRight:SIZES.base,
+            }}
+          />
+          <ThemedText type="text2bold" style={{ color: "white" }}>
+            Next Immunisation
+          </ThemedText>
+        </View>
+
+        <ThemedText type="text3white">
+          OPV 1 + Pentavalent 1 + PCV 1{" "}
         </ThemedText>
-        <ThemedText type="text4"> OPV 1 + Pentavalent 1 + PCV 1 </ThemedText>
-        <ThemedText type="text4">
+        <ThemedText type="text4white">
           Due date:
-          <ThemedText style={{ color: COLORS.black }} type="text4bold">
+          <ThemedText style={{ fontWeight: "bold" }} type="text4white">
             {" "}
             15th June 2024
           </ThemedText>
         </ThemedText>
-        <ThemedText type="text4">
+        <ThemedText type="text4white">
           Status:{" "}
-          <ThemedText style={{ color: COLORS.black }} type="text4bold">
+          <ThemedText style={{ fontWeight: "bold" }} type="text4white">
             Due in 3 days
           </ThemedText>
         </ThemedText>
-        <View style={styles.row}>
+        <View style={[styles.row,{marginVertical:SIZES.base}]}>
           <TouchableOpacity
             activeOpacity={0.5}
             style={[
               styles.checkButtons,
-              checked === "A" && { backgroundColor: COLORS.primary },
+              checked === "A" && { backgroundColor: COLORS.secondary },
             ]}
             onPress={() => setChecked("A")}
           >
             <ThemedText
-              type="text4"
-              style={{ color: checked === "A" ? COLORS.white : COLORS.black }}
+              type="text4white"
+              style={{ color: checked === "A" ? "#fff" : COLORS.black }}
             >
               Mark as Taken
             </ThemedText>
@@ -101,13 +121,13 @@ const HomeScreen = () => {
             activeOpacity={0.5}
             style={[
               styles.checkButtons,
-              checked === "B" && { backgroundColor: COLORS.primary },
+              checked === "B" && { backgroundColor: COLORS.secondary },
             ]}
             onPress={() => setChecked("B")}
           >
             <ThemedText
-              type="text4"
-              style={{ color: checked === "B" ? COLORS.white : COLORS.black }}
+              type="text4white"
+              style={{ color: checked === "B" ? "#fff" : COLORS.black }}
             >
               Set Reminder
             </ThemedText>
@@ -134,7 +154,7 @@ const HomeScreen = () => {
       >
         Progress
       </ThemedText>
-      <View style={styles.bigCard}>
+      <View style={[styles.bigCard]}>
         <ThemedText type="text3">{Value} Vaccines completed</ThemedText>
         <View style={[styles.progressBar]}>
           <View style={[styles.progressFill, { width: Value }]}></View>
@@ -146,6 +166,7 @@ const HomeScreen = () => {
           data={data}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ marginTop: SIZES.base }}
           renderItem={({ item }) => (
             <View style={styles.listItem}>
               <ThemedText type="text4" style={{ fontWeight: "bold" }}>
@@ -211,7 +232,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
   },
   card: {
-    backgroundColor: COLORS.primary + "35",
+    backgroundColor: COLORS.primary,
     borderRadius: SIZES.navTitle,
     padding: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
@@ -220,14 +241,16 @@ const styles = StyleSheet.create({
   progressBar: {
     width: SCREEN_WIDTH * 0.8,
     height: SIZES.base * 1.5,
-    backgroundColor: COLORS.primary + "50",
+    backgroundColor: COLORS.primary + "40",
     borderRadius: SIZES.padding,
     marginTop: SIZES.base,
+    elevation: 6,
   },
   progressFill: {
     height: "100%",
     backgroundColor: COLORS.primary,
     borderRadius: SIZES.padding,
+    elevation:2
   },
   bigCard: {
     width: SCREEN_WIDTH * 0.9,

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   text3bold: {
     ...FONTS.h3bold,
     color: COLORS.black,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
   text3boldwhite: {
     ...FONTS.h3bold,
