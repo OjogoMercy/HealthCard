@@ -244,7 +244,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary + "40",
     borderRadius: SIZES.padding,
     marginTop: SIZES.base,
-    elevation: 6,
   },
   progressFill: {
     height: "100%",

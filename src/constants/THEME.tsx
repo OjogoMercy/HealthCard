@@ -29,7 +29,7 @@ export const COLORS = {
   inputContainer: '#EBDFFA',
   formBg: '#EBDFFA33',
   inputText: '#2E14219E',
-  orange: '#FFAF42',
+  amber: '#FFA726',
   accent: '#FFA726', //Nutrition alerts, meal logging, calls to action.
   veryLightGray: '#cccccc1a',
   overlay: '#cccccc1a',

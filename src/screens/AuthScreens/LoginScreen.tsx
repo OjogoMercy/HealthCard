@@ -13,7 +13,7 @@ const LoginScreen = () => {
   const [password, setPassword] = React.useState('')
 
   return (
-    <CustomHeader authScreen={true}>
+    <CustomHeader authScreen={true} >
       <ThemedText type="text2bold" style={{ fontWeight: 'bold', textAlign: 'center' }}>
         Welcome To CeduGames
       </ThemedText>
