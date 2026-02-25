@@ -1,11 +1,12 @@
+import CustomHeader from '@/src/components/CustomHeader'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 const Immunisation = () => {
   return (
-    <View>
+    <CustomHeader>
       <Text>Immunisation</Text>
-    </View>
+    </CustomHeader>
   )
 }
 

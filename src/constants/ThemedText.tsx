@@ -88,12 +88,12 @@ const styles = StyleSheet.create({
   text2: {
     ...FONTS.h2,
     color: COLORS.black,
-    fontWeight: FONTS.h2.fontWeight as any,
+    fontWeight: "bold",
   },
   text2bold: {
     ...FONTS.h2bold,
     color: COLORS.black,
-    fontWeight: FONTS.h2bold.fontWeight as any,
+    fontWeight: "bold",
   },
   text2boldwhite: {
     ...FONTS.h2bold,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   text3: {
     ...FONTS.h3,
     color: COLORS.black,
-    fontWeight: FONTS.h3.fontWeight as any,
+    fontWeight: "bold",
   },
   text3bold: {
     ...FONTS.h3bold,
@@ -118,27 +118,27 @@ const styles = StyleSheet.create({
   text3gray: {
     ...FONTS.h3,
     color: COLORS.gray,
-    fontWeight: FONTS.h3.fontWeight as any,
+    fontWeight: "bold",
   },
   text3white: {
     ...FONTS.h3,
     color: COLORS.white,
-    fontWeight: FONTS.h3.fontWeight as any,
+    fontWeight: "bold",
   },
   text3green: {
     ...FONTS.h3,
     color: COLORS.primary,
-    fontWeight: FONTS.h3.fontWeight as any,
+    fontWeight: "bold",
   },
   text4: {
     ...FONTS.h4,
     color: COLORS.black,
-    fontWeight: FONTS.h4.fontWeight as any,
+    fontWeight: "bold",
   },
   text4bold: {
     ...FONTS.h4bold,
     color: COLORS.black,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
   text4gray: {
     ...FONTS.h4,
