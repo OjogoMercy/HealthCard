@@ -19,7 +19,7 @@ import {
 } from "react-native";
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
-  const Value = "67%";
+  const Value = "77%";
   const age = "6";
   const visits = "6 Weeks";
   const data = [
@@ -41,7 +41,6 @@ const HomeScreen = () => {
       dueDate: "15th June 2024",
       status: "Due in 15 days",
     },
-  
   ];
 
   return (
@@ -74,8 +73,11 @@ const HomeScreen = () => {
         end={{ x: 1, y: 1 }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-         <Ionicons name="time" size={23} color={COLORS.accent} />
-          <ThemedText type="text2bold" style={{ color: "white", marginLeft: SIZES.base   }}>
+          <Ionicons name="time" size={23} color={COLORS.accent} />
+          <ThemedText
+            type="text2bold"
+            style={{ color: "white", marginLeft: SIZES.base }}
+          >
             Next Immunisation
           </ThemedText>
         </View>

@@ -5,7 +5,7 @@ import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const CheckIn = () => {
   const age = "6";
@@ -14,6 +14,28 @@ const CheckIn = () => {
     month: "long",
     day: "numeric",
   });
+   const data = [
+    {
+      id: 1,
+      vaccine: "OPV 1",
+      dueDate: "15th June 2024",
+      status: "Due in 7 days",
+    },
+    {
+      id: 2,
+      vaccine: "Pentavalent 1",
+      dueDate: "15th June 2024",
+      status: "Due in 3 days",
+    },
+    {
+      id: 3,
+      vaccine: "PCV 1",
+      dueDate: "15th June 2024",
+      status: "Due in 15 days",
+    },
+  
+  ];
+
   return (
     <CustomHeader authScreen={false}>
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
@@ -76,6 +98,18 @@ const CheckIn = () => {
       </View>
       <View style={[styles.form,{backgroundColor:COLORS.secondary + "40",elevation:0}]}>
         <ThemedText type="text3bold">Vaccines Given Today</ThemedText>
+        <View>
+          <FlatList 
+          data={data}
+          renderItem={({item}) => {
+            return(
+              <View>
+                
+              </View>
+            )
+          }}
+          />
+        </View>
         
       <PrimaryButton title="Save Check-In"/>
 

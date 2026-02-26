@@ -1,9 +1,9 @@
 import React from "react";
-import { Animated,StyleSheet } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 
 export const AnimatedIconWrapper = ({ focused, children, glowColor }) => {
   const animatedValue = React.useRef(
-    new Animated.Value(focused ? 1 : 0)
+    new Animated.Value(focused ? 1 : 0),
   ).current;
 
   React.useEffect(() => {
