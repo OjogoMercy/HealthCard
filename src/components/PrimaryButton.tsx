@@ -1,25 +1,51 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
-import { COLORS, SIZES } from '../constants/THEME'
-import { ThemedText } from '../constants/ThemedText'
+import * as Haptics from "expo-haptics";
+import React from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { COLORS, SIZES } from "../constants/THEME";
+import { ThemedText } from "../constants/ThemedText";
 
 interface PrimaryButtonProps {
-  onPress: () => void
-  title: string
-  style?: object
-  textStyle?: object
+  onPress: () => void;
+  title: string;
+  style?: object;
+  textStyle?: object;
+  type?: "impact" | "success";
 }
 
-export default function PrimaryButton({ onPress, title, style, textStyle }: PrimaryButtonProps) {
+export default function PrimaryButton({
+  onPress,
+  title,
+  style,
+  textStyle,
+  type = "impact",
+}: PrimaryButtonProps) {
+  const handlePress = () => {
+    // Trigger haptic feedback
+    if (type === "impact") {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    } else if (type === "success") {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } else if (type === "error") {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    } else if (type === "light") {
+      Haptics.ImpactFeedbackStyle.Light;
+    }
+
+    if (onPress) onPress();
+  };
   return (
     <View>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.button, style]}>
+      <TouchableOpacity
+        onPress={handlePress}
+        activeOpacity={0.7}
+        style={[styles.button, style]}
+      >
         <ThemedText type="text3white" style={[textStyle]}>
           {title}
         </ThemedText>
       </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -27,9 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderRadius: SIZES.padding,
     padding: SIZES.base * 1.7,
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: SIZES.base * 2,
-    elevation:3,
- 
+    elevation: 3,
   },
-})
+});

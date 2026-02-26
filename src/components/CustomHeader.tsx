@@ -1,17 +1,7 @@
-import {, StatusBar 
-  StyleSheet,
-  View,
-  Image,
-
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import React from "react";
-import { images } from "../constants/images";
-import { SIZES, SCREEN_HEIGHT, SCREEN_WIDTH, COLORS } from "../constants/THEME";
-import { StatusBar } from "react-native";
-import { ThemedText } from "../constants/ThemedText";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 interface CustomHeaderProps {
   children: React.ReactNode;
   title: string;
@@ -33,7 +23,7 @@ const CustomHeader = ({
       style={{
         flex: 1,
         backgroundColor: COLORS.background,
-        paddingTop: SIZES.padding,
+        paddingTop: SIZES.base,
       }}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ alignItems: "center" }}
