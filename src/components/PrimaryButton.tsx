@@ -9,7 +9,7 @@ interface PrimaryButtonProps {
   title: string;
   style?: object;
   textStyle?: object;
-  type?: "impact" | "success";
+  type?: "impact" | "success" | "error" | "light";
 }
 
 export default function PrimaryButton({
@@ -17,7 +17,7 @@ export default function PrimaryButton({
   title,
   style,
   textStyle,
-  type = "impact",
+  type = "light",
 }: PrimaryButtonProps) {
   const handlePress = () => {
     // Trigger haptic feedback
@@ -28,7 +28,7 @@ export default function PrimaryButton({
     } else if (type === "error") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     } else if (type === "light") {
-      Haptics.ImpactFeedbackStyle.Light;
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
 
     if (onPress) onPress();
