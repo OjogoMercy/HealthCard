@@ -1,3 +1,4 @@
+import { Link } from "@/.expo/types/router";
 import CustomHeader from "@/src/components/CustomHeader";
 import {
   COLORS,
@@ -203,9 +204,11 @@ const HomeScreen = () => {
         ]}
       >
         <ThemedText type="text3">View Full Schedule</ThemedText>
-        <TouchableOpacity>
-          <Ionicons name="chevron-forward" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
+        {/* <Link href="/../CareScreens/CheckIn" style={{ padding: SIZES.base }}> */}
+          <TouchableOpacity>
+            <Ionicons name="chevron-forward" size={24} color={COLORS.primary} />
+          </TouchableOpacity>
+        {/* </Link> */}
       </View>
     </CustomHeader>
   );

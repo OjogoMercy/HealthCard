@@ -5,16 +5,23 @@ import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const CheckIn = () => {
+  const [checked, setChecked] = React.useState<string[]>([]);
   const age = "6";
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-   const data = [
+  const data = [
     {
       id: 1,
       vaccine: "OPV 1",
@@ -33,8 +40,20 @@ const CheckIn = () => {
       dueDate: "15th June 2024",
       status: "Due in 15 days",
     },
-  
+    {
+      id: 4,
+      vaccine: "Rotavirus 1",
+      dueDate: "15th June 2024",
+      status: "Due in 15 days",
+    },
   ];
+  const toggleVaccine = (vaccine: string) => {
+    setChecked((prev) =>
+      prev.includes(vaccine)
+        ? prev.filter((v) => v !== vaccine)
+        : [...prev, vaccine],
+    );
+  };
 
   return (
     <CustomHeader authScreen={false}>
@@ -96,23 +115,48 @@ const CheckIn = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.form,{backgroundColor:COLORS.secondary + "40",elevation:0}]}>
+      <View
+        style={[
+          styles.form,
+          { backgroundColor: COLORS.secondary + "40", elevation: 0 },
+        ]}
+      >
         <ThemedText type="text3bold">Vaccines Given Today</ThemedText>
         <View>
-          <FlatList 
-          data={data}
-          renderItem={({item}) => {
-            return(
-              <View>
-                
-              </View>
-            )
-          }}
+          <FlatList
+            data={data}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingVertical: SIZES.base,
+                  }}
+                >
+                  <ThemedText type="text4">{item.vaccine}</ThemedText>
+                  <TouchableOpacity
+                    onPress={() => toggleVaccine(item.vaccine)}
+                    activeOpacity={0.5}
+                  >
+                    <Ionicons
+                      name={
+                        checked.includes(item.vaccine)
+                          ? "checkbox"
+                          : "square-outline"
+                      }
+                      size={24}
+                      color={COLORS.primary}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
           />
         </View>
-        
-      <PrimaryButton title="Save Check-In"/>
 
+        <PrimaryButton title="Save Check-In" />
       </View>
     </CustomHeader>
   );
