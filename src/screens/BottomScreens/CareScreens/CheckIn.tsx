@@ -1,10 +1,10 @@
-import CustomHeader from "@/src/components/CustomHeader";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapView from "@/src/components/WrapView";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   FlatList,
@@ -55,9 +55,10 @@ const CheckIn = () => {
         : [...prev, vaccine],
     );
   };
+  const navigation = useNavigation<any>();
 
   return (
-    <WrapView title={""} authScreen={false}  >
+    <WrapView>
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Check-In
       </ThemedText>
@@ -157,7 +158,7 @@ const CheckIn = () => {
           />
         </View>
 
-        <PrimaryButton title="Save Check-In" />
+        <PrimaryButton title="Save Check-In" onPress={()=> navigation.navigate("Immunisation")} />
       </View>
     </WrapView>
   );

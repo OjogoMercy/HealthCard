@@ -8,6 +8,7 @@ import {
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
@@ -42,6 +43,7 @@ const HomeScreen = () => {
       status: "Due in 15 days",
     },
   ];
+  const navigation = useNavigation<any>();
 
   return (
     <CustomHeader
@@ -203,11 +205,12 @@ const HomeScreen = () => {
         ]}
       >
         <ThemedText type="text3">View Full Schedule</ThemedText>
-        {/* <Link href="/../CareScreens/CheckIn" style={{ padding: SIZES.base }}> */}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Immunisation")}
+          activeOpacity={0.5}
+        >
           <Ionicons name="chevron-forward" size={24} color={COLORS.primary} />
         </TouchableOpacity>
-        {/* </Link> */}
       </View>
     </CustomHeader>
   );

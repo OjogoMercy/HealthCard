@@ -1,20 +1,19 @@
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import { COLORS, SIZES } from "../constants/THEME";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
 
 interface WrapViewProps {
   children: React.ReactNode;
-  title: string;
-  authScreen: boolean;
-  headerStyle?: object;
+
 }
-const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
+const WrapView = ({  children,  }: WrapViewProps) => {
   const navigation = useNavigation<any>();
 
   return (
-    <View style={[styles.container]}>
+    <SafeAreaProvider style={styles.container}>
       <StatusBar
         barStyle="dark-content"
         translucent
@@ -22,7 +21,7 @@ const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
       />
 
       <View style={{ alignItems: "center" }}>{children}</View>
-    </View>
+    </SafeAreaProvider>
   );
 };
 
