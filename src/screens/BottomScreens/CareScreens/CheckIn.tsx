@@ -1,5 +1,6 @@
 import CustomHeader from "@/src/components/CustomHeader";
 import PrimaryButton from "@/src/components/PrimaryButton";
+import WrapView from "@/src/components/WrapView";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
@@ -56,7 +57,7 @@ const CheckIn = () => {
   };
 
   return (
-    <CustomHeader authScreen={false}>
+    <WrapView title={""} authScreen={false}  >
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Check-In
       </ThemedText>
@@ -158,7 +159,7 @@ const CheckIn = () => {
 
         <PrimaryButton title="Save Check-In" />
       </View>
-    </CustomHeader>
+    </WrapView>
   );
 };
 

@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
+import { COLORS, SIZES } from "../constants/THEME";
 
 import { useNavigation } from "@react-navigation/native";
-import { Colors } from "@/constants/theme";
 
 interface WrapViewProps {
   children: React.ReactNode;
@@ -13,18 +12,16 @@ interface WrapViewProps {
 }
 const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
   const navigation = useNavigation<any>();
-  
-
 
   return (
     <View style={[styles.container]}>
       <StatusBar
         barStyle="dark-content"
         translucent
-        backgroundColor={"transparent"}
+        backgroundColor={COLORS.background}
       />
 
-      <View style={{}}>{children}</View>
+      <View style={{ alignItems: "center" }}>{children}</View>
     </View>
   );
 };
@@ -32,6 +29,10 @@ const WrapView = ({ title, children, headerStyle }: WrapViewProps) => {
 export default WrapView;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: "center", backgroundColor:COLORS.white,justifyContent:'center', padding:SIZES.padding },
- 
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: COLORS.background,
+    paddingVertical: SIZES.navTitle,
+  },
 });

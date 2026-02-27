@@ -1,4 +1,5 @@
-import CustomHeader from "@/src/components/CustomHeader";
+import WrapView from "@/src/components/WrapView";
+import { VaccineData } from "@/src/constants/Database";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
@@ -11,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { VaccineData } from "@/src/constants/Database";
 
 const Immunisation = () => {
   const age = "6";
@@ -50,7 +50,7 @@ const Immunisation = () => {
     },
   ];
   return (
-    <CustomHeader>
+    <WrapView  title={""} authScreen={false}  >
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Vaccination Timeline
       </ThemedText>
@@ -66,9 +66,16 @@ const Immunisation = () => {
           Michael <ThemedText type="text4">| {age} months old</ThemedText>
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
-          <Ionicons name="chevron-down" size={24} color={COLORS.primary} />
+          <Ionicons
+            name="chevron-down-circle-outline"
+            size={SIZES.navTitle}
+            color={COLORS.primary}
+          />
         </TouchableOpacity>
       </View>
+      <ThemedText type="text4bold" style={{ color: COLORS.primary ,marginTop:SIZES.base}}>
+        Reccomended Nigerian Immunisation Schedule
+      </ThemedText>
       <SectionList
         sections={VaccineData}
         keyExtractor={(item, index) => item.id + index}
@@ -99,15 +106,28 @@ const Immunisation = () => {
                   },
                 ]}
               >
-                <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <ThemedText type="text4bold">{item.name}</ThemedText>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="chevron-down"
+                      size={SIZES.padding}
+                      color={COLORS.primary}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           );
         }}
       />
-    </CustomHeader>
+    </WrapView>
   );
 };
 
@@ -141,7 +161,7 @@ const styles = StyleSheet.create({
   bigCard: {
     width: "100%",
     backgroundColor: "white",
-    padding: SIZES.padding/1.5,
+    padding: SIZES.padding / 1.5,
   },
   tag: {
     backgroundColor: COLORS.secondary + "80",
@@ -159,10 +179,7 @@ const styles = StyleSheet.create({
   lastItem: {
     borderBottomLeftRadius: SIZES.padding,
     borderBottomRightRadius: SIZES.padding,
-    elevation: 3,
     marginBottom: SIZES.padding,
-    borderBottomColor: COLORS.primary,
-    borderBottomWidth: 1,
     backgroundColor: COLORS.white,
   },
 });
