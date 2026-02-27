@@ -15,40 +15,7 @@ import {
 
 const Immunisation = () => {
   const age = "6";
-  const Data = [
-    {
-      title: "Birth",
-      status: "Completed",
-      data: [
-        { id: "1", name: "BCG", isDone: true },
-        { id: "2", name: "OPV 0", isDone: true },
-      ],
-    },
-    {
-      title: "6 Weeks",
-      status: "Completed",
-      data: [
-        { id: "3", name: "OPV 1", isDone: true },
-        { id: "4", name: "Pentavalent 1", isDone: true },
-      ],
-    },
-    {
-      title: "10 Weeks",
-      status: "Upcoming",
-      data: [
-        { id: "5", name: "OPV 2", isDone: false },
-        { id: "6", name: "Pentavalent 2", isDone: false },
-      ],
-    },
-    {
-      title: "9 Months",
-      status: "Pending",
-      data: [
-        { id: "7", name: "Measles", isDone: false },
-        { id: "8", name: "Yellow Fever", isDone: false },
-      ],
-    },
-  ];
+
   return (
     <WrapView  title={""} authScreen={false}  >
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
