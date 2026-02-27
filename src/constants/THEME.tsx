@@ -36,7 +36,7 @@ export const COLORS = {
   opacity: 'rgba(0, 0, 0, 0.2)',
   promptInput: '#FFE8B2',
   promptBackground: '#FFF6E0',
-  background:"#F9FAFB",
+  background:"#F7F9FC",
   mutedText:"#6B7280"
 }
 

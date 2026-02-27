@@ -2,8 +2,16 @@ import CustomHeader from "@/src/components/CustomHeader";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Image, SectionList, StyleSheet, View } from "react-native";
+import {
+  Image,
+  SectionList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { VaccineData } from "@/src/constants/Database";
 
 const Immunisation = () => {
   const age = "6";
@@ -57,9 +65,12 @@ const Immunisation = () => {
           {" "}
           Michael <ThemedText type="text4">| {age} months old</ThemedText>
         </ThemedText>
+        <TouchableOpacity activeOpacity={0.5}>
+          <Ionicons name="chevron-down" size={24} color={COLORS.primary} />
+        </TouchableOpacity>
       </View>
       <SectionList
-        sections={Data}
+        sections={VaccineData}
         keyExtractor={(item, index) => item.id + index}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled={false}
@@ -78,22 +89,15 @@ const Immunisation = () => {
         renderItem={({ item, index, section }) => {
           const lastItem = index === section.data.length - 1;
           return (
-            <View
-              style={[
-                styles.list,
-                lastItem && {
-                  borderBottomLeftRadius: SIZES.padding,
-                  borderBottomRightRadius: SIZES.padding,
-                  elevation: 3,
-                  marginBottom: SIZES.padding,
-                  borderBottomColor: COLORS.primary,
-                  borderBottomWidth: 1,
-                  backgroundColor: "red",
-                },
-              ]}
-            >
+            <View style={[styles.list, lastItem && styles.lastItem]}>
               <View
-                style={[styles.bigCard, lastItem && { backgroundColor: "red" }]}
+                style={[
+                  styles.bigCard,
+                  lastItem && {
+                    borderBottomLeftRadius: SIZES.padding,
+                    borderBottomRightRadius: SIZES.padding,
+                  },
+                ]}
               >
                 <View>
                   <ThemedText type="text4bold">{item.name}</ThemedText>
@@ -114,8 +118,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
-    marginVertical: SIZES.padding,
+    width: SCREEN_WIDTH * 0.9,
+    elevation: 4,
+    backgroundColor: COLORS.white,
+    padding: SIZES.base,
+    borderRadius: SIZES.padding,
   },
   profileContainer: {
     borderRadius: SIZES.navTitle,
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   bigCard: {
     width: "100%",
     backgroundColor: "white",
-    padding: SIZES.padding,
+    padding: SIZES.padding/1.5,
   },
   tag: {
     backgroundColor: COLORS.secondary + "80",
@@ -148,5 +155,14 @@ const styles = StyleSheet.create({
   list: {
     width: SCREEN_WIDTH * 0.9,
     alignSelf: "center",
+  },
+  lastItem: {
+    borderBottomLeftRadius: SIZES.padding,
+    borderBottomRightRadius: SIZES.padding,
+    elevation: 3,
+    marginBottom: SIZES.padding,
+    borderBottomColor: COLORS.primary,
+    borderBottomWidth: 1,
+    backgroundColor: COLORS.white,
   },
 });

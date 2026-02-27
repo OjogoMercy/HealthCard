@@ -19,13 +19,14 @@ const CustomHeader = ({
 }: CustomHeaderProps) => {
   const navigation = useNavigation<any>();
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
         backgroundColor: COLORS.background,
         paddingTop: SIZES.base,
-        alignItems:'center'
       }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ alignItems: "center" }}
     >
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
 
@@ -39,7 +40,7 @@ const CustomHeader = ({
       >
         {children}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
