@@ -12,7 +12,7 @@ import React, { useRef } from "react";
 import { Animated, Image, StatusBar, StyleSheet, View } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 
-const FirstScreen = ({ onDone }) => {
+const FirstScreen = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const sliderRef = useRef(null);
 
@@ -61,7 +61,7 @@ const FirstScreen = ({ onDone }) => {
     },
   ];
   const navigation = useNavigation();
-  const renderPagination = (activeIndex) => {
+  const renderPagination = (activeIndex: number) => {
     const isLastSlide = activeIndex === slides.length - 1;
 
     return (

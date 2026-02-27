@@ -3,13 +3,15 @@ import { NavigationContainer, NavigationIndependentTree } from '@react-navigatio
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthNavigator from './AuthNavigator';
 import BottomTabNavigator from './BottomTabNavigator';
-import IntroNavigator from './SliderNavigator';
+import SplashScreen from '../screens/IntroSlider/SplashScreen';
+import FirstScreen from '../screens/IntroSlider/FirstScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
   Auth: undefined;
   Main: undefined;
-  Intro:undefined
+  Intro:undefined;
+  First:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,10 +22,11 @@ export default function RootNavigator() {
   return (
     <NavigationIndependentTree>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false, animation:'slide_from_right'}} initialRouteName='Intro'>       
+      <Stack.Navigator screenOptions={{ headerShown: false, animation:'slide_from_right'}} initialRouteName='Splash'>       
           <Stack.Screen name="Main" component={BottomTabNavigator} />
         <Stack.Screen name="Auth" component={AuthNavigator} />
-        <Stack.Screen name="Intro" component={IntroNavigator} />
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="First" component={FirstScreen} />
     
       </Stack.Navigator>
     </NavigationContainer>

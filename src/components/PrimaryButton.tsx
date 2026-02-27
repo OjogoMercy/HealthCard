@@ -20,7 +20,6 @@ export default function PrimaryButton({
   type = "light",
 }: PrimaryButtonProps) {
   const handlePress = () => {
-    // Trigger haptic feedback
     if (type === "impact") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     } else if (type === "success") {
