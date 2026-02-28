@@ -29,14 +29,15 @@ const Immunisation = () => {
     bottomRef.current?.expand();
   };
   const handleClose = () => {
-    console.log("Sheet is closed")
+    console.log("Sheet is closed");
     setSelected(null);
     bottomRef.current?.close();
   };
-  console.log(bottomRef.current)
+  console.log(bottomRef.current);
+  console.log(snapPoints);
 
   return (
-    <WrapView>
+    <View style={styles.container}>
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Vaccination Timeline
       </ThemedText>
@@ -119,13 +120,21 @@ const Immunisation = () => {
           );
         }}
       />
+
       <BottomSheet
         ref={bottomRef}
         snapPoints={snapPoints}
         index={-1}
         onClose={handleClose}
+        enablePanDownToClose
       >
-        <View style={{ flex: 1, alignItems: "center", padding: SIZES.padding }}>
+        <View
+          style={{
+            alignItems: "center",
+            padding: SIZES.padding,
+            backgroundColor: "white",
+          }}
+        >
           <TouchableOpacity onPress={() => handleClose()} activeOpacity={0.5}>
             <Ionicons
               name="chevron-down"
@@ -144,7 +153,7 @@ const Immunisation = () => {
           </ThemedText>
         </View>
       </BottomSheet>
-    </WrapView>
+    </View>
   );
 };
 
@@ -199,4 +208,10 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.padding,
     backgroundColor: COLORS.white,
   },
+  container:{
+    flex:1,
+    backgroundColor: COLORS.background,
+    alignItems: "center",
+    paddingTop: SIZES.padding * 2,
+  }
 });

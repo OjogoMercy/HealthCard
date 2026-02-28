@@ -1,26 +1,24 @@
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import { COLORS, SIZES } from "../constants/THEME";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
-import { useNavigation } from "@react-navigation/native";
+import { COLORS, SIZES } from "../constants/THEME";
 
 interface WrapViewProps {
   children: React.ReactNode;
-  style:object
-
+  style: object;
 }
-const WrapView = ({  children,style  }: WrapViewProps) => {
-
+const WrapView = ({ children, style }: WrapViewProps) => {
   return (
-    <SafeAreaProvider style={[styles.container,style]}>
+    <SafeAreaProvider style={[styles.container, style]}>
       <StatusBar
         barStyle="dark-content"
         translucent
         backgroundColor={COLORS.background}
       />
 
-      <View style={{ alignItems: "center" }}>{children}</View>
+      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
+        {children}
+      </View>
     </SafeAreaProvider>
   );
 };
