@@ -4,7 +4,8 @@ import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import BottomSheet from "@gorhom/bottom-sheet";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Image,
   SectionList,
@@ -15,9 +16,27 @@ import {
 
 const Immunisation = () => {
   const age = "6";
+  const [selected, setSelected] = useState<{
+    id: string;
+    name: string;
+    summary: string;
+  } | null>(null);
+  const bottomRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["40%", "70%"], []);
+  const handleOpen = (item: any) => {
+    console.log(item);
+    setSelected(item);
+    bottomRef.current?.expand();
+  };
+  const handleClose = () => {
+    console.log("Sheet is closed")
+    setSelected(null);
+    bottomRef.current?.close();
+  };
+  console.log(bottomRef.current)
 
   return (
-    <WrapView  title={""} authScreen={false}  >
+    <WrapView>
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Vaccination Timeline
       </ThemedText>
@@ -40,7 +59,10 @@ const Immunisation = () => {
           />
         </TouchableOpacity>
       </View>
-      <ThemedText type="text4bold" style={{ color: COLORS.primary ,marginTop:SIZES.base}}>
+      <ThemedText
+        type="text4bold"
+        style={{ color: COLORS.primary, marginTop: SIZES.base }}
+      >
         Reccomended Nigerian Immunisation Schedule
       </ThemedText>
       <SectionList
@@ -81,7 +103,10 @@ const Immunisation = () => {
                   }}
                 >
                   <ThemedText type="text4bold">{item.name}</ThemedText>
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleOpen(item)}
+                    activeOpacity={0.5}
+                  >
                     <Ionicons
                       name="chevron-down"
                       size={SIZES.padding}
@@ -94,6 +119,31 @@ const Immunisation = () => {
           );
         }}
       />
+      <BottomSheet
+        ref={bottomRef}
+        snapPoints={snapPoints}
+        index={-1}
+        onClose={handleClose}
+      >
+        <View style={{ flex: 1, alignItems: "center", padding: SIZES.padding }}>
+          <TouchableOpacity onPress={() => handleClose()} activeOpacity={0.5}>
+            <Ionicons
+              name="chevron-down"
+              size={SIZES.padding}
+              color={COLORS.primary}
+            />
+          </TouchableOpacity>
+          <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
+            {selected?.name}
+          </ThemedText>
+          <ThemedText
+            type="text4"
+            style={{ marginTop: SIZES.base, textAlign: "center" }}
+          >
+            {selected?.summary}
+          </ThemedText>
+        </View>
+      </BottomSheet>
     </WrapView>
   );
 };
