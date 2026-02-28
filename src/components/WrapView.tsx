@@ -7,13 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 
 interface WrapViewProps {
   children: React.ReactNode;
+  style:object
 
 }
-const WrapView = ({  children,  }: WrapViewProps) => {
-  const navigation = useNavigation<any>();
+const WrapView = ({  children,style  }: WrapViewProps) => {
 
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaProvider style={[styles.container,style]}>
       <StatusBar
         barStyle="dark-content"
         translucent

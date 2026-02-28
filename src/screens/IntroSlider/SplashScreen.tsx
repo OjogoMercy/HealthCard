@@ -15,7 +15,7 @@ const SplashScreen = () => {
   });
 
   return (
-    <WrapView>
+    <WrapView style={{ flex: 1, justifyContent: "center" }}>
       <Image
         source={images.logo}
         style={{
