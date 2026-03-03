@@ -4,8 +4,7 @@ import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import BottomSheet from "@gorhom/bottom-sheet";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   SectionList,
@@ -21,23 +20,17 @@ const Immunisation = () => {
     name: string;
     summary: string;
   } | null>(null);
-  const bottomRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["40%", "70%"], []);
-  const handleOpen = (item: any) => {
-    console.log(item);
-    setSelected(item);
-    bottomRef.current?.expand();
+  const handleOpen = (item: {
+    id: string;
+    name: string;
+    summary: string;
+  }) => {
+    setSelected((previous) => previous?.id === item.id ? null : item);
   };
-  const handleClose = () => {
-    console.log("Sheet is closed");
-    setSelected(null);
-    bottomRef.current?.close();
-  };
-  console.log(bottomRef.current);
-  console.log(snapPoints);
+
 
   return (
-    <View style={styles.container}>
+    <WrapView style={styles.container}>
       <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
         Vaccination Timeline
       </ThemedText>
@@ -96,6 +89,7 @@ const Immunisation = () => {
                   },
                 ]}
               >
+                
                 <View
                   style={{
                     flexDirection: "row",
@@ -109,51 +103,23 @@ const Immunisation = () => {
                     activeOpacity={0.5}
                   >
                     <Ionicons
-                      name="chevron-down"
+                      name={selected?.id === item.id ? "chevron-up" : "chevron-down"}
                       size={SIZES.padding}
                       color={COLORS.primary}
                     />
                   </TouchableOpacity>
                 </View>
+                {selected?.id === item.id && (
+                  <View style={{backgroundColor:COLORS.white, padding:SIZES.base}}>
+                    <ThemedText type="text3">{item.summary}</ThemedText>
+                  </View>
+                )}
               </View>
             </View>
           );
         }}
       />
-
-      <BottomSheet
-        ref={bottomRef}
-        snapPoints={snapPoints}
-        index={-1}
-        onClose={handleClose}
-        enablePanDownToClose
-      >
-        <View
-          style={{
-            alignItems: "center",
-            padding: SIZES.padding,
-            backgroundColor: "white",
-          }}
-        >
-          <TouchableOpacity onPress={() => handleClose()} activeOpacity={0.5}>
-            <Ionicons
-              name="chevron-down"
-              size={SIZES.padding}
-              color={COLORS.primary}
-            />
-          </TouchableOpacity>
-          <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-            {selected?.name}
-          </ThemedText>
-          <ThemedText
-            type="text4"
-            style={{ marginTop: SIZES.base, textAlign: "center" }}
-          >
-            {selected?.summary}
-          </ThemedText>
-        </View>
-      </BottomSheet>
-    </View>
+    </WrapView>
   );
 };
 
@@ -208,10 +174,10 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.padding,
     backgroundColor: COLORS.white,
   },
-  container:{
-    flex:1,
+  container: {
+    flex: 1,
     backgroundColor: COLORS.background,
     alignItems: "center",
     paddingTop: SIZES.padding * 2,
-  }
+  },
 });
