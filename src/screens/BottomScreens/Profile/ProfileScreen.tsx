@@ -21,12 +21,11 @@ import {
 } from "react-native";
 
 const ProfileScreen = () => {
- 
-  const Baby ={
-  name : "Michael",
-   age : "6",
-   Value: "64%",
-  }
+  const Baby = {
+    name: "Michael",
+    age: "6",
+    Value: "64%",
+  };
 
   const Data = [
     {
@@ -136,25 +135,22 @@ const ProfileScreen = () => {
           }
           renderItem={({ item }) => {
             return (
-              <View style={styles.listItem}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name={item.iconName}
-                    size={24}
-                    color={COLORS.primary}
-                  />
-                </TouchableOpacity>
+              <TouchableOpacity style={styles.listItem}>
+                <Ionicons
+                  name={item.iconName}
+                  size={24}
+                  color={COLORS.primary}
+                />
                 <ThemedText type="text4" style={{ marginLeft: SIZES.base }}>
                   {item.title}
                 </ThemedText>
-                <TouchableOpacity style={{ marginLeft: "auto" }}>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={22}
-                    color={COLORS.black}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Ionicons
+                  style={{ marginLeft: "auto" }}
+                  name="chevron-forward"
+                  size={22}
+                  color={COLORS.black}
+                />
+              </TouchableOpacity>
             );
           }}
         />

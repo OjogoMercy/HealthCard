@@ -1,17 +1,18 @@
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapView from "@/src/components/WrapView";
 import { general } from "@/src/constants/General";
-import {
-  COLORS,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-  SIZES,
-} from "@/src/constants/THEME";
+import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View,FlatList } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const MomProfile = () => {
   const User = {
@@ -24,7 +25,7 @@ const MomProfile = () => {
     age: "6",
     Value: "64%",
   };
-   const Data = [
+  const Data = [
     {
       id: 1,
       iconName: "person",
@@ -41,11 +42,9 @@ const MomProfile = () => {
       title: "Settings",
     },
     {
-        id:4,
-        iconName:"help-circle",
-        title:"Help"
-
-
+      id: 4,
+      iconName: "help-circle",
+      title: "Help",
     },
     {
       id: 5,
@@ -74,7 +73,7 @@ const MomProfile = () => {
         </TouchableOpacity>
         <ThemedText
           type="text3bold"
-          style={{ marginVertical: SIZES.base, color: COLORS.primary }}
+          style={{ marginTop: SIZES.base, color: COLORS.primary }}
         >
           {User.name}
         </ThemedText>
@@ -85,7 +84,7 @@ const MomProfile = () => {
         style={[
           general.nextContainer,
           {
-            height: SCREEN_HEIGHT * 0.25,
+            height: "auto",
             backgroundColor: COLORS.primary + "20",
           },
         ]}
@@ -121,9 +120,9 @@ const MomProfile = () => {
             <ThemedText type="text4">| {Baby.age} months old</ThemedText>
           </ThemedText>
         </View>
-        <View style={{width:'100%'}}>
-        <PrimaryButton title="Add New Child" onPress={undefined} />
 
+        <View style={{ width: "100%" }}>
+          <PrimaryButton title="Add New Child" onPress={undefined} />
         </View>
       </View>
       <View style={styles.card}>
@@ -136,25 +135,22 @@ const MomProfile = () => {
           }
           renderItem={({ item }) => {
             return (
-              <View style={styles.listItem}>
-                <TouchableOpacity>
+              <TouchableOpacity style={styles.listItem}>
                   <Ionicons
                     name={item.iconName}
                     size={24}
                     color={COLORS.primary}
                   />
-                </TouchableOpacity>
                 <ThemedText type="text4" style={{ marginLeft: SIZES.base }}>
                   {item.title}
                 </ThemedText>
-                <TouchableOpacity style={{ marginLeft: "auto" }}>
                   <Ionicons
+                  style={{marginLeft:'auto'}}
                     name="chevron-forward"
                     size={22}
                     color={COLORS.black}
                   />
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             );
           }}
         />
@@ -172,7 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
     alignItems: "center",
-    marginVertical: SIZES.padding,
+    marginVertical: SIZES.base,
     elevation: 1,
   },
   profileContainer: {
@@ -189,14 +185,12 @@ const styles = StyleSheet.create({
     padding: SIZES.base,
     borderRadius: SIZES.padding,
     marginTop: SIZES.base,
-    width: "90%",
+    width: SCREEN_WIDTH*0.9,
   },
-   listItem: {
+  listItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: SIZES.base,
+    paddingVertical: SIZES.base/1.3,
   },
-
-
 });
