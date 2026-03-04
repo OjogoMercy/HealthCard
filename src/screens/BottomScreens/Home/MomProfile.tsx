@@ -1,5 +1,11 @@
 import WrapView from "@/src/components/WrapView";
-import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
+import { general } from "@/src/constants/General";
+import {
+  COLORS,
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH,
+  SIZES,
+} from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -10,7 +16,12 @@ const MomProfile = () => {
   const User = {
     name: "Sarah Williams",
     email: "email.com",
-    Phone:"070845346257"
+    Phone: "070845346257",
+  };
+  const Baby = {
+    name: "Michael",
+    age: "6",
+    Value: "64%",
   };
   return (
     <WrapView screenTitle="Mom Profile">
@@ -26,7 +37,7 @@ const MomProfile = () => {
           />
           <Ionicons
             name="camera"
-            size={25}
+            size={22}
             color={COLORS.primary}
             style={{ position: "absolute", bottom: 0, right: 0 }}
           />
@@ -37,8 +48,39 @@ const MomProfile = () => {
         >
           {User.name}
         </ThemedText>
-        <ThemedText type="text4" >{User.email}</ThemedText>
-        <ThemedText type="text4" >{User.Phone}</ThemedText>
+        <ThemedText type="text4">{User.email}</ThemedText>
+        <ThemedText type="text4">{User.Phone}</ThemedText>
+      </View>
+      <View style={styles.nextContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <Ionicons name="calendar" size={20} color={COLORS.accent} />
+          <ThemedText type="text3bold" style={{ marginLeft: SIZES.base }}>
+            Children
+          </ThemedText>
+        </View>
+
+        <View
+          style={[
+            general.row,
+            {
+              marginVertical: SIZES.base,
+              elevation: 0,
+              backgroundColor: "white",
+            },
+          ]}
+        >
+          <View style={general.profileContainer}>
+            <Image source={images.baby} style={general.profileImage} />
+          </View>
+          <ThemedText
+            type="text3bold"
+            style={{ color: COLORS.primary, marginRight: "auto" }}
+          >
+            {" "}
+            Michael{" "}
+            <ThemedText type="text4">| {Baby.age} months old</ThemedText>
+          </ThemedText>
+        </View>
       </View>
     </WrapView>
   );
@@ -72,4 +114,15 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
     width: "90%",
   },
+  nextContainer: {
+    backgroundColor: COLORS.accent + "30",
+    width: SCREEN_WIDTH * 0.9,
+    paddingVertical: SIZES.padding / 2,
+    borderRadius: SIZES.padding,
+    marginVertical: SIZES.base,
+    alignItems: "flex-start",
+    paddingHorizontal: SIZES.base * 1.5,
+    height: SCREEN_HEIGHT * 0.12,
+  },
+ 
 });

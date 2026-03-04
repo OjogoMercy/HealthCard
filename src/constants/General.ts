@@ -1,0 +1,91 @@
+import { StyleSheet } from "react-native";
+import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH, SIZES } from "./THEME";
+
+export const general = StyleSheet.create({
+  profileContainer: {
+    borderRadius: SIZES.navTitle,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: SIZES.base,
+  },
+  listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: SIZES.base,
+  },
+  card: {
+    backgroundColor: COLORS.secondary + "20",
+    padding: SIZES.base,
+    borderRadius: SIZES.padding,
+    marginTop: SIZES.padding,
+    width: "90%",
+  },
+  profileCard: {
+    backgroundColor: COLORS.white,
+    padding: SIZES.base,
+    borderRadius: SIZES.padding,
+    width: SCREEN_WIDTH * 0.9,
+    alignItems: "center",
+    marginVertical: SIZES.padding,
+    flexDirection: "row",
+    elevation: 1,
+  },
+  editButton: {
+    backgroundColor: COLORS.primary,
+    padding: SIZES.base,
+    marginLeft: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: SIZES.padding,
+    justifyContent: "center",
+    elevation: 3,
+  },
+  progress: {
+    padding: SIZES.base * 2,
+    borderRadius: SIZES.padding,
+    width: SCREEN_WIDTH * 0.9,
+    marginVertical: SIZES.base,
+    height: SCREEN_HEIGHT * 0.155,
+  },
+  progressBar: {
+    width: SCREEN_WIDTH * 0.8,
+    height: SIZES.base * 1.5,
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.padding,
+    marginVertical: SIZES.padding / 2,
+  },
+  progressFill: {
+    height: "100%",
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.padding,
+    elevation: 2,
+  },
+  nextContainer: {
+    backgroundColor: COLORS.accent + "30",
+    width: SCREEN_WIDTH * 0.9,
+    paddingVertical: SIZES.padding / 2,
+    borderRadius: SIZES.padding,
+    marginVertical: SIZES.base,
+    alignItems: "flex-start",
+    paddingHorizontal: SIZES.base * 1.5,
+    height: SCREEN_HEIGHT * 0.12,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: SCREEN_WIDTH * 0.9,
+    elevation: 4,
+    backgroundColor: COLORS.white,
+    padding: SIZES.base,
+    borderRadius: SIZES.padding,
+  },
+
+  profileImage: {
+    height: "90%",
+    width: "90%",
+    borderRadius: SIZES.padding,
+    resizeMode: "cover",
+  },
+});
