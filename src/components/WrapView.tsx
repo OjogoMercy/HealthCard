@@ -5,6 +5,7 @@ import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
+import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 interface WrapViewProps {
   children: React.ReactNode;
   style: object;
@@ -20,8 +21,13 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
         backgroundColor={COLORS.background}
       />
 
-      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View
+        style={{
+          alignItems: "center",
+          flex: 1,
+          padding: SIZES.base,}}
+      >
+        <View style={{ flexDirection: "row", justifyContent: "space-between" ,width:SCREEN_WIDTH*0.95}}>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.goBack()}
@@ -31,8 +37,8 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
           <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
             {screenTitle}
           </ThemedText>
-          <TouchableOpacity activeOpacity={0.7} onPress={undefined}>
-            <Ionicons name="list" size={22} color={"black"} />
+          <TouchableOpacity  onPress={undefined}>
+            <Ionicons name="ellipsis-vertical" size={22} color={"black"} />
           </TouchableOpacity>
         </View>
         {children}
@@ -46,7 +52,7 @@ export default WrapView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
     backgroundColor: COLORS.background,
     paddingVertical: SIZES.navTitle,
   },

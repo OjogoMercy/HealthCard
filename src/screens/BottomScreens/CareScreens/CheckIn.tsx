@@ -58,10 +58,7 @@ const CheckIn = () => {
   const navigation = useNavigation<any>();
 
   return (
-    <WrapView>
-      <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-        Check-In
-      </ThemedText>
+    <WrapView screenTitle="Check-In">
       <View style={styles.row}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.baby} style={styles.profileImage} />
@@ -158,7 +155,10 @@ const CheckIn = () => {
           />
         </View>
 
-        <PrimaryButton title="Save Check-In" onPress={()=> navigation.navigate("Immunisation")} />
+        <PrimaryButton
+          title="Save Check-In"
+          onPress={() => navigation.navigate("Immunisation")}
+        />
       </View>
     </WrapView>
   );

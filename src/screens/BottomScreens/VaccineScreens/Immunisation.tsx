@@ -20,20 +20,12 @@ const Immunisation = () => {
     name: string;
     summary: string;
   } | null>(null);
-  const handleOpen = (item: {
-    id: string;
-    name: string;
-    summary: string;
-  }) => {
-    setSelected((previous) => previous?.id === item.id ? null : item);
+  const handleOpen = (item: { id: string; name: string; summary: string }) => {
+    setSelected((previous) => (previous?.id === item.id ? null : item));
   };
 
-
   return (
-    <WrapView style={styles.container}>
-      <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-        Vaccination Timeline
-      </ThemedText>
+    <WrapView style={styles.container} screenTitle="Vaccination Timeline">
       <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
         <View style={styles.profileContainer}>
           <Image source={images.baby} style={styles.profileImage} />
@@ -89,7 +81,6 @@ const Immunisation = () => {
                   },
                 ]}
               >
-                
                 <View
                   style={{
                     flexDirection: "row",
@@ -103,14 +94,21 @@ const Immunisation = () => {
                     activeOpacity={0.5}
                   >
                     <Ionicons
-                      name={selected?.id === item.id ? "chevron-up" : "chevron-down"}
+                      name={
+                        selected?.id === item.id ? "chevron-up" : "chevron-down"
+                      }
                       size={SIZES.padding}
                       color={COLORS.primary}
                     />
                   </TouchableOpacity>
                 </View>
                 {selected?.id === item.id && (
-                  <View style={{backgroundColor:COLORS.white, padding:SIZES.base}}>
+                  <View
+                    style={{
+                      backgroundColor: COLORS.white,
+                      padding: SIZES.base,
+                    }}
+                  >
                     <ThemedText type="text3">{item.summary}</ThemedText>
                   </View>
                 )}
