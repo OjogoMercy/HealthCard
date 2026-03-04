@@ -52,7 +52,7 @@ const HomeScreen = () => {
       tabScreen={true}
       screenTitle="Home"
     >
-      <View style={[styles.row]}>
+      <View style={[styles.row,]}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>

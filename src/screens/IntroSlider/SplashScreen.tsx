@@ -1,7 +1,6 @@
-import WrapView from "@/src/components/WrapView";
 import { useNavigation } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, StatusBar, StyleSheet } from "react-native";
+import { Image, StatusBar, StyleSheet, View } from "react-native";
 import { images } from "../../constants/images";
 import { SCREEN_WIDTH } from "../../constants/THEME";
 
@@ -15,7 +14,15 @@ const SplashScreen = () => {
   });
 
   return (
-    <WrapView style={{ flex: 1, justifyContent: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+      }}
+    >
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
       <Image
         source={images.logo}
         style={{
@@ -24,7 +31,7 @@ const SplashScreen = () => {
           resizeMode: "contain",
         }}
       />
-    </WrapView>
+    </View>
   );
 };
 
