@@ -1,3 +1,4 @@
+import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapView from "@/src/components/WrapView";
 import { general } from "@/src/constants/General";
 import {
@@ -10,7 +11,7 @@ import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View,FlatList } from "react-native";
 
 const MomProfile = () => {
   const User = {
@@ -23,6 +24,35 @@ const MomProfile = () => {
     age: "6",
     Value: "64%",
   };
+   const Data = [
+    {
+      id: 1,
+      iconName: "person",
+      title: "Edit Profile",
+    },
+    {
+      id: 2,
+      iconName: "people-circle",
+      title: "Security",
+    },
+    {
+      id: 3,
+      iconName: "settings",
+      title: "Settings",
+    },
+    {
+        id:4,
+        iconName:"help-circle",
+        title:"Help"
+
+
+    },
+    {
+      id: 5,
+      iconName: "log-out-outline",
+      title: "Logout",
+    },
+  ];
   return (
     <WrapView screenTitle="Mom Profile">
       <View style={styles.profileCard}>
@@ -51,26 +81,36 @@ const MomProfile = () => {
         <ThemedText type="text4">{User.email}</ThemedText>
         <ThemedText type="text4">{User.Phone}</ThemedText>
       </View>
-      <View style={styles.nextContainer}>
+      <View
+        style={[
+          general.nextContainer,
+          {
+            height: SCREEN_HEIGHT * 0.25,
+            backgroundColor: COLORS.primary + "20",
+          },
+        ]}
+      >
         <View style={{ flexDirection: "row" }}>
-          <Ionicons name="calendar" size={20} color={COLORS.accent} />
+          <Ionicons name="people-circle" size={20} color={COLORS.primary} />
           <ThemedText type="text3bold" style={{ marginLeft: SIZES.base }}>
             Children
           </ThemedText>
         </View>
 
-        <View
-          style={[
-            general.row,
-            {
-              marginVertical: SIZES.base,
-              elevation: 0,
-              backgroundColor: "white",
-            },
-          ]}
-        >
-          <View style={general.profileContainer}>
-            <Image source={images.baby} style={general.profileImage} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={[
+              general.profileContainer,
+              { width: SIZES.navTitle * 2, height: SIZES.navTitle * 2 },
+            ]}
+          >
+            <Image
+              source={images.baby}
+              style={[
+                general.profileImage,
+                { borderWidth: 2, borderColor: COLORS.primary },
+              ]}
+            />
           </View>
           <ThemedText
             type="text3bold"
@@ -81,6 +121,43 @@ const MomProfile = () => {
             <ThemedText type="text4">| {Baby.age} months old</ThemedText>
           </ThemedText>
         </View>
+        <View style={{width:'100%'}}>
+        <PrimaryButton title="Add New Child" onPress={undefined} />
+
+        </View>
+      </View>
+      <View style={styles.card}>
+        <FlatList
+          data={Data}
+          ListHeaderComponent={
+            <ThemedText type="text4bold" style={{ marginVertical: SIZES.base }}>
+              Account Settings
+            </ThemedText>
+          }
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.listItem}>
+                <TouchableOpacity>
+                  <Ionicons
+                    name={item.iconName}
+                    size={24}
+                    color={COLORS.primary}
+                  />
+                </TouchableOpacity>
+                <ThemedText type="text4" style={{ marginLeft: SIZES.base }}>
+                  {item.title}
+                </ThemedText>
+                <TouchableOpacity style={{ marginLeft: "auto" }}>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={22}
+                    color={COLORS.black}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
       </View>
     </WrapView>
   );
@@ -114,15 +191,12 @@ const styles = StyleSheet.create({
     marginTop: SIZES.padding,
     width: "90%",
   },
-  nextContainer: {
-    backgroundColor: COLORS.accent + "30",
-    width: SCREEN_WIDTH * 0.9,
-    paddingVertical: SIZES.padding / 2,
-    borderRadius: SIZES.padding,
-    marginVertical: SIZES.base,
-    alignItems: "flex-start",
-    paddingHorizontal: SIZES.base * 1.5,
-    height: SCREEN_HEIGHT * 0.12,
+   listItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: SIZES.base,
   },
- 
+
+
 });

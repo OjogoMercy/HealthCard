@@ -1,5 +1,6 @@
 import WrapView from "@/src/components/WrapView";
 import { VaccineData } from "@/src/constants/Database";
+import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
@@ -39,8 +40,8 @@ const Immunisation = () => {
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons
-            name="chevron-down-circle-outline"
-            size={SIZES.navTitle}
+            name="chevron-down"
+            size={25}
             color={COLORS.primary}
           />
         </TouchableOpacity>
