@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondary + "20",
     padding: SIZES.base,
     borderRadius: SIZES.padding,
-    marginTop: SIZES.padding,
+    marginTop: SIZES.base,
     width: "90%",
   },
    listItem: {

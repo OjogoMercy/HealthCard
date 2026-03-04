@@ -11,10 +11,10 @@ import { Platform } from "react-native";
 import { AnimatedIconWrapper } from "../components/AnimatedIconWrapper";
 import { COLORS } from "../constants/THEME";
 import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
-import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
 import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
 import * as Haptics from "expo-haptics";
+import StackNav from "./StackNav";
 
 type RootTabParamList = {
   Home: undefined;
@@ -78,7 +78,7 @@ export default function BottomTabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={StackNav}
         options={{ title: "Home" }}
       />
       <Tab.Screen

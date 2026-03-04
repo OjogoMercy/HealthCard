@@ -54,7 +54,7 @@ const HomeScreen = () => {
     >
       <View style={[styles.row,]}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5} onPress={() =>
-            navigation.navigate("StackNav", { screen: "MomProfile" })
+            navigation.navigate("MomProfile")
           }>
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
