@@ -14,6 +14,8 @@ import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
 import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
 import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
+import * as Haptics from "expo-haptics";
+
 type RootTabParamList = {
   Home: undefined;
   Immunisation: undefined;
@@ -68,6 +70,11 @@ export default function BottomTabNavigator() {
           );
         },
       })}
+      screenListeners={{
+        tabPress:(e)=> {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+        }
+      }}
     >
       <Tab.Screen
         name="Home"

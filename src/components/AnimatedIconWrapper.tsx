@@ -9,7 +9,7 @@ export const AnimatedIconWrapper = ({ focused, children, glowColor }) => {
   React.useEffect(() => {
     Animated.timing(animatedValue, {
       toValue: focused ? 1 : 0,
-      duration: 500,
+      duration: 200,
       useNativeDriver: false,
     }).start();
   }, [focused]);
