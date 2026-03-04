@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import WrapView from '@/src/components/WrapView'
 
 const MomProfile = () => {
   return (
-    <View>
+    <WrapView screenTitle="Mom Profile">
       <Text>MomProfile</Text>
-    </View>
+    </WrapView>
   )
 }
 

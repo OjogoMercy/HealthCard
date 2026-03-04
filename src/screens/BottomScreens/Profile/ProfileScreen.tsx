@@ -63,6 +63,12 @@ const ProfileScreen = () => {
               borderColor: COLORS.primary,
             }}
           />
+          <Ionicons
+            name="camera"
+            size={20}
+            color={COLORS.primary}
+            style={{ position: "absolute", bottom: 5, right: 5 }}
+          />
         </TouchableOpacity>
         <View>
           <ThemedText type="text3bold" style={{ color: COLORS.primary }}>

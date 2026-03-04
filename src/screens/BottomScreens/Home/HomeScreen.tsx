@@ -53,7 +53,9 @@ const HomeScreen = () => {
       screenTitle="Home"
     >
       <View style={[styles.row,]}>
-        <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
+        <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5} onPress={() =>
+            navigation.navigate("StackNav", { screen: "MomProfile" })
+          }>
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
         <ThemedText type="text2" style={{ marginRight: "auto" }}>
