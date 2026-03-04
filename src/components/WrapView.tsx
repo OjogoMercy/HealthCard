@@ -38,7 +38,7 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
             {screenTitle}
           </ThemedText>
           <TouchableOpacity  onPress={undefined}>
-            <Ionicons name="ellipsis-vertical" size={22} color={"black"} />
+            <Ionicons name="ellipsis-vertical" size={22} color={COLORS.background} />
           </TouchableOpacity>
         </View>
         {children}

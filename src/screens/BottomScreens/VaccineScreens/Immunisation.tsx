@@ -26,7 +26,7 @@ const Immunisation = () => {
 
   return (
     <WrapView style={styles.container} screenTitle="Vaccination Timeline">
-      <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
+      <View style={[styles.row, { marginVertical: SIZES.base }]}>
         <View style={styles.profileContainer}>
           <Image source={images.baby} style={styles.profileImage} />
         </View>

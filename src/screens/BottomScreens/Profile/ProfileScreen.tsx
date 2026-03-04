@@ -14,6 +14,7 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -27,17 +28,22 @@ const ProfileScreen = () => {
     {
       id: 1,
       iconName: "person",
-      title: "Personal Information",
+      title: "Child Information",
     },
     {
       id: 2,
-      iconName: "calendar",
-      title: "Calendar",
+      iconName: "people-circle",
+      title: "Switch Child Profile",
     },
     {
       id: 3,
-      iconName: "settings",
-      title: "Settings",
+      iconName: "help-circle",
+      title: "Help and Support",
+    },
+    {
+      id: 4,
+      iconName: "log-out-outline",
+      title: "Logout",
     },
   ];
 
@@ -82,10 +88,31 @@ const ProfileScreen = () => {
         <ThemedText type="text4white">Completion : {Value}</ThemedText>
         <ThemedText type="text4white">13 of 20 vaccines completed </ThemedText>
       </LinearGradient>
+      <View style={styles.nextContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <Ionicons name="calendar" size={20} color={COLORS.accent} />
+          <ThemedText type="text3bold" style={{ marginLeft: SIZES.base }}>
+            Next Vaccine
+          </ThemedText>
+        </View>
+        <ThemedText type="text4">OPV 1 + Pentavalent 1</ThemedText>
+
+        <View style={{ flexDirection: "row" }}>
+          <Text>Due : 12th June 2024 |</Text>
+          <Ionicons
+            name="time"
+            size={15}
+            color={COLORS.accent}
+            style={{ marginLeft: SIZES.base / 2 }}
+          />
+          <Text> Status: Upcoming </Text>
+        </View>
+      </View>
 
       <View style={styles.card}>
         <FlatList
           data={Data}
+          ListHeaderComponent={<ThemedText type="text4bold" style={{marginVertical: SIZES.base}}>Quick Actions</ThemedText>}
           renderItem={({ item }) => {
             return (
               <View style={styles.listItem}>
@@ -145,6 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: SIZES.padding,
     flexDirection: "row",
+    elevation: 1,
   },
   editButton: {
     backgroundColor: COLORS.primary,
@@ -175,5 +203,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: SIZES.padding,
     elevation: 2,
+  },
+  nextContainer: {
+    backgroundColor: COLORS.accent + "30",
+    width: SCREEN_WIDTH * 0.9,
+    paddingVertical: SIZES.padding/2,
+    borderRadius: SIZES.padding,
+    marginVertical: SIZES.base,
+    alignItems: "flex-start",
+    paddingHorizontal: SIZES.base * 1.5,
+    height: SCREEN_HEIGHT * 0.12,
   },
 });
