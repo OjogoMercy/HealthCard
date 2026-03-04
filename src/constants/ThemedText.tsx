@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   text4: {
     ...FONTS.h4,
     color: COLORS.black,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   text4bold: {
     ...FONTS.h4bold,

@@ -21,9 +21,12 @@ import {
 } from "react-native";
 
 const ProfileScreen = () => {
-  const name = "Michael";
-  const age = "6";
-  const Value = "70%";
+ 
+  const Baby ={
+  name : "Michael",
+   age : "6",
+   Value: "64%",
+  }
 
   const Data = [
     {
@@ -72,9 +75,9 @@ const ProfileScreen = () => {
         </TouchableOpacity>
         <View>
           <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
-            {name}
+            {Baby.name}
           </ThemedText>
-          <ThemedText type="text4">{age} months old </ThemedText>
+          <ThemedText type="text4">{Baby.age} months old </ThemedText>
         </View>
         <TouchableOpacity
           style={styles.editButton}
@@ -97,9 +100,9 @@ const ProfileScreen = () => {
       >
         <ThemedText type="text3boldwhite">Vaccination Progress</ThemedText>
         <View style={[styles.progressBar]}>
-          <View style={[styles.progressFill, { width: Value }]}></View>
+          <View style={[styles.progressFill, { width: Baby.Value }]}></View>
         </View>
-        <ThemedText type="text4white">Completion : {Value}</ThemedText>
+        <ThemedText type="text4white">Completion : {Baby.Value}</ThemedText>
         <ThemedText type="text4white">13 of 20 vaccines completed </ThemedText>
       </LinearGradient>
       <View style={styles.nextContainer}>
