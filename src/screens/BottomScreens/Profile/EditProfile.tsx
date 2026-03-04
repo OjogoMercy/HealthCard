@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import WrapView from "@/src/components/WrapView";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 const EditProfile = () => {
   return (
-    <View>
+    <WrapView screenTitle="Edit Profile">
       <Text>EditProfile</Text>
-    </View>
-  )
-}
+    </WrapView>
+  );
+};
 
-export default EditProfile
+export default EditProfile;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

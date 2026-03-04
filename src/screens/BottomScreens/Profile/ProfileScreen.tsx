@@ -8,6 +8,7 @@ import {
 } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
@@ -46,6 +47,7 @@ const ProfileScreen = () => {
       title: "Logout",
     },
   ];
+  const navigation = useNavigation();
 
   return (
     <WrapView screenTitle="Profile">
@@ -68,7 +70,13 @@ const ProfileScreen = () => {
           </ThemedText>
           <ThemedText type="text4">{age} months old </ThemedText>
         </View>
-        <TouchableOpacity style={styles.editButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.editButton}
+          activeOpacity={0.7}
+          onPress={() =>
+            navigation.navigate("StackNav", { screen: "EditProfile" })
+          }
+        >
           <ThemedText type="text4white" style={{ color: COLORS.white }}>
             Edit Profile{" "}
           </ThemedText>
@@ -112,7 +120,11 @@ const ProfileScreen = () => {
       <View style={styles.card}>
         <FlatList
           data={Data}
-          ListHeaderComponent={<ThemedText type="text4bold" style={{marginVertical: SIZES.base}}>Quick Actions</ThemedText>}
+          ListHeaderComponent={
+            <ThemedText type="text4bold" style={{ marginVertical: SIZES.base }}>
+              Quick Actions
+            </ThemedText>
+          }
           renderItem={({ item }) => {
             return (
               <View style={styles.listItem}>
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
   nextContainer: {
     backgroundColor: COLORS.accent + "30",
     width: SCREEN_WIDTH * 0.9,
-    paddingVertical: SIZES.padding/2,
+    paddingVertical: SIZES.padding / 2,
     borderRadius: SIZES.padding,
     marginVertical: SIZES.base,
     alignItems: "flex-start",

@@ -5,6 +5,7 @@ import AuthNavigator from './AuthNavigator';
 import BottomTabNavigator from './BottomTabNavigator';
 import SplashScreen from '../screens/IntroSlider/SplashScreen';
 import FirstScreen from '../screens/IntroSlider/FirstScreen';
+import StackNav from './StackNav';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   Main: undefined;
   Intro: undefined;
   First: undefined;
+  StackNav: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +32,7 @@ export default function RootNavigator() {
         <Stack.Screen name="First" component={FirstScreen} />
         <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="Main" component={BottomTabNavigator} />
+        <Stack.Screen name="StackNav" component={StackNav} />
       </Stack.Navigator>
     </NavigationContainer>
   );

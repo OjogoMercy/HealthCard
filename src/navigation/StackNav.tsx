@@ -11,7 +11,7 @@ export type StackParamList = {
 
 export default function StackNav() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="MomProfile" component={MomProfile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
