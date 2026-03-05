@@ -89,8 +89,8 @@ const MomProfile = () => {
           },
         ]}
       >
-        <View style={{ flexDirection: "row" }}>
-          <Ionicons name="people-circle" size={20} color={COLORS.primary} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Ionicons name="people-circle" size={24} color={COLORS.primary} />
           <ThemedText type="text3bold" style={{ marginLeft: SIZES.base }}>
             Children
           </ThemedText>
@@ -136,20 +136,20 @@ const MomProfile = () => {
           renderItem={({ item }) => {
             return (
               <TouchableOpacity style={styles.listItem}>
-                  <Ionicons
-                    name={item.iconName}
-                    size={24}
-                    color={COLORS.primary}
-                  />
+                <Ionicons
+                  name={item.iconName}
+                  size={24}
+                  color={COLORS.primary}
+                />
                 <ThemedText type="text4" style={{ marginLeft: SIZES.base }}>
                   {item.title}
                 </ThemedText>
-                  <Ionicons
-                  style={{marginLeft:'auto'}}
-                    name="chevron-forward"
-                    size={22}
-                    color={COLORS.black}
-                  />
+                <Ionicons
+                  style={{ marginLeft: "auto" }}
+                  name="chevron-forward"
+                  size={22}
+                  color={COLORS.black}
+                />
               </TouchableOpacity>
             );
           }}
@@ -185,12 +185,12 @@ const styles = StyleSheet.create({
     padding: SIZES.base,
     borderRadius: SIZES.padding,
     marginTop: SIZES.base,
-    width: SCREEN_WIDTH*0.9,
+    width: SCREEN_WIDTH * 0.9,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: SIZES.base/1.3,
+    paddingVertical: SIZES.base / 1.3,
   },
 });
