@@ -1,19 +1,12 @@
-import React from 'react';
-import {
-  TextInput,
-  StyleSheet,
-  View,
-  Text,
-  TextStyle,
-  ViewStyle,
-  TouchableOpacity,
-} from 'react-native';
+import React from "react";
+import { StyleSheet, TextInput, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 
-import {COLORS, SIZES, FONTS} from '../constants/THEME';
+import { COLORS, FONTS, SIZES } from "../constants/THEME";
+import Ionicons from "@expo/vector-icons/Ionicons";
 type Props = {
   label?: string;
   value: string;
-  onChangeText:(text: string) => void;
+  onChangeText: (text: string) => void;
   placeholder?: string;
   secureTextEntry?: boolean;
   inputStyle?: TextStyle;
@@ -29,63 +22,50 @@ const CustomInput = ({
   value,
   onChangeText,
   placeholder,
-  // secure,
-  // secureTextEntry = false,
+  secure,
+  secureTextEntry = false,
   inputStyle,
   // containerStyle,
-  // error,
+  error,
   // iconName,
   keyboardType,
 }: Props) => {
   const [show, setShow] = React.useState(false);
   return (
-    // <View style={[styles.container, containerStyle]}>
-    //   {label && <Text style={general.label}>{label}</Text>}
-    //   <View style={general.inputWrapper}>
-    //     {iconName && (
-    //       <MaterialIcons
-    //         name={iconName as any}
-    //         size={SCREEN_WIDTH * 0.06}
-    //         color={Colors.black}
-    //         style={general.icon}
-    //       />
-    //     )}
-    <TextInput
-      placeholder={placeholder}
-      placeholderTextColor={COLORS.inputText}
-      value={value}
-      onChangeText={onChangeText}
-      style={styles.customInput}
-      keyboardType={keyboardType}
-      underlineColorAndroid={'transparent'}
-    />
-    //     {secure && (
-    //       <TouchableOpacity activeOpacity={0.7} onPress={() => setShow(!show)}>
-    //         <Ionicons
-    //           name={show ? "eye-sharp" : "eye-off"}
-    //           color={Colors.black}
-    //           size={Sizes.body2}
-    //         />
-    //       </TouchableOpacity>
-    //     )}
-    //   </View>
-    //   {error && <Text style={general.error}>{error}</Text>}
-    // </View>
+    <>
+      <TextInput
+        placeholder={placeholder}
+        placeholderTextColor={COLORS.inputText}
+        value={value}
+        onChangeText={onChangeText}
+        style={styles.customInput}
+        keyboardType={keyboardType}
+        secureTextEntry={secure && !show}
+        underlineColorAndroid={"transparent"}
+      />
+      {secure && (
+        <TouchableOpacity activeOpacity={0.7} onPress={() => setShow(!show)}>
+          <Ionicons
+            name={show ? "eye-sharp" : "eye-off"}
+            color={COLORS.black}
+            size={SIZES.base * 1.5}
+          />
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
 export default CustomInput;
 const styles = StyleSheet.create({
   customInput: {
-    borderRadius: SIZES.padding/1.5,
+    borderRadius: SIZES.padding / 1.5,
     padding: SIZES.base,
     height: SIZES.base * 6.5,
     marginBottom: SIZES.base * 2,
     marginTop: SIZES.base,
     ...FONTS.h4,
-    backgroundColor: COLORS.inputContainer,
-    borderWidth: 0,
-    borderBottomWidth: 0, 
-    borderColor: 'transparent',
+    backgroundColor: COLORS.white,
+    borderColor: "transparent",
   },
 });

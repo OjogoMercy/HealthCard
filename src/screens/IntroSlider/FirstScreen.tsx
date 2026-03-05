@@ -80,7 +80,7 @@ const FirstScreen = () => {
             title={isLastSlide ? "Get Started" : "Next"}
             onPress={() => {
               if (isLastSlide) {
-                navigation.navigate("Main");
+                navigation.navigate("Auth");
               } else {
                 Animated.timing(scrollX, {
                   toValue: activeIndex + 1,
@@ -91,7 +91,7 @@ const FirstScreen = () => {
                 sliderRef.current?.goToSlide(activeIndex + 1);
               }
             }}
-            style={{ elevation: 5 }}
+            style={{ elevation: 5 ,marginBottom:- SIZES.base}}
           />
         </View>
         <ThemedText

@@ -9,7 +9,7 @@ const SplashScreen = () => {
   useEffect(() => {
     StatusBar.setBarStyle("dark-content");
     setTimeout(() => {
-      navigation.navigate("Main");
+      navigation.navigate("First");
     }, 1500);
   });
 
