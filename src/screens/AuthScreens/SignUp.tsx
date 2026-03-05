@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Image, KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { Image, KeyboardAvoidingView, StyleSheet, TouchableOpacity, View } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -47,12 +47,7 @@ const SignUp = () => {
           keyboardType="phone-pad"
           secure={true}
         />
-        <CustomInput
-          placeholder="Date of Birth"
-          value={dateOfBirth}
-          onChangeText={setDateOfBirth}
-          keyboardType="numeric"
-        />
+     
         <CustomInput
           placeholder="Password"
           value={password}
@@ -65,28 +60,36 @@ const SignUp = () => {
           onChangeText={setConfirmPassword}
           secureTextEntry={true}
         />
-      </KeyboardAvoidingView>
-      <View style={{ width: SCREEN_WIDTH * 0.9 }}>
         <PrimaryButton
           title="Sign Up"
           onPress={() => navigation.navigate("Login")}
         />
-      </View>
+      </KeyboardAvoidingView>
+      
 
-      <View style={styles.row}>
+      <TouchableOpacity style={styles.row}>
         <Image
           source={images.google}
-          style={{ height: SIZES.h1, width: SIZES.h1, resizeMode: "contain" }}
+          style={{ height: SIZES.h2, width: SIZES.h2, resizeMode: "contain" }}
         />
-        <ThemedText style={{ fontSize: 15, fontWeight: "bold" }}>
+        <ThemedText style={{ fontSize: 13,}}>
           Continue with Google
         </ThemedText>
-      </View>
+      </TouchableOpacity>
+       <TouchableOpacity style={[styles.row,{padding:SIZES.base/2.5}]}>
+        <Image
+          source={images.apple}
+          style={{ height: SIZES.h1*1.2, width: SIZES.h1*1.2, resizeMode: "contain" }}
+        />
+        <ThemedText style={{ fontSize: 13,}}>
+          Continue with Apple
+        </ThemedText>
+      </TouchableOpacity>
       <ThemedText
         style={{
           fontSize: 12,
           textAlign: "center",
-          marginBottom: SIZES.padding,
+          marginVertical: SIZES.padding/2,
         }}
       >
         Already have an account?
@@ -118,7 +121,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.padding,
     alignItems: "center",
     justifyContent: "center",
-    gap: SIZES.base,
     marginTop: SIZES.base,
+   borderRadius:SIZES.padding,
+   borderWidth:1,
+   borderColor:COLORS.primary,
+   padding:SIZES.base,
+   gap:10
   },
 });

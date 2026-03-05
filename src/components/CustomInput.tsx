@@ -1,16 +1,16 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 import React from "react";
 import {
+  KeyboardTypeOptions,
   StyleSheet,
   TextInput,
   TextStyle,
   TouchableOpacity,
   View,
   ViewStyle,
-  KeyboardTypeOptions, // Import for better type safety
 } from "react-native";
 import { COLORS, FONTS, SIZES } from "../constants/THEME";
-import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 
 type Props = {
   label?: string;
@@ -22,7 +22,7 @@ type Props = {
   containerStyle?: ViewStyle;
   error?: string;
   secure?: boolean;
-  keyboardType?: KeyboardTypeOptions; 
+  keyboardType?: KeyboardTypeOptions;
 };
 
 const CustomInput = ({
@@ -45,19 +45,19 @@ const CustomInput = ({
         style={styles.customInput}
         keyboardType={keyboardType}
         underlineColorAndroid={"transparent"}
-        secureTextEntry={secure ? !show : false} 
+        secureTextEntry={secure ? !show : false}
       />
       {secure && (
-        <TouchableOpacity 
-          activeOpacity={0.7} 
+        <TouchableOpacity
+          activeOpacity={0.7}
           onPress={() => setShow(!show)}
           style={styles.iconContainer}
         >
           <Ionicons
-            name={show ? "eye" : "eye-off"} 
+            name={show ? "eye" : "eye-off"}
             color={COLORS.black || "black"}
             size={20}
-          />  
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -70,20 +70,22 @@ const styles = StyleSheet.create({
   container: {
     width: SCREEN_WIDTH * 0.85,
     flexDirection: "row",
-    backgroundColor:  "white", 
-        alignItems: 'center',
-    borderRadius: SIZES.padding / 2,
+    backgroundColor: "white",
+    alignItems: "center",
+    borderRadius: SIZES.padding / 1.5,
     marginVertical: SIZES.base,
-    paddingHorizontal: SIZES.base, 
+    paddingHorizontal: SIZES.base,
+    paddingVertical:SIZES.base/2
+    
   },
   customInput: {
-    flex: 1, 
+    flex: 1,
     paddingVertical: SIZES.base * 1.5,
     paddingHorizontal: SIZES.base,
     ...FONTS.h4,
-    color: 'black',
+    color: "black",
   },
   iconContainer: {
     padding: SIZES.base,
-  }
+  },
 });
