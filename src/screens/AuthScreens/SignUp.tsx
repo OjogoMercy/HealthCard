@@ -1,12 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {
-  Image,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -51,6 +45,7 @@ const SignUp = () => {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
           keyboardType="phone-pad"
+          secure={true}
         />
         <CustomInput
           placeholder="Date of Birth"
@@ -71,13 +66,16 @@ const SignUp = () => {
           secureTextEntry={true}
         />
       </KeyboardAvoidingView>
-      <PrimaryButton
-        title="Sign Up"
-        onPress={() => navigation.navigate("Login")}
-      />
+      <View style={{ width: SCREEN_WIDTH * 0.9 }}>
+        <PrimaryButton
+          title="Sign Up"
+          onPress={() => navigation.navigate("Login")}
+        />
+      </View>
+
       <View style={styles.row}>
         <Image
-          source={images.icon}
+          source={images.google}
           style={{ height: SIZES.h1, width: SIZES.h1, resizeMode: "contain" }}
         />
         <ThemedText style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -92,7 +90,8 @@ const SignUp = () => {
         }}
       >
         Already have an account?
-        <ThemedText type="text4bold"
+        <ThemedText
+          type="text4bold"
           style={{ color: COLORS.primary }}
           onPress={() => navigation.navigate("Login")}
         >

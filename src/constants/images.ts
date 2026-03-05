@@ -12,4 +12,6 @@ export const images = {
   slide2: require("../assets/images/slide2.png"),
   mom:require("../assets/images/mom.webp"),
   baby:require("../assets/images/baby.webp"),
+  google:require("../assets/images/google.webp"),
+  apple:require("../assets/images/apple.png")
 };

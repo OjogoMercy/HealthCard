@@ -21,7 +21,7 @@ export const COLORS = {
   secondary: '#81C784',
   alert:"#D32F2F",
   black: 'rgba(0, 0, 0, 1)',
-  white: 'rgba(255, 255, 255, 1)',
+  white: '#fff',
   gray: '#747674',
   gray2: '#ccc',
   gray3: '#323F4B',
