@@ -87,5 +87,12 @@ export const general = StyleSheet.create({
     width: "90%",
     borderRadius: SIZES.padding,
     resizeMode: "cover",
+  },form: {
+    marginVertical: SIZES.padding,
+    backgroundColor: COLORS.primary + "20",
+    borderRadius: SIZES.padding,
+    paddingVertical: SIZES.padding,
+    width: SCREEN_WIDTH * 0.9,
+    paddingHorizontal: SIZES.base,
   },
 });

@@ -1,63 +1,84 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import CustomHeader from '../../components/CustomHeader'
-import { ThemedText } from '../../constants/ThemedText'
-import { COLORS, SCREEN_WIDTH, SIZES } from '../../constants/THEME'
-import CustomInput from '../../components/CustomInput'
-import PrimaryButton from '../../components/PrimaryButton'
-import { useNavigation } from '@react-navigation/native'
+import { general } from "@/src/constants/General";
+import { images } from "@/src/constants/images";
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import CustomHeader from "../../components/CustomHeader";
+import CustomInput from "../../components/CustomInput";
+import PrimaryButton from "../../components/PrimaryButton";
+import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
+import { ThemedText } from "../../constants/ThemedText";
 
 const LoginScreen = () => {
-  const navigation = useNavigation<any>()
-  const [Username, setUsername] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const navigation = useNavigation<any>();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   return (
-    <CustomHeader authScreen={true} >
-      <ThemedText type="text2bold" style={{ fontWeight: 'bold', textAlign: 'center' }}>
-        Welcome To CeduGames
-      </ThemedText>
-      <ThemedText style={{ textAlign: 'center', fontSize: 14 }}>
-        Cephas Educational Games
-      </ThemedText>
-      <View style={styles.form}>
-        <ThemedText style={{ fontSize: 16, textAlign: 'center' }}>
-          Let's get smart and have fun
+    <CustomHeader authScreen={true}>
+      <Image
+        source={images.logo}
+        style={{
+          height: SIZES.navTitle * 3,
+          width: SIZES.navTitle * 3,
+          resizeMode: "contain",
+        }}
+      />
+      <View style={general.form}>
+        <ThemedText
+          type="text3bold"
+          style={{ color: COLORS.primary, margin: SIZES.base / 2 }}
+        >
+          Login To Your Account
         </ThemedText>
         <CustomInput
-          placeholder="Username/Phone Number"
-          value={Username}
-          onChangeText={setUsername}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
         />
         <CustomInput
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry={true}
+          secure={true}
         />
         <ThemedText
           style={{
             fontSize: 13,
-            textAlign: 'right',
-            marginBottom: SIZES.padding,
-            color: COLORS.orange,
+            textAlign: "right",
+            marginVertical: SIZES.base/3,
           }}
-          onPress={() => navigation.navigate('ForgotPassword')}>
+          onPress={() => navigation.navigate("ForgotPassword")}
+        >
           Forgot Password?
         </ThemedText>
+        <PrimaryButton
+          title="Login"
+          onPress={() => navigation.navigate("Main")}
+        />
       </View>
-      <PrimaryButton title="Login" onPress={() => navigation.navigate('PreHome1')} />
-      <ThemedText style={{ fontSize: 12, textAlign: 'center', marginVertical: SIZES.padding }}>
+
+      <ThemedText
+        style={{
+          fontSize: 12,
+          textAlign: "center",
+          marginVertical: SIZES.padding,
+        }}
+      >
         Don't have an account?
-        <Text style={{ color: COLORS.primary }} onPress={() => navigation.navigate('SignUp')}>
-          SignUp
-        </Text>
+          <ThemedText
+                  type="text4bold"
+                  style={{ color: COLORS.primary }}
+                  onPress={() => navigation.navigate("SignUp")}
+                >
+                  SignUp
+                </ThemedText>
       </ThemedText>
     </CustomHeader>
-  )
-}
+  );
+};
 
-export default LoginScreen
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   form: {
@@ -68,4 +89,4 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.9,
     paddingHorizontal: SIZES.base,
   },
-})
+});

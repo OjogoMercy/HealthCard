@@ -1,7 +1,9 @@
+import CustomHeader from "@/src/components/CustomHeader";
+import { general } from "@/src/constants/General";
+import { images } from "@/src/constants/images";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import CustomHeader from "../../components/CustomHeader";
+import { Image, StyleSheet, Text, View } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
@@ -11,8 +13,22 @@ const ForgotPassword = () => {
   const [emailAddress, setEmailAddress] = React.useState("");
   const navigation = useNavigation<any>();
   return (
-    <CustomHeader title="Forgot Password">
-      <View style={styles.form}>
+    <CustomHeader>
+      <Image
+        source={images.logo}
+        style={{
+          height: SIZES.navTitle * 3,
+          width: SIZES.navTitle * 3,
+          resizeMode: "contain",
+        }}
+      />
+      <View style={general.form}>
+        <ThemedText
+          type="text3bold"
+          style={{ color: COLORS.primary, marginBottom: SIZES.base }}
+        >
+          Forgot Password?
+        </ThemedText>
         <ThemedText
           type="text4"
           style={{ textAlign: "center", marginBottom: SIZES.padding }}

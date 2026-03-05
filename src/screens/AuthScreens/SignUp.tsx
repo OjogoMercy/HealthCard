@@ -1,20 +1,25 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Image, KeyboardAvoidingView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { images } from "../../constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
 import { ThemedText } from "../../constants/ThemedText";
+import { general } from "@/src/constants/General";
 
 const SignUp = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<number>();
   const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <CustomHeader authScreen={true}>
@@ -26,8 +31,11 @@ const SignUp = () => {
           resizeMode: "contain",
         }}
       />
-      <KeyboardAvoidingView style={styles.form}>
-        <ThemedText style={{ fontSize: 16 }}>
+      <KeyboardAvoidingView style={general.form}>
+        <ThemedText
+          type="text3bold"
+          style={{ color: COLORS.primary, margin: SIZES.base/2 }}
+        >
           Create an account to get started
         </ThemedText>
         <CustomInput
@@ -40,56 +48,48 @@ const SignUp = () => {
           value={Username}
           onChangeText={setUsername}
         />
-        <CustomInput
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="phone-pad"
-          secure={true}
-        />
-     
+
         <CustomInput
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry={true}
+          secure={true}
         />
         <CustomInput
           placeholder="Confirm Password"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          secureTextEntry={true}
+          secure={true}
         />
         <PrimaryButton
           title="Sign Up"
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => navigation.navigate("Main")}
         />
       </KeyboardAvoidingView>
-      
 
       <TouchableOpacity style={styles.row}>
         <Image
           source={images.google}
           style={{ height: SIZES.h2, width: SIZES.h2, resizeMode: "contain" }}
         />
-        <ThemedText style={{ fontSize: 13,}}>
-          Continue with Google
-        </ThemedText>
+        <ThemedText style={{ fontSize: 13 }}>Continue with Google</ThemedText>
       </TouchableOpacity>
-       <TouchableOpacity style={[styles.row,{padding:SIZES.base/2.5}]}>
+      <TouchableOpacity style={[styles.row, { padding: SIZES.base / 2.5 }]}>
         <Image
           source={images.apple}
-          style={{ height: SIZES.h1*1.2, width: SIZES.h1*1.2, resizeMode: "contain" }}
+          style={{
+            height: SIZES.h1 * 1.2,
+            width: SIZES.h1 * 1.2,
+            resizeMode: "contain",
+          }}
         />
-        <ThemedText style={{ fontSize: 13,}}>
-          Continue with Apple
-        </ThemedText>
+        <ThemedText style={{ fontSize: 13 }}>Continue with Apple</ThemedText>
       </TouchableOpacity>
       <ThemedText
         style={{
           fontSize: 12,
           textAlign: "center",
-          marginVertical: SIZES.padding/2,
+          marginVertical: SIZES.padding / 2,
         }}
       >
         Already have an account?
@@ -108,24 +108,17 @@ const SignUp = () => {
 export default SignUp;
 
 const styles = StyleSheet.create({
-  form: {
-    marginTop: SIZES.padding,
-    backgroundColor: COLORS.primary + "20",
-    borderRadius: SIZES.padding,
-    paddingVertical: SIZES.padding,
-    width: SCREEN_WIDTH * 0.9,
-    paddingHorizontal: SIZES.base,
-  },
+ 
   row: {
     flexDirection: "row",
     paddingHorizontal: SIZES.padding,
     alignItems: "center",
     justifyContent: "center",
     marginTop: SIZES.base,
-   borderRadius:SIZES.padding,
-   borderWidth:1,
-   borderColor:COLORS.primary,
-   padding:SIZES.base,
-   gap:10
+    borderRadius: SIZES.padding,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    padding: SIZES.base,
+    gap: 10,
   },
 });
