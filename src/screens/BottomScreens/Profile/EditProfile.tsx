@@ -1,17 +1,21 @@
 import CustomInput from "@/src/components/CustomInput";
-import WrapView from "@/src/components/WrapView";
+import PrimaryButton from "@/src/components/PrimaryButton";
+import WrapScrollView from "@/src/components/WrapScrollView";
+import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { COLORS, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
-import { User } from "lucide-react-native";
 import React, { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
-
 const EditProfile = () => {
-  const [babyName,setBabyName] = useState('')
+  const [babyName, setBabyName] = useState("");
+  const [date, setDate] = useState("");
+  const [gender, setGender] = useState("Male");
+  const [doctor, setDoctor] = useState("Dr Adewale Johnson");
+  const [hospital, setHospital] = useState("Lagos State Hospital");
   const Baby = {
     name: "Michael",
     age: "6",
@@ -19,7 +23,7 @@ const EditProfile = () => {
   };
 
   return (
-    <WrapView screenTitle="Edit Profile">
+    <WrapScrollView screenTitle="Edit Child Profile">
       <View style={styles.profileCard}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image
@@ -45,10 +49,72 @@ const EditProfile = () => {
         </ThemedText>
         <ThemedText type="text4">{Baby.age} Months Old</ThemedText>
       </View>
-      <View style={styles.form}>
-        <CustomInput value={babyName} onChangeText={setBabyName}/>
+      <View style={general.form}>
+        <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
+          Basic Information
+        </ThemedText>
+        <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
+          Name
+        </ThemedText>
+        <CustomInput
+          value={babyName}
+          onChangeText={setBabyName}
+          placeholder="Child's Name"
+        />
+        <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
+          Date Of Birth
+        </ThemedText>
+        <CustomInput
+          value={date}
+          onChangeText={setDate}
+          placeholder="Child's D.O.B"
+        />
+        <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
+          Gender
+        </ThemedText>
+        <CustomInput
+          value={gender}
+          onChangeText={setGender}
+          placeholder="Baby's Name"
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          <PrimaryButton title="Save Changes" onPress={undefined} />
+          <PrimaryButton
+            title="Cancel"
+            onPress={undefined}
+            style={{ paddingHorizontal: SIZES.padding * 2 }}
+          />
+        </View>
       </View>
-    </WrapView>
+      <View style={general.form}>
+        <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
+          HealthCare Provider
+        </ThemedText>
+        <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
+          Primary Hospital
+        </ThemedText>
+        <CustomInput
+          value={hospital}
+          onChangeText={setHospital}
+          placeholder="Child's Hospital"
+        />
+        <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
+          Pediatrician / Doctor
+        </ThemedText>
+        <CustomInput
+          value={doctor}
+          onChangeText={setDoctor}
+          placeholder="Child's Doctor"
+        />
+        <PrimaryButton title="Save Changes" />
+      </View>
+    </WrapScrollView>
   );
 };
 
@@ -68,16 +134,9 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.navTitle * 2,
     alignItems: "center",
     justifyContent: "center",
-    padding: SIZES.base /4,
+    padding: SIZES.base / 4,
     backgroundColor: "white",
     borderWidth: 2,
     borderColor: COLORS.primary,
   },
-  form:{
-    width:SCREEN_WIDTH*0.9,
-    backgroundColor:COLORS.primary +"20",
-    borderRadius:SIZES.padding,
-    marginVertical:SIZES.padding,
-    padding:SIZES.base,
-  }
 });

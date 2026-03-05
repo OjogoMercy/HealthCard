@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding / 1.5,
     marginVertical: SIZES.base,
     paddingHorizontal: SIZES.base,
-    paddingVertical:SIZES.base/2
-    
+    paddingVertical: SIZES.base / 2,
   },
   customInput: {
     flex: 1,

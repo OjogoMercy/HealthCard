@@ -1,15 +1,23 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
+import { ThemedText } from "../constants/ThemedText";
 
 interface WrapScrollViewProps {
   children: React.ReactNode;
-  title?: string;
-  authScreen?: boolean;
+  style: object;
+  screenTitle?: string;
 }
 
-const WrapScrollView = ({ children, title }: WrapScrollViewProps) => {
+const WrapScrollView = ({ children, screenTitle }: WrapScrollViewProps) => {
   const navigation = useNavigation<any>();
 
   return (
@@ -17,8 +25,34 @@ const WrapScrollView = ({ children, title }: WrapScrollViewProps) => {
       style={styles.scrollView}
       contentContainerStyle={styles.contentContainer}
     >
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View style={styles.contentWrapper}>{children}</View>
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+      <View style={styles.contentWrapper}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: SCREEN_WIDTH * 0.95,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="chevron-back" size={22} color={"black"} />
+          </TouchableOpacity>
+          <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
+            {screenTitle}
+          </ThemedText>
+          <TouchableOpacity onPress={undefined}>
+            <Ionicons
+              name="ellipsis-vertical"
+              size={22}
+              color={COLORS.background}
+            />
+          </TouchableOpacity>
+        </View>
+        {children}
+      </View>
     </ScrollView>
   );
 };
@@ -28,7 +62,7 @@ export default WrapScrollView;
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.background,
   },
   contentContainer: {
     alignItems: "center",
