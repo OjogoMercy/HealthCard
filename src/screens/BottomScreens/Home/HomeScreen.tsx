@@ -1,4 +1,3 @@
-import AnimatedComponent from "@/src/components/AnimatedComponent";
 import CustomHeader from "@/src/components/CustomHeader";
 import {
   COLORS,
@@ -19,6 +18,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AnimatedComponent from "@/src/components/AnimatedComponent";
 
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
