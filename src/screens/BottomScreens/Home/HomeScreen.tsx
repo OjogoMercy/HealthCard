@@ -18,7 +18,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import AnimatedComponent from "@/src/components/AnimatedComponent";
 
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
@@ -234,7 +233,6 @@ const HomeScreen = () => {
             height: SCREEN_HEIGHT * 0.25,
           }}
         >
-          <AnimatedComponent />
         </View>
       )}
     </CustomHeader>
