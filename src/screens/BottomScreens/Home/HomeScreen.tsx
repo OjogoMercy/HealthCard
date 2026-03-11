@@ -239,6 +239,7 @@ const HomeScreen = () => {
               height: "100%",
               resizeMode: "contain",
               marginTop: SIZES.padding,
+              z,
             }}
           />
         </View>
