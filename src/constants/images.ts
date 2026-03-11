@@ -1,5 +1,3 @@
-import { ImageSourcePropType } from "react-native";
-
 export const images = {
   icon: require("../assets/images/icon.png"),
   logo: require("../assets/images/logo.png"),
@@ -10,8 +8,9 @@ export const images = {
   slide6: require("../assets/images/slide6.png"),
   splashIcon: require("../assets/images/splash-icon.png"),
   slide2: require("../assets/images/slide2.png"),
-  mom:require("../assets/images/mom.webp"),
-  baby:require("../assets/images/baby.webp"),
-  google:require("../assets/images/google.webp"),
-  apple:require("../assets/images/apple.png")
+  mom: require("../assets/images/mom.webp"),
+  baby: require("../assets/images/baby.webp"),
+  google: require("../assets/images/google.webp"),
+  apple: require("../assets/images/apple.png"),
+  mascot: require("../assets/images/mascot.png"),
 };

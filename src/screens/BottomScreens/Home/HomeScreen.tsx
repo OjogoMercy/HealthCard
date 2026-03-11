@@ -44,6 +44,7 @@ const HomeScreen = () => {
     },
   ];
   const navigation = useNavigation<any>();
+  const [empty, notEmpty] = useState(false);
 
   return (
     <CustomHeader
@@ -52,10 +53,12 @@ const HomeScreen = () => {
       tabScreen={true}
       screenTitle="Home"
     >
-      <View style={[styles.row,]}>
-        <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5} onPress={() =>
-            navigation.navigate("MomProfile")
-          }>
+      <View style={[styles.row]}>
+        <TouchableOpacity
+          style={styles.profileContainer}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate("MomProfile")}
+        >
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
         <ThemedText type="text2" style={{ marginRight: "auto" }}>
@@ -158,62 +161,88 @@ const HomeScreen = () => {
       >
         Progress
       </ThemedText>
-      <View style={[styles.bigCard]}>
-        <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
-          <View style={styles.profileContainer}>
-            <Image source={images.baby} style={styles.profileImage} />
-          </View>
-          <ThemedText
-            type="text3bold"
-            style={{ color: COLORS.primary, marginRight: "auto" }}
-          >
-            {" "}
-            Michael <ThemedText type="text4">| {age} months old</ThemedText>
-          </ThemedText>
-        </View>
-        <ThemedText type="text3">{Value} Vaccines completed</ThemedText>
-        <View style={[styles.progressBar]}>
-          <View style={[styles.progressFill, { width: Value }]}></View>
-        </View>
-        <ThemedText style={{ marginTop: SIZES.padding }}>
-          Upcoming Visits ({visits})
-        </ThemedText>
-        <FlatList
-          data={data}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ marginTop: SIZES.base }}
-          renderItem={({ item }) => (
-            <View style={styles.listItem}>
-              <ThemedText type="text4" style={{ fontWeight: "bold" }}>
-                {item.vaccine}
-              </ThemedText>
-              <ThemedText type="text4" style={{ color: COLORS.primary }}>
-                {item.status}
+      {empty && (
+        <>
+          <View style={[styles.bigCard]}>
+            <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
+              <View style={styles.profileContainer}>
+                <Image source={images.baby} style={styles.profileImage} />
+              </View>
+              <ThemedText
+                type="text3bold"
+                style={{ color: COLORS.primary, marginRight: "auto" }}
+              >
+                {" "}
+                Michael <ThemedText type="text4">| {age} months old</ThemedText>
               </ThemedText>
             </View>
-          )}
-        />
-      </View>
-      <View
-        style={[
-          styles.bigCard,
-          {
-            borderRadius: SIZES.padding,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          },
-        ]}
-      >
-        <ThemedText type="text3">View Full Schedule</ThemedText>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Immunisation")}
-          activeOpacity={0.5}
+            <ThemedText type="text3">{Value} Vaccines completed</ThemedText>
+            <View style={[styles.progressBar]}>
+              <View style={[styles.progressFill, { width: Value }]}></View>
+            </View>
+            <ThemedText style={{ marginTop: SIZES.padding }}>
+              Upcoming Visits ({visits})
+            </ThemedText>
+            <FlatList
+              data={data}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => item.id.toString()}
+              contentContainerStyle={{ marginTop: SIZES.base }}
+              renderItem={({ item }) => (
+                <View style={styles.listItem}>
+                  <ThemedText type="text4" style={{ fontWeight: "bold" }}>
+                    {item.vaccine}
+                  </ThemedText>
+                  <ThemedText type="text4" style={{ color: COLORS.primary }}>
+                    {item.status}
+                  </ThemedText>
+                </View>
+              )}
+            />
+          </View>
+          <View
+            style={[
+              styles.bigCard,
+              {
+                borderRadius: SIZES.padding,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <ThemedText type="text3">View Full Schedule</ThemedText>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Immunisation")}
+              activeOpacity={0.5}
+            >
+              <Ionicons
+                name="chevron-forward"
+                size={24}
+                color={COLORS.primary}
+              />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+      {!empty && (
+        <View
+          style={{
+            width: SCREEN_WIDTH * 0.7,
+            height: SCREEN_HEIGHT * 0.25,
+          }}
         >
-          <Ionicons name="chevron-forward" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
+          <Image
+            source={images.mascot}
+            style={{
+              width: "100%",
+              height: "100%",
+              resizeMode: "contain",
+              marginTop: SIZES.padding,
+            }}
+          />
+        </View>
+      )}
     </CustomHeader>
   );
 };
