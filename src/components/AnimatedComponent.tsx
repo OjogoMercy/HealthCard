@@ -232,7 +232,7 @@ const AnimatedComponent = () => {
         >
           <LottieView
             ref={lottieRef}
-            source={require("../assets/mascot.json")}
+            source={require("../assets/lotteImage/mascot.json")}
             autoPlay
             loop
             speed={SPEED}
@@ -241,7 +241,6 @@ const AnimatedComponent = () => {
         </Animated.View>
       </TouchableWithoutFeedback>
 
-      {/* Drop shadow */}
       <Animated.View
         style={[styles.shadow, { transform: [{ scaleX: shadowScale }] }]}
       />

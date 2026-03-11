@@ -30,7 +30,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./src/assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -42,12 +42,13 @@
       "expo-font",
       "expo-image",
       "expo-web-browser",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "lottie-react-native"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "assetBundlePatterns": ["assets/**"]
+    "assetBundlePatterns": ["src/assets//lotteImage**", "assets/lotteImage**"]
   }
 }

@@ -1,3 +1,4 @@
+import AnimatedComponent from "@/src/components/AnimatedComponent";
 import CustomHeader from "@/src/components/CustomHeader";
 import {
   COLORS,
@@ -232,7 +233,9 @@ const HomeScreen = () => {
             width: SCREEN_WIDTH * 0.7,
             height: SCREEN_HEIGHT * 0.25,
           }}
-        ></View>
+        >
+          <AnimatedComponent />
+        </View>
       )}
     </CustomHeader>
   );
