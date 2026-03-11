@@ -7,21 +7,50 @@ import { COLORS, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const EditProfile = () => {
   const [babyName, setBabyName] = useState("");
-  const [date, setDate] = useState("");
-  const [gender, setGender] = useState("Male");
+  const [date, setDate] = useState(new Date());
+  const [gender, setGender] = useState("");
   const [doctor, setDoctor] = useState("Dr Adewale Johnson");
   const [hospital, setHospital] = useState("Lagos State Hospital");
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [isDateSelected, setIsDateSeleted] = useState(false);
+
   const Baby = {
     name: "Michael",
     age: "6",
     Value: "64%",
   };
+  const onChange = (
+    event: { type: string },
+    selectedDate: React.SetStateAction<Date>,
+  ) => {
+    const currentDate = selectedDate || date;
+    setPickerOpen(Platform.OS === "ios");
+    setDate(currentDate);
 
+    if (event.type === "set" && selectedDate) {
+      setDate(selectedDate);
+      setIsDateSeleted(true);
+    } else {
+      setPickerOpen(false);
+    }
+  };
+  const formatDate = (datetoFormat: {
+    toLocaleDateString: (arg0: string) => any;
+  }) => {
+    return datetoFormat.toLocaleDateString("en-GB");
+  };
   return (
     <WrapScrollView screenTitle="Edit Child Profile">
       <View style={styles.profileCard}>
@@ -64,18 +93,37 @@ const EditProfile = () => {
         <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
           Date Of Birth
         </ThemedText>
-        <CustomInput
-          value={date}
-          onChangeText={setDate}
-          placeholder="Child's D.O.B"
-        />
+        <TouchableOpacity
+          onPress={() => setPickerOpen(true)}
+          style={styles.date}
+        >
+          <ThemedText
+            type="text4"
+            style={{ color: COLORS.gray, marginLeft: SIZES.h6 }}
+          >
+            {isDateSelected ? formatDate(date) : "Child's D.O.B"}
+          </ThemedText>
+          {pickerOpen && (
+            <View style={{ backgroundColor: "white", borderRadius: 10 }}>
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display="spinner"
+                onChange={onChange}
+                maximumDate={new Date()}
+                themeVariant="light"
+              />
+            </View>
+          )}
+        </TouchableOpacity>
+
         <ThemedText type="text4bold" style={{ marginLeft: SIZES.base / 2 }}>
           Gender
         </ThemedText>
         <CustomInput
           value={gender}
           onChangeText={setGender}
-          placeholder="Baby's Name"
+          placeholder="Baby's Gender"
         />
         <View
           style={{
@@ -138,5 +186,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 2,
     borderColor: COLORS.primary,
+  },
+  date: {
+    width: SCREEN_WIDTH * 0.85,
+    flexDirection: "row",
+    backgroundColor: "white",
+    alignItems: "center",
+    borderRadius: SIZES.padding / 1.5,
+    marginVertical: SIZES.base,
+    paddingHorizontal: SIZES.base,
+    paddingVertical: SIZES.padding / 1.7,
   },
 });

@@ -23,6 +23,7 @@ type Props = {
   error?: string;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  editable: boolean;
 };
 
 const CustomInput = ({
@@ -32,6 +33,7 @@ const CustomInput = ({
   secure,
   containerStyle,
   keyboardType,
+  editable,
 }: Props) => {
   const [show, setShow] = React.useState(false);
 
@@ -46,6 +48,7 @@ const CustomInput = ({
         keyboardType={keyboardType}
         underlineColorAndroid={"transparent"}
         secureTextEntry={secure ? !show : false}
+        editable={editable}
       />
       {secure && (
         <TouchableOpacity
