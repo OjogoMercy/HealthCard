@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 const HomeScreen = () => {
   const [checked, setChecked] = useState("A");
   const Value = "77%";
@@ -231,18 +232,7 @@ const HomeScreen = () => {
             width: SCREEN_WIDTH * 0.7,
             height: SCREEN_HEIGHT * 0.25,
           }}
-        >
-          <Image
-            source={images.mascot}
-            style={{
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
-              marginTop: SIZES.padding,
-              z,
-            }}
-          />
-        </View>
+        ></View>
       )}
     </CustomHeader>
   );
