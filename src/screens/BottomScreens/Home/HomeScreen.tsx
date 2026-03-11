@@ -54,7 +54,7 @@ const HomeScreen = () => {
       tabScreen={true}
       screenTitle="Home"
     >
-      <View style={[styles.row]}>
+      <View style={[styles.row, { marginTop: 0 }]}>
         <TouchableOpacity
           style={styles.profileContainer}
           activeOpacity={0.5}
@@ -233,6 +233,15 @@ const HomeScreen = () => {
             height: SCREEN_HEIGHT * 0.25,
           }}
         >
+          <Image
+            style={{
+              width: "100%",
+              height: "100%",
+              resizeMode: "contain",
+              marginVertical: SIZES.padding,
+            }}
+            source={images.mascot}
+          />
         </View>
       )}
     </CustomHeader>
