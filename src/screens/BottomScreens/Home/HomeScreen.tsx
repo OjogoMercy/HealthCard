@@ -74,7 +74,8 @@ const HomeScreen = () => {
           <Ionicons name="notifications" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      <LinearGradient
+      
+      { empty&& (<><LinearGradient
         style={styles.card}
         colors={[COLORS.primary, COLORS.primary + "80"]}
         start={{ x: 0, y: 0 }}
@@ -141,16 +142,14 @@ const HomeScreen = () => {
             </ThemedText>
           </TouchableOpacity>
         </View>
-      </LinearGradient>
-      <View
-        style={{
-          height: SIZES.base * 1.2,
-          backgroundColor: COLORS.primary + "50",
-          borderBottomLeftRadius: SIZES.padding,
-          borderBottomRightRadius: SIZES.padding,
-          width: SCREEN_WIDTH * 0.75,
-        }}
-      />
+      </LinearGradient><View
+          style={{
+            height: SIZES.base * 1.2,
+            backgroundColor: COLORS.primary + "50",
+            borderBottomLeftRadius: SIZES.padding,
+            borderBottomRightRadius: SIZES.padding,
+            width: SCREEN_WIDTH * 0.75,
+          }} /></>)}
       <ThemedText
         type="text2bold"
         style={{

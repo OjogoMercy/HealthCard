@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const setProfile = () => {
+const SetProfile = () => {
   return (
     <View>
-      <Text>setProfile</Text>
+      <Text>SetProfile</Text>
     </View>
   );
 };
 
-export default setProfile;
+export default SetProfile;
 
 const styles = StyleSheet.create({});
