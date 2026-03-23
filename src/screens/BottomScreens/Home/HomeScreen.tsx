@@ -1,4 +1,5 @@
 import CustomHeader from "@/src/components/CustomHeader";
+import PrimaryButton from "@/src/components/PrimaryButton";
 import {
   COLORS,
   SCREEN_HEIGHT,
@@ -54,7 +55,7 @@ const HomeScreen = () => {
       tabScreen={true}
       screenTitle="Home"
     >
-      <View style={[styles.row, { marginTop: 0 }]}>
+      <View style={[styles.row]}>
         <TouchableOpacity
           style={styles.profileContainer}
           activeOpacity={0.5}
@@ -74,95 +75,97 @@ const HomeScreen = () => {
           <Ionicons name="notifications" size={24} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
-      
-      { empty&& (<><LinearGradient
-        style={styles.card}
-        colors={[COLORS.primary, COLORS.primary + "80"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Ionicons name="time" size={23} color={COLORS.accent} />
-          <ThemedText
-            type="text2bold"
-            style={{ color: "white", marginLeft: SIZES.base }}
-          >
-            Next Immunisation
-          </ThemedText>
-        </View>
 
-        <ThemedText type="text3white">
-          OPV 1 + Pentavalent 1 + PCV 1{" "}
-        </ThemedText>
-        <ThemedText type="text4white">
-          Due date:
-          <ThemedText style={{ fontWeight: "bold" }} type="text4white">
-            {" "}
-            15th June 2024
-          </ThemedText>
-        </ThemedText>
-        <ThemedText type="text4white">
-          Status:{" "}
-          <ThemedText
-            style={{ fontWeight: "bold", color: COLORS.accent }}
-            type="text4white"
-          >
-            Due in 3 days
-          </ThemedText>
-        </ThemedText>
-        <View style={[styles.row, { marginVertical: SIZES.base }]}>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={[
-              styles.checkButtons,
-              checked === "A" && { backgroundColor: COLORS.secondary },
-            ]}
-            onPress={() => setChecked("A")}
-          >
-            <ThemedText
-              type="text4white"
-              style={{ color: checked === "A" ? "#fff" : COLORS.black }}
-            >
-              Mark as Taken
-            </ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={[
-              styles.checkButtons,
-              checked === "B" && { backgroundColor: COLORS.secondary },
-            ]}
-            onPress={() => setChecked("B")}
-          >
-            <ThemedText
-              type="text4white"
-              style={{ color: checked === "B" ? "#fff" : COLORS.black }}
-            >
-              Set Reminder
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
-      </LinearGradient><View
-          style={{
-            height: SIZES.base * 1.2,
-            backgroundColor: COLORS.primary + "50",
-            borderBottomLeftRadius: SIZES.padding,
-            borderBottomRightRadius: SIZES.padding,
-            width: SCREEN_WIDTH * 0.75,
-          }} /></>)}
-      <ThemedText
-        type="text2bold"
-        style={{
-          marginTop: SIZES.base * 1.5,
-          color: COLORS.primary,
-          marginRight: "auto",
-          fontWeight: "bold",
-        }}
-      >
-        Progress
-      </ThemedText>
       {empty && (
         <>
+          <LinearGradient
+            style={styles.card}
+            colors={[COLORS.primary, COLORS.primary + "80"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Ionicons name="time" size={23} color={COLORS.accent} />
+              <ThemedText
+                type="text2bold"
+                style={{ color: "white", marginLeft: SIZES.base }}
+              >
+                Next Immunisation
+              </ThemedText>
+            </View>
+
+            <ThemedText type="text3white">
+              OPV 1 + Pentavalent 1 + PCV 1{" "}
+            </ThemedText>
+            <ThemedText type="text4white">
+              Due date:
+              <ThemedText style={{ fontWeight: "bold" }} type="text4white">
+                {" "}
+                15th June 2024
+              </ThemedText>
+            </ThemedText>
+            <ThemedText type="text4white">
+              Status:{" "}
+              <ThemedText
+                style={{ fontWeight: "bold", color: COLORS.accent }}
+                type="text4white"
+              >
+                Due in 3 days
+              </ThemedText>
+            </ThemedText>
+            <View style={[styles.row, { marginVertical: SIZES.base }]}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={[
+                  styles.checkButtons,
+                  checked === "A" && { backgroundColor: COLORS.secondary },
+                ]}
+                onPress={() => setChecked("A")}
+              >
+                <ThemedText
+                  type="text4white"
+                  style={{ color: checked === "A" ? "#fff" : COLORS.black }}
+                >
+                  Mark as Taken
+                </ThemedText>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                style={[
+                  styles.checkButtons,
+                  checked === "B" && { backgroundColor: COLORS.secondary },
+                ]}
+                onPress={() => setChecked("B")}
+              >
+                <ThemedText
+                  type="text4white"
+                  style={{ color: checked === "B" ? "#fff" : COLORS.black }}
+                >
+                  Set Reminder
+                </ThemedText>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+          <View
+            style={{
+              height: SIZES.base * 1.2,
+              backgroundColor: COLORS.primary + "50",
+              borderBottomLeftRadius: SIZES.padding,
+              borderBottomRightRadius: SIZES.padding,
+              width: SCREEN_WIDTH * 0.75,
+            }}
+          />
+          <ThemedText
+            type="text2bold"
+            style={{
+              marginTop: SIZES.base * 1.5,
+              color: COLORS.primary,
+              marginRight: "auto",
+              fontWeight: "bold",
+            }}
+          >
+            Progress
+          </ThemedText>
           <View style={[styles.bigCard]}>
             <View style={[styles.row, { marginVertical: SIZES.base / 2 }]}>
               <View style={styles.profileContainer}>
@@ -226,21 +229,37 @@ const HomeScreen = () => {
         </>
       )}
       {!empty && (
-        <View
-          style={{
-            width: SCREEN_WIDTH * 0.7,
-            height: SCREEN_HEIGHT * 0.25,
-          }}
-        >
-          <Image
+        <View style={{ width: "100%", height: "100%" }}>
+          <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
+            Welcome to HealthCard
+          </ThemedText>
+          <ThemedText>Track your babys vaccines easily </ThemedText>
+          <View
             style={{
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
-              marginVertical: SIZES.padding,
+              width: SCREEN_WIDTH * 0.8,
+              height: SCREEN_HEIGHT * 0.3,
+              marginVertical: SIZES.h1,
+              alignItems: "center",
             }}
-            source={images.mascot}
-          />
+          >
+            <Image
+              style={{
+                width: "90%",
+                height: "90%",
+                resizeMode: "contain",
+                marginVertical: SIZES.padding,
+              }}
+              source={images.mascot}
+            />
+          </View>
+          <ThemedText type="text3bold">
+            Lets set up your babys profile
+          </ThemedText>
+          <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
+            So we can track vaccines and reminders
+          </ThemedText>
+          <PrimaryButton title="Add Baby Profile" />
+          {/* <ThemedText type="text3green">What you'll get</ThemedText> */}
         </View>
       )}
     </CustomHeader>
