@@ -1,10 +1,10 @@
 import WrapView from "@/src/components/WrapView";
 import { VaccineData } from "@/src/constants/Database";
-import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Image,
@@ -15,6 +15,7 @@ import {
 } from "react-native";
 
 const Immunisation = () => {
+  const navigation = useNavigation();
   const age = "6";
   const [selected, setSelected] = useState<{
     id: string;
@@ -39,11 +40,7 @@ const Immunisation = () => {
           Michael <ThemedText type="text4">| {age} months old</ThemedText>
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
-          <Ionicons
-            name="chevron-down"
-            size={25}
-            color={COLORS.primary}
-          />
+          <Ionicons name="chevron-down" size={25} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
       <ThemedText
@@ -111,6 +108,23 @@ const Immunisation = () => {
                     }}
                   >
                     <ThemedText type="text3">{item.summary}</ThemedText>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("StackNav", {
+                          screen: "VaccineDetails",
+                        })
+                      }
+                    >
+                      <ThemedText
+                        type="text4bold"
+                        style={{
+                          color: COLORS.primary,
+                          alignSelf: "flex-end",
+                        }}
+                      >
+                        Read More...
+                      </ThemedText>
+                    </TouchableOpacity>
                   </View>
                 )}
               </View>
@@ -177,6 +191,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     alignItems: "center",
-    paddingTop: SIZES.padding * 2,
   },
 });

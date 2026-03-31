@@ -1,11 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { COLORS, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
-import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 interface WrapViewProps {
   children: React.ReactNode;
   style: object;
@@ -21,13 +21,20 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
         backgroundColor={COLORS.background}
       />
 
-      <View
+      <SafeAreaView
         style={{
           alignItems: "center",
           flex: 1,
-          padding: SIZES.base,}}
+          paddingHorizontal: SIZES.base,
+        }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" ,width:SCREEN_WIDTH*0.95}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: SCREEN_WIDTH * 0.95,
+          }}
+        >
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => navigation.goBack()}
@@ -37,12 +44,16 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
           <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
             {screenTitle}
           </ThemedText>
-          <TouchableOpacity  onPress={undefined}>
-            <Ionicons name="ellipsis-vertical" size={22} color={COLORS.background} />
+          <TouchableOpacity onPress={undefined}>
+            <Ionicons
+              name="ellipsis-vertical"
+              size={22}
+              color={COLORS.background}
+            />
           </TouchableOpacity>
         </View>
         {children}
-      </View>
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 };
@@ -54,6 +65,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: "center",
     backgroundColor: COLORS.background,
-    paddingVertical: SIZES.navTitle,
+    paddingVertical: SIZES.h3,
   },
 });
