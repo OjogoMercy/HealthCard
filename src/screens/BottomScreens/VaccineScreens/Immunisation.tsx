@@ -112,6 +112,7 @@ const Immunisation = () => {
                       onPress={() =>
                         navigation.navigate("StackNav", {
                           screen: "VaccineDetails",
+                          params: { item },
                         })
                       }
                     >

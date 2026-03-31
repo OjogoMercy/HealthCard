@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     backgroundColor: COLORS.background,
+    padding: SIZES.h4,
   },
   contentContainer: {
     alignItems: "center",
@@ -78,5 +79,6 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     alignItems: "center",
     paddingTop: SIZES.padding * 2,
+    paddingHorizontal: SIZES.h3,
   },
 });
