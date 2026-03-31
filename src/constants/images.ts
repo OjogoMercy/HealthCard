@@ -13,4 +13,5 @@ export const images = {
   google: require("../assets/images/google.webp"),
   apple: require("../assets/images/apple.png"),
   mascot: require("../assets/images/mascot.png"),
+  mascotCry: require("../assets/images/mascotCry.png"),
 };
