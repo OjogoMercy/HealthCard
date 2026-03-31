@@ -1,10 +1,10 @@
 import WrapScrollView from "@/src/components/WrapScrollView";
 import { images } from "@/src/constants/images";
-import { COLORS, SIZES } from "@/src/constants/THEME";
+import { COLORS, SCREEN_HEIGHT, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useRoute } from "@react-navigation/native";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 const VaccineDetails = () => {
   const params = useRoute().params as {
@@ -24,9 +24,8 @@ const VaccineDetails = () => {
         {params.item.isDone ? (
           <Image source={images.mascot} style={styles.mascotImage} />
         ) : (
-          <Image source={images.mascot} style={styles.mascotImage} />
+          <Image source={images.mascotCry} style={styles.mascotImage} />
         )}
-        <Text style={styles.title}>{params.item.name}</Text>
       </View>
     );
   };
@@ -43,6 +42,7 @@ const VaccineDetails = () => {
         Vaccine Name: {params.item.name}
       </ThemedText>
       <ThemedText>{params.item.summary}</ThemedText>
+      <View style={styles.divisor} />
       <ThemedText
         type="text3bold"
         style={{
@@ -58,6 +58,8 @@ const VaccineDetails = () => {
           {index + 1}. {item}
         </ThemedText>
       ))}
+      <VaccineDetailHeader />
+      <View style={styles.divisor} />
       <ThemedText
         type="text3bold"
         style={{
@@ -74,6 +76,7 @@ const VaccineDetails = () => {
           {index + 1}. {item}
         </ThemedText>
       ))}
+      <View style={styles.divisor} />
       <ThemedText
         type="text3bold"
         style={{
@@ -96,4 +99,22 @@ const VaccineDetails = () => {
 
 export default VaccineDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  header: {
+    width: "100%",
+    height: SCREEN_HEIGHT * 0.3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  mascotImage: {
+    width: "50%",
+    height: "90%",
+    resizeMode: "contain",
+  },
+  divisor: {
+    width: "100%",
+    height: 1,
+    backgroundColor: COLORS.secondary,
+    marginTop: SIZES.base,
+  },
+});

@@ -32,7 +32,7 @@ export const VaccineData = [
         ],
         sideEffects: [
           "A small red bump may appear at the injection site (usually the upper left arm) a few weeks after the shot — this is normal.",
-          "The bump may turn into a small blister and then a tiny scar — this is expected and means the vaccine worked.",
+          "The bump may turn into a small blister and then a tiny scar, this is expected and means the vaccine worked.",
           "Mild swelling or tenderness around the injection area.",
         ],
         warningSigns: [
@@ -46,15 +46,15 @@ export const VaccineData = [
         name: "OPV 0",
         isDone: false,
         summary:
-          "This is the first dose of the polio vaccine, given as drops in the mouth at birth. Polio is a virus that can cause permanent paralysis — meaning a child may never be able to walk again. This early dose begins protecting your baby right away.",
+          "This is the first dose of the polio vaccine, given as drops in the mouth at birth. Polio is a virus that can cause permanent paralysis, meaning a child may never be able to walk again. This early dose begins protecting your baby right away.",
         preChecklist: [
           "No special preparation is needed for this vaccine.",
-          "If your baby has been vomiting or has severe diarrhoea on the day, let the health worker know — the dose may need to be repeated.",
+          "If your baby has been vomiting or has severe diarrhoea on the day, let the health worker know, the dose may need to be repeated.",
           "Bring your immunization card so the dose is properly recorded.",
         ],
         sideEffects: [
           "This vaccine is given as oral drops, so injection-site reactions do not apply.",
-          "Some babies may have mild loose stool after the drops — this usually passes quickly.",
+          "Some babies may have mild loose stool after the drops, this usually passes quickly.",
         ],
         warningSigns: [
           "If your baby vomits immediately after receiving the drops, let the health worker know so they can give another dose.",
@@ -69,7 +69,7 @@ export const VaccineData = [
           "This vaccine protects your baby against Hepatitis B, a serious infection that attacks the liver. Babies who get Hepatitis B at birth are at high risk of carrying the virus for life, which can lead to liver disease or liver cancer later on. This birth dose is extremely important.",
         preChecklist: [
           "This vaccine is ideally given within 24 hours of birth, so inform the hospital staff as early as possible.",
-          "Let the medical team know your own Hepatitis B status if you know it — this helps them decide if extra treatment is needed for your baby.",
+          "Let the medical team know your own Hepatitis B status if you know it, this helps them decide if extra treatment is needed for your baby.",
         ],
         sideEffects: [
           "Mild soreness or swelling at the injection site.",
@@ -94,14 +94,14 @@ export const VaccineData = [
         summary:
           "This is one injection that protects your baby against five diseases at once: diphtheria (a throat infection that can block breathing), whooping cough (a severe cough that can stop a baby from breathing), tetanus (a dangerous infection from wounds), Hepatitis B (liver infection), and Hib (a bacteria that can cause meningitis and pneumonia). It is given at 6 weeks.",
         preChecklist: [
-          "Feed your baby before the appointment — a full baby is usually calmer during injections.",
-          "Do not give this vaccine if your baby has a high fever on the day — reschedule and let the health worker know.",
+          "Feed your baby before the appointment, a full baby is usually calmer during injections.",
+          "Do not give this vaccine if your baby has a high fever on the day, reschedule and let the health worker know.",
           "Bring something to comfort your baby after the shot, like a small toy or a cloth with your scent.",
         ],
         sideEffects: [
           "Pain, redness, or swelling at the injection site for 1–2 days.",
           "Mild to moderate fever, usually within 24 hours of the shot.",
-          "Your baby may cry more than usual and be clingy — this is normal.",
+          "Your baby may cry more than usual and be clingy, this is normal.",
           "Slight loss of appetite on the day of vaccination.",
         ],
         warningSigns: [
@@ -128,7 +128,7 @@ export const VaccineData = [
           "Fussiness or irritability for a day or two.",
         ],
         warningSigns: [
-          "If your baby develops a stiff neck, extreme sensitivity to light, or a rash alongside a fever, go to the hospital immediately — these can be signs of meningitis.",
+          "If your baby develops a stiff neck, extreme sensitivity to light, or a rash alongside a fever, go to the hospital immediately, these can be signs of meningitis.",
           "A fever above 39°C that does not come down should be seen by a doctor.",
         ],
       },
@@ -159,7 +159,7 @@ export const VaccineData = [
           "This vaccine protects against rotavirus, the most common cause of severe diarrhoea and dehydration in babies and young children. Rotavirus diarrhoea can cause a baby to lose so much fluid so quickly that it becomes life-threatening. This vaccine is given as drops in the mouth.",
         preChecklist: [
           "If your baby has had a stomach illness or diarrhoea in the past 2 weeks, let the health worker know before the dose is given.",
-          "Do not withhold feeding — breastfeeding before and after is encouraged.",
+          "Do not withhold feeding, breastfeeding before and after is encouraged.",
         ],
         sideEffects: [
           "Mild stomach upset or loose stool for a day or two.",
@@ -202,7 +202,7 @@ export const VaccineData = [
         name: "Pentavalent 2 (DPT, Hep B, Hib)",
         isDone: false,
         summary:
-          "This is the second dose of the five-in-one vaccine protecting against diphtheria, whooping cough, tetanus, Hepatitis B, and Hib. Each dose is essential — skipping it leaves your baby partially protected. It is given at 10 weeks.",
+          "This is the second dose of the five-in-one vaccine protecting against diphtheria, whooping cough, tetanus, Hepatitis B, and Hib. Each dose is essential, skipping it leaves your baby partially protected. It is given at 10 weeks.",
         preChecklist: [
           "Feed your baby before the appointment.",
           "Reschedule if your baby has a fever above 38.5°C on the day.",
@@ -210,12 +210,12 @@ export const VaccineData = [
         ],
         sideEffects: [
           "Pain, redness, or swelling at the injection site.",
-          "Fever within 24 hours — a cool, damp cloth on the forehead can help.",
+          "Fever within 24 hours, a cool, damp cloth on the forehead can help.",
           "Increased crying or clinginess.",
         ],
         warningSigns: [
           "A very high fever (above 39°C) lasting more than 48 hours needs medical attention.",
-          "Any convulsions or seizures — go to the hospital immediately.",
+          "Any convulsions or seizures, go to the hospital immediately.",
           "Swelling that spreads beyond the injection site should be checked by a doctor.",
         ],
       },
@@ -236,7 +236,7 @@ export const VaccineData = [
           "Fussiness for 1–2 days.",
         ],
         warningSigns: [
-          "Stiff neck, unusual sensitivity to light, or a widespread rash alongside fever — go to the hospital right away.",
+          "Stiff neck, unusual sensitivity to light, or a widespread rash alongside fever, go to the hospital right away.",
           "Fever above 39°C that is not responding to paracetamol should be reported.",
         ],
       },
@@ -245,7 +245,7 @@ export const VaccineData = [
         name: "OPV 2",
         isDone: false,
         summary:
-          "The third dose of the oral polio vaccine, given at 10 weeks. Consistency with each dose is what builds full protection. Nigeria has worked hard to eliminate polio — completing this schedule helps protect not just your baby, but all children.",
+          "The third dose of the oral polio vaccine, given at 10 weeks. Consistency with each dose is what builds full protection. Nigeria has worked hard to eliminate polio, completing this schedule helps protect not just your baby, but all children.",
         preChecklist: [
           "Avoid giving this dose if your baby has severe diarrhoea or has been vomiting on that day.",
           "Bring your immunization card.",
@@ -255,7 +255,7 @@ export const VaccineData = [
           "Occasional mild loose stool.",
         ],
         warningSigns: [
-          "Vomiting immediately after the dose — inform the health worker so the dose can be repeated.",
+          "Vomiting immediately after the dose, inform the health worker so the dose can be repeated.",
           "Any new weakness or floppiness in a limb should be reported to a doctor.",
         ],
       },
@@ -274,8 +274,8 @@ export const VaccineData = [
           "Loose stools for a day or two.",
         ],
         warningSigns: [
-          "Blood in the stool after vaccination — seek care immediately.",
-          "A very bloated or hard belly, or your baby pulling their legs up in pain — these could be signs of a rare bowel complication and require urgent medical attention.",
+          "Blood in the stool after vaccination, seek care immediately.",
+          "A very bloated or hard belly, or your baby pulling their legs up in pain, these could be signs of a rare bowel complication and require urgent medical attention.",
         ],
       },
     ],
@@ -301,9 +301,9 @@ export const VaccineData = [
           "Your baby may be unsettled for 1–2 days.",
         ],
         warningSigns: [
-          "Fever above 39°C lasting more than 2 days — see a doctor.",
-          "Convulsions or jerking movements — go to the hospital immediately.",
-          "Extreme paleness, difficulty breathing, or your baby becoming limp — seek emergency care.",
+          "Fever above 39°C lasting more than 2 days, see a doctor.",
+          "Convulsions or jerking movements, go to the hospital immediately.",
+          "Extreme paleness, difficulty breathing, or your baby becoming limp, seek emergency care.",
         ],
       },
       {
@@ -323,7 +323,7 @@ export const VaccineData = [
           "Irritability for a short time.",
         ],
         warningSigns: [
-          "Signs of meningitis — stiff neck, high fever, sensitivity to light, unusual drowsiness — go to the hospital immediately.",
+          "Signs of meningitis, stiff neck, high fever, sensitivity to light, unusual drowsiness, go to the hospital immediately.",
           "Difficulty breathing after vaccination needs urgent attention.",
         ],
       },
@@ -338,11 +338,11 @@ export const VaccineData = [
           "Bring the immunization card.",
         ],
         sideEffects: [
-          "Very few side effects — the drops are generally well tolerated.",
+          "Very few side effects, the drops are generally well tolerated.",
           "Mild stomach upset in some babies.",
         ],
         warningSigns: [
-          "Immediate vomiting after the drops — report to the health worker for a repeat dose.",
+          "Immediate vomiting after the drops, report to the health worker for a repeat dose.",
           "Any unexplained weakness in the legs or arms should be seen by a doctor urgently.",
         ],
       },
@@ -385,7 +385,7 @@ export const VaccineData = [
           "Mild fussiness.",
         ],
         warningSigns: [
-          "Weakness or unusual floppiness in any limb — see a doctor immediately.",
+          "Weakness or unusual floppiness in any limb, see a doctor immediately.",
           "A high fever that does not settle within 48 hours.",
         ],
       },
