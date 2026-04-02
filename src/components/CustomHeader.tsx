@@ -33,7 +33,7 @@ const CustomHeader = ({
         style={{
           flex: 1,
           width: SCREEN_WIDTH,
-          paddingVertical: SIZES.padding,
+          paddingVertical: SIZES.padding / 2,
           alignItems: "center",
           paddingHorizontal: SIZES.padding,
         }}
