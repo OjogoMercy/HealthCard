@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { useBabyStore } from "@/src/store/useBabyStore";
+import { getAgeLabel } from "@/src/constants/age";
 
 const Immunisation = () => {
   const navigation = useNavigation();
@@ -39,7 +40,7 @@ const Immunisation = () => {
           style={{ color: COLORS.primary, marginRight: "auto" }}
         >
           {" "}
-          Michael <ThemedText type="text4">| {age} months old</ThemedText>
+         {baby.name} <ThemedText type="text4">| {getAgeLabel(baby.dob)}</ThemedText>
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons name="chevron-down" size={25} color={COLORS.primary} />
