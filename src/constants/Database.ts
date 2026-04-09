@@ -22,7 +22,7 @@ export const VaccineData = [
       {
         id: "1",
         name: "BCG",
-        isDone: false,
+        isDone: true,
         summary:
           "This vaccine protects your baby from a dangerous infection called tuberculosis (TB). TB can attack the lungs and, in babies, can also spread to the brain, which can be life-threatening. Getting this vaccine at birth gives your baby strong early protection.",
         preChecklist: [
@@ -44,7 +44,7 @@ export const VaccineData = [
       {
         id: "2",
         name: "OPV 0",
-        isDone: false,
+        isDone: true,
         summary:
           "This is the first dose of the polio vaccine, given as drops in the mouth at birth. Polio is a virus that can cause permanent paralysis, meaning a child may never be able to walk again. This early dose begins protecting your baby right away.",
         preChecklist: [
@@ -64,7 +64,7 @@ export const VaccineData = [
       {
         id: "3",
         name: "Hep B0 (Birth)",
-        isDone: false,
+        isDone: true,
         summary:
           "This vaccine protects your baby against Hepatitis B, a serious infection that attacks the liver. Babies who get Hepatitis B at birth are at high risk of carrying the virus for life, which can lead to liver disease or liver cancer later on. This birth dose is extremely important.",
         preChecklist: [

@@ -93,7 +93,7 @@ const AgeCalc = () => {
           <ThemedText type="text2" style={styles.stageLabel}>
             Current stage
           </ThemedText>
-          <ThemedText type="text2bold" style={styles.stageTitle}>
+          <ThemedText type="text2" style={styles.stageTitle}>
             {currentTitle}
           </ThemedText>
         </View>
@@ -121,7 +121,7 @@ const AgeCalc = () => {
                   onPress={() => saveBirthDate(subtractDays(sim.daysAgo))}
                   activeOpacity={0.7}
                 >
-                  <ThemedText type="text2" style={styles.simLabel}>
+                  <ThemedText type="text3" style={styles.simLabel}>
                     {sim.label}
                   </ThemedText>
                 </TouchableOpacity>
@@ -141,7 +141,7 @@ const AgeCalc = () => {
                   {
                     backgroundColor: item.isDone
                       ? COLORS.primary + "20"
-                      : COLORS.accent + "90",
+                      : COLORS.accent,
                   },
                 ]}
               >
@@ -237,8 +237,10 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.88,
     backgroundColor: COLORS.primary + "10",
     borderRadius: SIZES.padding,
-    paddingVertical: SIZES.base,
+    paddingVertical: SIZES.base*1.3,
     paddingHorizontal: SIZES.padding,
+    borderWidth:1,
+borderColor: COLORS.primary + "30",
   },
   simLabel: {
     color: COLORS.primary,
@@ -248,6 +250,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
     padding: SIZES.padding,
     marginBottom: SIZES.base,
+      borderWidth:1,
+borderColor: COLORS.primary + "30",
   },
   badge: {
     alignSelf: "flex-start",
@@ -262,7 +266,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   vaccineSummary: {
-    color: COLORS.secondary,
+    color: COLORS.black,
     lineHeight: 20,
   },
   emptyState: {
