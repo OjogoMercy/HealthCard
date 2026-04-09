@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { VaccineData } from "../constants/Database";
 
 export interface Vaccine {
@@ -19,23 +21,20 @@ export interface VaccineCategory {
 
 export interface BabyProfile {
   name: string;
-  dob: string; 
+  dob: string;
 }
 
 interface BabyStore {
-  // ── State ──
   baby: BabyProfile | null;
   currentStageTitle: string | null;
   currentVaccines: Vaccine[];
   upcomingStage: VaccineCategory | null;
-
-  // ── Actions ──
+  completedIds: string[];
   setBaby: (profile: BabyProfile) => void;
   markVaccineDone: (vaccineId: string) => void;
   clearBaby: () => void;
 }
 
-// for age calculation 
 const getAgeInWeeks = (dob: Date): number =>
   Math.floor((Date.now() - dob.getTime()) / (1000 * 60 * 60 * 24 * 7));
 
@@ -72,8 +71,6 @@ const getStageTitle = (dob: Date): string => {
   return "9–13 Years";
 };
 
-// ─── Upcoming stage helper ────────────────────────────────────────────────────
-
 const STAGE_ORDER = [
   "Birth",
   "6 Weeks",
@@ -93,45 +90,67 @@ const getUpcomingStage = (currentTitle: string): VaccineCategory | null => {
   return VaccineData.find((v) => v.title === nextTitle) ?? null;
 };
 
-// ─── Store ────────────────────────────────────────────────────────────────────
-
-export const useBabyStore = create<BabyStore>((set, get) => ({
-  // initial state 
-  baby: null,
-  currentStageTitle: null,
-  currentVaccines: [],
-  upcomingStage: null,
-
-  // Set baby profile and calculate stage immediately 
-  setBaby: (profile: BabyProfile) => {
-    const dob = new Date(profile.dob);
-    const stageTitle = getStageTitle(dob);
-    const matched = VaccineData.find((v) => v.title === stageTitle);
-    const upcoming = getUpcomingStage(stageTitle);
-
-    set({
-      baby: profile,
-      currentStageTitle: stageTitle,
-      currentVaccines: matched?.data ?? [],
-      upcomingStage: upcoming ?? null,
-    });
-  },
-
-  // mark vaccines done by ID 
-  markVaccineDone: (vaccineId: string) => {
-    const { currentVaccines } = get();
-    const updated = currentVaccines.map((v) =>
-      v.id === vaccineId ? { ...v, isDone: true } : v
-    );
-    set({ currentVaccines: updated });
-  },
-
-  //clear everything and reset 
-  clearBaby: () =>
-    set({
+export const useBabyStore = create<BabyStore>()(
+  persist(
+    (set, get) => ({
       baby: null,
       currentStageTitle: null,
       currentVaccines: [],
       upcomingStage: null,
+      completedIds: [],
+
+      setBaby: (profile: BabyProfile) => {
+        const dob = new Date(profile.dob);
+        const stageTitle = getStageTitle(dob);
+        const matched = VaccineData.find((v) => v.title === stageTitle);
+        const upcoming = getUpcomingStage(stageTitle);
+
+        const vaccinesWithStatus = (matched?.data ?? []).map((v) => ({
+          ...v,
+          isDone: get().completedIds.includes(v.id),
+        }));
+
+        set({
+          baby: profile,
+          currentStageTitle: stageTitle,
+          currentVaccines: vaccinesWithStatus,
+          upcomingStage: upcoming ?? null,
+        });
+      },
+
+      markVaccineDone: (vaccineId: string) => {
+        set((state) => {
+          const newCompletedIds = state.completedIds.includes(vaccineId)
+            ? state.completedIds
+            : [...state.completedIds, vaccineId];
+
+          const updatedCurrent = state.currentVaccines.map((v) =>
+            v.id === vaccineId ? { ...v, isDone: true } : v
+          );
+
+          return {
+            completedIds: newCompletedIds,
+            currentVaccines: updatedCurrent,
+          };
+        });
+      },
+// to clear and persist baby info on storage
+      clearBaby: () =>
+        set({
+          baby: null,
+          currentStageTitle: null,
+          currentVaccines: [],
+          upcomingStage: null,
+          completedIds: [],
+        }),
     }),
-}));
+    {
+      name: "healthcard-baby-storage",
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({
+        baby: state.baby,
+        completedIds: state.completedIds,
+      }),
+    }
+  )
+);
