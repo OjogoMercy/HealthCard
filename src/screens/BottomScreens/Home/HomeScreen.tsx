@@ -64,7 +64,7 @@ const HomeScreen = () => {
       title="Home"
       authScreen={false}
       tabScreen={true}
-      screenTitle="Home"
+      
     >
       <View style={styles.row}>
         <TouchableOpacity

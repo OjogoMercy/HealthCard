@@ -5,6 +5,7 @@ import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { useBabyStore } from "@/src/store/useBabyStore"; // Import store
 import React from "react";
 import {
   FlatList,
@@ -15,47 +16,34 @@ import {
 } from "react-native";
 
 const CheckIn = () => {
-  const [checked, setChecked] = React.useState<string[]>([]);
-  const age = "6";
+  const navigation = useNavigation<any>();
+  
+  // Connect to the store to get baby info and vaccin
+  const baby = useBabyStore((s) => s.baby);
+  const currentVaccines = useBabyStore((s) => s.currentVaccines);
+  const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
+  const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
+
   const date = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-  const data = [
-    {
-      id: 1,
-      vaccine: "OPV 1",
-      dueDate: "15th June 2024",
-      status: "Due in 7 days",
-    },
-    {
-      id: 2,
-      vaccine: "Pentavalent 1",
-      dueDate: "15th June 2024",
-      status: "Due in 3 days",
-    },
-    {
-      id: 3,
-      vaccine: "PCV 1",
-      dueDate: "15th June 2024",
-      status: "Due in 15 days",
-    },
-    {
-      id: 4,
-      vaccine: "Rotavirus 1",
-      dueDate: "15th June 2024",
-      status: "Due in 15 days",
-    },
-  ];
-  const toggleVaccine = (vaccine: string) => {
-    setChecked((prev) =>
-      prev.includes(vaccine)
-        ? prev.filter((v) => v !== vaccine)
-        : [...prev, vaccine],
+
+  // If no baby, we can't check in
+  if (!baby) {
+    return (
+      <WrapView screenTitle="Check-In">
+        <View style={styles.emptyContainer}>
+          <ThemedText type="text3bold">No Baby Profile Found</ThemedText>
+          <PrimaryButton 
+            title="Setup Baby Profile" 
+            onPress={() => navigation.navigate("AgeCalc")} 
+          />
+        </View>
+      </WrapView>
     );
-  };
-  const navigation = useNavigation<any>();
+  }
 
   return (
     <WrapView screenTitle="Check-In">
@@ -63,101 +51,61 @@ const CheckIn = () => {
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.baby} style={styles.profileImage} />
         </TouchableOpacity>
-        <View style={{ marginRight: "auto" }}>
-          <ThemedText
-            type="text3bold"
-            style={{ color: COLORS.primary, marginRight: "auto" }}
-          >
-            {" "}
-            Michael
+        <View style={{ marginRight: "auto", marginLeft: SIZES.base }}>
+          <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
+            {baby.name}
           </ThemedText>
-          <ThemedText type="text4"> {age} months old</ThemedText>
+          <ThemedText type="text4">{currentStageTitle} Stage</ThemedText>
         </View>
-
-        <TouchableOpacity activeOpacity={0.5}>
-          <Ionicons name="chevron-down" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
       </View>
-      <View
-        style={[
-          styles.form,
-          {
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          },
-        ]}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+
+      <View style={[styles.form, styles.rowBetween]}>
+        <View style={styles.iconLabel}>
           <Ionicons name="calendar-outline" size={24} color={COLORS.primary} />
           <ThemedText type="text4">Visit Date</ThemedText>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.iconLabel}>
           <ThemedText type="text4bold">{date}</ThemedText>
-          <TouchableOpacity
-            style={{ marginLeft: SIZES.base }}
-            activeOpacity={0.5}
-          >
+          <TouchableOpacity style={{ marginLeft: SIZES.base }} activeOpacity={0.5}>
             <Ionicons name="time-outline" size={24} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
       </View>
-      <View
-        style={[
-          styles.form,
-          { backgroundColor: COLORS.secondary + "40", elevation: 0 },
-        ]}
-      >
-        <ThemedText type="text3bold">Vaccines Given Today</ThemedText>
-        <View>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingVertical: SIZES.base,
-                  }}
-                >
-                  <ThemedText type="text4">{item.vaccine}</ThemedText>
-                  <TouchableOpacity
-                    onPress={() => toggleVaccine(item.vaccine)}
-                    activeOpacity={0.5}
-                  >
-                    <Ionicons
-                      name={
-                        checked.includes(item.vaccine)
-                          ? "checkbox"
-                          : "square-outline"
-                      }
-                      size={24}
-                      color={COLORS.primary}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </View>
+
+      <View style={[styles.form, { backgroundColor: COLORS.secondary + "20", elevation: 0 }]}>
+        <ThemedText type="text3bold">Vaccines for {currentStageTitle}</ThemedText>
+        <ThemedText type="text4gray" style={{ marginBottom: SIZES.base }}>
+          Tap the box to mark vaccines given today.
+        </ThemedText>
+        
+        <FlatList
+          data={currentVaccines}
+          keyExtractor={(item) => item.id}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <View style={styles.vaccineItem}>
+              <ThemedText type="text4" style={item.isDone ? { color: COLORS.primary, fontWeight: 'bold' } : {}}>
+                {item.name}
+              </ThemedText>
+              <TouchableOpacity
+                onPress={() => markVaccineDone(item.id)}
+                activeOpacity={0.5}
+                disabled={item.isDone} // Prevent unchecking once saved for MVP
+              >
+                <Ionicons
+                  name={item.isDone ? "checkbox" : "square-outline"}
+                  size={28}
+                  color={item.isDone ? COLORS.primary : COLORS.gray}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        />
 
         <PrimaryButton
-          title="Save Check-In"
-          onPress={() => navigation.navigate("Immunisation")}
+          title="Done for Today"
+          onPress={() => navigation.navigate("Home")}
+          style={{ marginTop: SIZES.padding }}
         />
       </View>
     </WrapView>
@@ -170,13 +118,22 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     width: SCREEN_WIDTH * 0.9,
     marginVertical: SIZES.base,
     backgroundColor: COLORS.white,
-    padding: SIZES.base,
+    padding: SIZES.padding,
     borderRadius: SIZES.padding,
     elevation: 2,
+  },
+  rowBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  iconLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5
   },
   profileContainer: {
     borderRadius: SIZES.navTitle,
@@ -190,14 +147,28 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "90%",
     borderRadius: SIZES.padding,
-    resizeMode: "cover",
   },
   form: {
     width: SCREEN_WIDTH * 0.9,
     backgroundColor: "white",
     borderRadius: SIZES.padding,
     padding: SIZES.padding,
-    marginTop: SIZES.base * 1.5,
+    marginTop: SIZES.base,
     elevation: 2,
   },
+  vaccineItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: SIZES.base * 1.5,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.gray4,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: SIZES.padding,
+    gap: 20
+  }
 });

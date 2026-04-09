@@ -23,6 +23,7 @@ const CustomHeader = ({
       style={{
         flex: 1,
         backgroundColor: COLORS.background,
+        paddingVertical:SIZES.padding
       }}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ alignItems: "center" }}

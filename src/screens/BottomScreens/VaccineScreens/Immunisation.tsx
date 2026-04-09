@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useBabyStore } from "@/src/store/useBabyStore";
 
 const Immunisation = () => {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ const Immunisation = () => {
   const handleOpen = (item: { id: string; name: string; summary: string }) => {
     setSelected((previous) => (previous?.id === item.id ? null : item));
   };
+  const baby = useBabyStore((s) => s.baby);
 
   return (
     <WrapView style={styles.container} screenTitle="Vaccination Timeline">
