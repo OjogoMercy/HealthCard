@@ -22,6 +22,7 @@ export interface VaccineCategory {
 export interface BabyProfile {
   name: string;
   dob: string;
+  gender?: string;
 }
 
 interface BabyStore {

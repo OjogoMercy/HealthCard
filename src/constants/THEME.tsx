@@ -30,7 +30,7 @@ export const COLORS = {
   formBg: '#EBDFFA33',
   inputText: '#2E14219E',
   amber: '#FFA726',
-  accent: '#FFA726', //Nutrition alerts, meal logging, calls to action.
+  accent: '#FFA726',
   veryLightGray: '#cccccc1a',
   overlay: '#cccccc1a',
   opacity: 'rgba(0, 0, 0, 0.2)',
@@ -41,7 +41,6 @@ export const COLORS = {
 }
 
 export const SIZES = {
-  //global sizes
   base: screenHeight * 0.01,
   font: screenHeight * 0.0175,
   radius: 5,
@@ -171,7 +170,6 @@ export const FONTS = {
     lineHeight: 22,
   },
 }
-
 const appTheme = { COLORS, SIZES, FONTS, SCREEN_HEIGHT, SCREEN_WIDTH }
 
 export default appTheme
