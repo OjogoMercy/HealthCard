@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as Haptics from "expo-haptics";
 import {
   ClipboardCheck,
   Home,
@@ -13,7 +14,6 @@ import { COLORS } from "../constants/THEME";
 import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
 import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
-import * as Haptics from "expo-haptics";
 import StackNav from "./StackNav";
 
 type RootTabParamList = {
@@ -29,6 +29,24 @@ export default function BottomTabNavigator() {
   const activeTintColor: ColorValue = COLORS.primary;
   const inactiveTintColor: ColorValue = "#8e8e93";
   const glowColor = COLORS.secondary + "45";
+  const androidConstants =
+    Platform.OS === "android"
+      ? (Platform.constants as Record<string, unknown>)
+      : {};
+  const androidFingerprint =
+    typeof androidConstants.Fingerprint === "string"
+      ? androidConstants.Fingerprint.toLowerCase()
+      : "";
+  const androidModel =
+    typeof androidConstants.Model === "string"
+      ? androidConstants.Model.toLowerCase()
+      : "";
+  const isAndroidEmulator =
+    Platform.OS === "android" &&
+    (androidFingerprint.includes("generic") ||
+      androidFingerprint.includes("emulator") ||
+      androidModel.includes("sdk") ||
+      androidModel.includes("emulator"));
 
   return (
     <Tab.Navigator
@@ -43,7 +61,7 @@ export default function BottomTabNavigator() {
           marginTop: 4,
         },
         tabBarStyle: {
-          height: Platform.OS === "android" ? 70 : 90,
+          height: isAndroidEmulator ? 100 : 70,
           paddingTop: 10,
           backgroundColor: "white",
           borderTopWidth: 0,
@@ -71,9 +89,9 @@ export default function BottomTabNavigator() {
         },
       })}
       screenListeners={{
-        tabPress:(e)=> {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-        }
+        tabPress: (e) => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        },
       }}
     >
       <Tab.Screen
