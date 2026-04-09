@@ -68,4 +68,3 @@ set({ baby: null, currentVaccines: null });
 getTargetTitle,
 };
 });
-```

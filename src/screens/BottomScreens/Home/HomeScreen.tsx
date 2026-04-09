@@ -258,8 +258,7 @@ const HomeScreen = () => {
           <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
             So we can track vaccines and reminders
           </ThemedText>
-          <PrimaryButton title="Add Baby Profile" />
-          {/* <ThemedText type="text3green">What you'll get</ThemedText> */}
+          <PrimaryButton title="Add Baby Profile" onPress={() => navigation.navigate("AgeCalc")} />
         </View>
       )}
     </CustomHeader>

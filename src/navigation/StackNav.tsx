@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import AgeCalc from "../constants/AgeCalc";
 import HomeScreen from "../screens/BottomScreens/Home/HomeScreen";
 import MomProfile from "../screens/BottomScreens/Home/MomProfile";
 import EditProfile from "../screens/BottomScreens/Profile/EditProfile";
@@ -12,6 +13,7 @@ export type StackParamList = {
   Default: undefined;
   SetProfile: undefined;
   VaccineDetails: undefined;
+  AgeCalc: undefined;
 };
 
 export default function StackNav() {
@@ -25,6 +27,7 @@ export default function StackNav() {
       <Stack.Screen name="Default" component={HomeScreen} />
       <Stack.Screen name="SetProfile" component={SetProfile} />
       <Stack.Screen name="VaccineDetails" component={VaccineDetails} />
+      <Stack.Screen name="AgeCalc" component={AgeCalc} />
     </Stack.Navigator>
   );
 }
