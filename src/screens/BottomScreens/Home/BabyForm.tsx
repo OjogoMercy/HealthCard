@@ -1,12 +1,11 @@
-import CustomHeader from "@/src/components/CustomHeader";
 import PrimaryButton from "@/src/components/PrimaryButton";
-import { COLORS, SIZES } from "@/src/constants/THEME";
+import WrapView from "@/src/components/WrapView";
+import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
-import WrapView from "@/src/components/WrapView";
 import React, { useState } from "react";
 import {
   Alert,
@@ -41,7 +40,7 @@ const BabyForm = () => {
   };
 
   return (
-    <WrapView screenTitle="Baby's Profile" >
+    <WrapView screenTitle="Baby's Profile">
       <View style={styles.container}>
         <ThemedText type="text2bold" style={styles.title}>
           Let’s get started, Mummy!
@@ -87,8 +86,8 @@ const BabyForm = () => {
           <DateTimePicker
             value={date}
             mode="date"
-            display="default"
-            maximumDate={new Date()} // Baby can't be born in the future
+            display="spinner"
+            maximumDate={new Date()}
             onChange={(event, selectedDate) => {
               setShowPicker(false);
               if (selectedDate) setDate(selectedDate);
@@ -97,7 +96,11 @@ const BabyForm = () => {
         )}
 
         <View style={styles.buttonContainer}>
-          <PrimaryButton title="Create HealthCard" onPress={handleSave} />
+          <PrimaryButton
+            title="Create HealthCard"
+            onPress={handleSave}
+            style={{ width: SCREEN_WIDTH * 0.9 }}
+          />
           <ThemedText type="text4gray" style={styles.footerText}>
             Don't worry, Ma. You can always change these details later in the
             Profile section.
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.padding * 2,
   },
   inputGroup: {
-    width: "100%",
+    width: SCREEN_WIDTH * 0.9,
     marginBottom: SIZES.padding,
   },
   label: {

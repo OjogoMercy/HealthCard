@@ -99,20 +99,19 @@ const HomeScreen = () => {
             <Image style={styles.mascotImage} source={images.mascot} />
           </View>
 
-<View style={{alignItems:'center',width:'100%'}}>
-    <ThemedText type="text3bold">
-            Let's set up your baby's profile
-          </ThemedText>
-          <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
-            So we can track vaccines and reminders
-          </ThemedText>
-          <PrimaryButton
-            title="Add Baby Profile"
-          style={{width:'90%'}}
-            onPress={() => navigation.navigate("AgeCalc")}
-          />
-</View>
-      
+          <View style={{ alignItems: "center", width: "100%" }}>
+            <ThemedText type="text3bold">
+              Let's set up your baby's profile
+            </ThemedText>
+            <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
+              So we can track vaccines and reminders
+            </ThemedText>
+            <PrimaryButton
+              title="Add Baby Profile"
+              style={{ width: "90%" }}
+              onPress={() => navigation.navigate("BabyForm")}
+            />
+          </View>
         </View>
       )}
 

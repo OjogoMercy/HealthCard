@@ -1,6 +1,6 @@
 import * as Haptics from "expo-haptics";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 
@@ -33,15 +33,15 @@ export default function PrimaryButton({
     if (onPress) onPress();
   };
   return (
-      <TouchableOpacity
-        onPress={handlePress}
-        activeOpacity={0.7}
-        style={[styles.button, style]}
-      >
-        <ThemedText type="text3white" style={[textStyle]}>
-          {title}
-        </ThemedText>
-      </TouchableOpacity>
+    <TouchableOpacity
+      onPress={handlePress}
+      activeOpacity={0.7}
+      style={[styles.button, style]}
+    >
+      <ThemedText type="text3white" style={[textStyle]}>
+        {title}
+      </ThemedText>
+    </TouchableOpacity>
   );
 }
 
