@@ -33,7 +33,6 @@ export default function PrimaryButton({
     if (onPress) onPress();
   };
   return (
-    <View>
       <TouchableOpacity
         onPress={handlePress}
         activeOpacity={0.7}
@@ -43,7 +42,6 @@ export default function PrimaryButton({
           {title}
         </ThemedText>
       </TouchableOpacity>
-    </View>
   );
 }
 

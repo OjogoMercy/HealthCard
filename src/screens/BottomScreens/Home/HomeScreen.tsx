@@ -99,7 +99,8 @@ const HomeScreen = () => {
             <Image style={styles.mascotImage} source={images.mascot} />
           </View>
 
-          <ThemedText type="text3bold">
+<View style={{alignItems:'center',width:'100%'}}>
+    <ThemedText type="text3bold">
             Let's set up your baby's profile
           </ThemedText>
           <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
@@ -107,8 +108,11 @@ const HomeScreen = () => {
           </ThemedText>
           <PrimaryButton
             title="Add Baby Profile"
+          style={{width:'90%'}}
             onPress={() => navigation.navigate("AgeCalc")}
           />
+</View>
+      
         </View>
       )}
 
