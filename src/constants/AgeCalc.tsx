@@ -141,14 +141,14 @@ const AgeCalc = () => {
                   {
                     backgroundColor: item.isDone
                       ? COLORS.primary + "20"
-                      : COLORS.accent + "20",
+                      : COLORS.accent + "90",
                   },
                 ]}
               >
                 <ThemedText
                   type="text2bold"
                   style={{
-                    color: item.isDone ? COLORS.primary : COLORS.accent,
+                    color: item.isDone ? COLORS.primary : COLORS.white,
                     fontSize: 11,
                   }}
                 >
@@ -159,7 +159,7 @@ const AgeCalc = () => {
               <ThemedText type="text2bold" style={styles.vaccineName}>
                 {item.name}
               </ThemedText>
-              <ThemedText type="text2" style={styles.vaccineSummary}>
+              <ThemedText type="text3" style={styles.vaccineSummary}>
                 {item.summary}
               </ThemedText>
             </View>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   vaccineCard: {
-    backgroundColor: COLORS.opacity ?? "#F9F9F9",
+    backgroundColor: COLORS.overlay ?? "#F9F9F9",
     borderRadius: SIZES.padding,
     padding: SIZES.padding,
     marginBottom: SIZES.base,
