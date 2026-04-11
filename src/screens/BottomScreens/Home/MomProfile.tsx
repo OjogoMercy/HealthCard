@@ -1,196 +1,368 @@
+import WrapScrollView from "@/src/components/WrapScrollView";
 import PrimaryButton from "@/src/components/PrimaryButton";
-import WrapView from "@/src/components/WrapView";
-import { general } from "@/src/constants/General";
-import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
-import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
 import {
+  COLORS,
+  SCREEN_WIDTH,
+  SIZES,
+} from "@/src/constants/THEME";
+import { ThemedText } from "@/src/constants/ThemedText";
+import { useMomStore } from "@/src/store/useMomStore";
+import { useBabyStore } from "@/src/store/useBabyStore";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import {
+  Alert,
   FlatList,
   Image,
+  Modal,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 
+
+const getAgeLabel = (dob: string): string => {
+  const birth = new Date(dob);
+  const now = new Date();
+  const diffInDays = Math.floor(
+    (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const weeks = Math.floor(diffInDays / 7);
+  const months =
+    (now.getFullYear() - birth.getFullYear()) * 12 +
+    (now.getMonth() - birth.getMonth());
+  const years = now.getFullYear() - birth.getFullYear();
+
+  if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} old`;
+  if (months < 24) return `${months} month${months === 1 ? "" : "s"} old`;
+  return `${years} year${years === 1 ? "" : "s"} old`;
+};
+
+
 const MomProfile = () => {
-  const User = {
-    name: "Sarah Williams",
-    email: "email.com",
-    Phone: "070845346257",
+  const navigation = useNavigation<any>();
+  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [comingSoonMessage, setComingSoonMessage] = useState("");
+
+  const mom = useMomStore((s) => s.mom);
+  const clearMom = useMomStore((s) => s.clearMom);
+  const baby = useBabyStore((s) => s.baby);
+  const clearBaby = useBabyStore((s) => s.clearBaby);
+
+  const triggerComingSoon = (message: string) => {
+    setComingSoonMessage(message);
+    setShowComingSoon(true);
   };
-  const Baby = {
-    name: "Michael",
-    age: "6",
-    Value: "64%",
+  const handleLogout = () => {
+    Alert.alert(
+      "Log Out",
+      "Are you sure you want to log out? Your data will be saved.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Log Out",
+          style: "destructive",
+          onPress: () => {
+            clearMom();
+            clearBaby();
+            navigation.navigate("Home");
+          },
+        },
+      ]
+    );
   };
-  const Data = [
+
+  const settingsData = [
     {
       id: 1,
-      iconName: "person",
+      iconName: "person-outline",
       title: "Edit Profile",
+      onPress: () =>
+        navigation.navigate("StackNav", { screen: "EditMomProfile" }),
     },
     {
       id: 2,
-      iconName: "people-circle",
+      iconName: "shield-checkmark-outline",
       title: "Security",
+      onPress: () =>
+        triggerComingSoon(
+          "Security settings like password change and two-factor authentication are coming soon."
+        ),
     },
     {
       id: 3,
-      iconName: "settings",
+      iconName: "settings-outline",
       title: "Settings",
+      onPress: () =>
+        triggerComingSoon(
+          "App settings including language and notification preferences are on the way."
+        ),
     },
     {
       id: 4,
-      iconName: "help-circle",
+      iconName: "help-circle-outline",
       title: "Help",
+      onPress: () =>
+        triggerComingSoon(
+          "Our help centre and support chat are coming soon. Hang tight!"
+        ),
     },
     {
       id: 5,
       iconName: "log-out-outline",
       title: "Logout",
+      onPress: handleLogout,
+      danger: true,
     },
   ];
+
   return (
-    <WrapView screenTitle="Mom Profile">
+    <WrapScrollView screenTitle="Mom Profile">
+
       <View style={styles.profileCard}>
-        <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
+        <TouchableOpacity style={styles.photoContainer} activeOpacity={0.7}>
           <Image
-            source={images.mom}
-            style={{
-              width: SCREEN_WIDTH * 0.25,
-              height: SCREEN_WIDTH * 0.25,
-              borderRadius: SIZES.navTitle * 2,
-            }}
+            source={mom?.photoUri ? { uri: mom.photoUri } : images.mom}
+            style={styles.photo}
           />
-          <Ionicons
-            name="camera"
-            size={22}
-            color={COLORS.primary}
-            style={{ position: "absolute", bottom: 0, right: 0 }}
-          />
+          <View style={styles.cameraIcon}>
+            <Ionicons name="camera" size={16} color={COLORS.white} />
+          </View>
         </TouchableOpacity>
-        <ThemedText
-          type="text3bold"
-          style={{ marginTop: SIZES.base, color: COLORS.primary }}
-        >
-          {User.name}
+
+        <ThemedText type="text2bold" style={styles.name}>
+          {mom?.fullName ?? "Your Name"}
         </ThemedText>
-        <ThemedText type="text4">{User.email}</ThemedText>
-        <ThemedText type="text4">{User.Phone}</ThemedText>
+        <ThemedText type="text4" style={styles.subInfo}>
+          {mom?.email ?? "email@example.com"}
+        </ThemedText>
+        <ThemedText type="text4" style={styles.subInfo}>
+          {mom?.phone ?? "Phone not set"}
+        </ThemedText>
       </View>
-      <View
-        style={[
-          general.nextContainer,
-          {
-            height: "auto",
-            backgroundColor: COLORS.primary + "20",
-          },
-        ]}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Ionicons name="people-circle" size={24} color={COLORS.primary} />
-          <ThemedText type="text3bold" style={{ marginLeft: SIZES.base }}>
+
+      <View style={styles.sectionCard}>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="people" size={22} color={COLORS.primary} />
+          <ThemedText type="text2bold" style={styles.sectionTitle}>
             Children
           </ThemedText>
         </View>
 
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={[
-              general.profileContainer,
-              { width: SIZES.navTitle * 2, height: SIZES.navTitle * 2 },
-            ]}
-          >
-            <Image
-              source={images.baby}
-              style={[
-                general.profileImage,
-                { borderWidth: 2, borderColor: COLORS.primary },
-              ]}
-            />
-          </View>
-          <ThemedText
-            type="text3bold"
-            style={{ color: COLORS.primary, marginRight: "auto" }}
-          >
-            {" "}
-            Michael{" "}
-            <ThemedText type="text4">| {Baby.age} months old</ThemedText>
-          </ThemedText>
-        </View>
-
-        <View style={{ width: "100%" }}>
-          <PrimaryButton title="Add New Child" onPress={undefined} />
-        </View>
-      </View>
-      <View style={styles.card}>
-        <FlatList
-          data={Data}
-          ListHeaderComponent={
-            <ThemedText type="text4bold" style={{ marginVertical: SIZES.base }}>
-              Account Settings
+        {baby ? (
+          <View style={styles.childRow}>
+            <Image source={images.baby} style={styles.childPhoto} />
+            <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
+              {baby.name}{" "}
+              <ThemedText type="text4" style={{ color: COLORS.black }}>
+                | {getAgeLabel(baby.dob)}
+              </ThemedText>
             </ThemedText>
+          </View>
+        ) : (
+          <ThemedText
+            type="text4gray"
+            style={{ marginVertical: SIZES.base, marginLeft: SIZES.base }}
+          >
+            No child profile added yet
+          </ThemedText>
+        )}
+
+        <PrimaryButton
+          title="Add New Child"
+          onPress={() =>
+            triggerComingSoon(
+              "Multiple child profiles are on the way. You will be able to track all your children's vaccines in one place very soon!"
+            )
           }
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity style={styles.listItem}>
-                <Ionicons
-                  name={item.iconName}
-                  size={24}
-                  color={COLORS.primary}
-                />
-                <ThemedText type="text4" style={{ marginLeft: SIZES.base }}>
-                  {item.title}
-                </ThemedText>
-                <Ionicons
-                  style={{ marginLeft: "auto" }}
-                  name="chevron-forward"
-                  size={22}
-                  color={COLORS.black}
-                />
-              </TouchableOpacity>
-            );
-          }}
         />
       </View>
-    </WrapView>
+
+      <View style={styles.sectionCard}>
+        <ThemedText type="text2bold" style={styles.sectionTitle}>
+          Account Settings
+        </ThemedText>
+
+        <FlatList
+          data={settingsData}
+          scrollEnabled={false}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[
+                styles.listItem,
+                item.id === settingsData.length && { borderBottomWidth: 0 },
+              ]}
+              activeOpacity={0.6}
+              onPress={item.onPress}
+            >
+              <Ionicons
+                name={item.iconName as any}
+                size={22}
+                color={item.danger ? COLORS.alert ?? "#CC0000" : COLORS.primary}
+              />
+              <ThemedText
+                type="text4"
+                style={[
+                  styles.listLabel,
+                  item.danger && { color: COLORS.alert ?? "#CC0000" },
+                ]}
+              >
+                {item.title}
+              </ThemedText>
+              <Ionicons
+                name="chevron-forward"
+                size={20}
+                style={{ marginLeft: "auto" }}
+                color={item.danger ? COLORS.alert ?? "#CC0000" : COLORS.black}
+              />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+
+      <Modal
+        visible={showComingSoon}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowComingSoon(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Ionicons name="rocket" size={48} color={COLORS.primary} />
+            <ThemedText
+              type="text2bold"
+              style={{ color: COLORS.primary, marginTop: SIZES.base }}
+            >
+              Coming Soon
+            </ThemedText>
+            <ThemedText
+              type="text4gray"
+              style={styles.modalMessage}
+            >
+              {comingSoonMessage}
+            </ThemedText>
+            <TouchableOpacity
+              style={styles.modalButton}
+              activeOpacity={0.7}
+              onPress={() => setShowComingSoon(false)}
+            >
+              <ThemedText type="text4white" style={{ color: COLORS.white }}>
+                Got it
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+    </WrapScrollView>
   );
 };
 
 export default MomProfile;
-
 const styles = StyleSheet.create({
   profileCard: {
     backgroundColor: COLORS.white,
-    padding: SIZES.base,
     borderRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
     alignItems: "center",
+    paddingVertical: SIZES.padding,
+    paddingHorizontal: SIZES.base,
     marginVertical: SIZES.base,
     elevation: 1,
   },
-  profileContainer: {
-    borderRadius: SIZES.navTitle * 2,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: SIZES.base / 4,
-    backgroundColor: "white",
-    borderWidth: 2,
+  photoContainer: {
+    position: "relative",
+    marginBottom: SIZES.base,
+  },
+  photo: {
+    width: SCREEN_WIDTH * 0.28,
+    height: SCREEN_WIDTH * 0.28,
+    borderRadius: SCREEN_WIDTH * 0.14,
+    borderWidth: 2.5,
     borderColor: COLORS.primary,
   },
-  card: {
-    backgroundColor: COLORS.secondary + "20",
-    padding: SIZES.base,
+  cameraIcon: {
+    position: "absolute",
+    bottom: 2,
+    right: 2,
+    backgroundColor: COLORS.primary,
+    borderRadius: 20,
+    padding: 4,
+  },
+  name: {
+    color: COLORS.primary,
+    marginTop: SIZES.base * 0.5,
+  },
+  subInfo: {
+    color: COLORS.gray ?? "#888",
+    marginTop: 2,
+  },
+  sectionCard: {
+    backgroundColor: COLORS.primary + "10",
     borderRadius: SIZES.padding,
-    marginTop: SIZES.base,
     width: SCREEN_WIDTH * 0.9,
+    padding: SIZES.padding,
+    marginVertical: SIZES.base,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: SIZES.base,
+  },
+  sectionTitle: {
+    marginLeft: SIZES.base,
+    marginBottom: SIZES.base * 0.5,
+  },
+  childRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: SIZES.base * 1.5,
+    gap: SIZES.base,
+  },
+  childPhoto: {
+    width: SIZES.navTitle * 1.8,
+    height: SIZES.navTitle * 1.8,
+    borderRadius: SIZES.navTitle,
+    borderWidth: 2,
+    borderColor: COLORS.primary,
   },
   listItem: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: SIZES.base / 1.3,
+    paddingVertical: SIZES.base * 1.2,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.primary + "20",
+  },
+  listLabel: {
+    marginLeft: SIZES.base,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.navTitle,
+    padding: SIZES.padding * 1.5,
+    width: SCREEN_WIDTH * 0.82,
+    alignItems: "center",
+    elevation: 5,
+  },
+  modalMessage: {
+    textAlign: "center",
+    marginTop: SIZES.base,
+    lineHeight: 22,
+  },
+  modalButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.padding,
+    paddingVertical: SIZES.base,
+    paddingHorizontal: SIZES.padding * 2,
+    marginTop: SIZES.padding,
   },
 });
