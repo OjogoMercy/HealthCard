@@ -60,12 +60,7 @@ const HomeScreen = () => {
   const allDone = dueVaccines.length === 0 && currentVaccines.length > 0;
 
   return (
-    <CustomHeader
-      title="Home"
-      authScreen={false}
-      tabScreen={true}
-      
-    >
+    <CustomHeader title="Home" authScreen={false} tabScreen={true}>
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.profileContainer}
@@ -159,7 +154,6 @@ const HomeScreen = () => {
                     Next Immunisation
                   </ThemedText>
                 </View>
-
                 <ThemedText type="text3white">
                   {dueVaccines.map((v) => v.name).join(" + ")}
                 </ThemedText>
@@ -273,7 +267,7 @@ const HomeScreen = () => {
             </View>
           )}
 
-          <View style={[styles.bigCard, styles.scheduleRow]}>
+          {/* <View style={[styles.bigCard, styles.scheduleRow]}>
             <ThemedText type="text3">View Full Schedule</ThemedText>
             <TouchableOpacity
               onPress={() => navigation.navigate("Immunisation")}
@@ -285,7 +279,7 @@ const HomeScreen = () => {
                 color={COLORS.primary}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </>
       )}
     </CustomHeader>
@@ -322,7 +316,7 @@ const styles = StyleSheet.create({
     gap: SIZES.base,
   },
   cardShadow: {
-    height: SIZES.base * 1.2,
+    height: SIZES.base ,
     backgroundColor: COLORS.primary + "50",
     borderBottomLeftRadius: SIZES.padding,
     borderBottomRightRadius: SIZES.padding,
@@ -374,6 +368,7 @@ const styles = StyleSheet.create({
   upcomingCard: {
     borderLeftWidth: 3,
     borderLeftColor: COLORS.accent,
+    marginBottom: SIZES.padding,
   },
   scheduleRow: {
     flexDirection: "row",

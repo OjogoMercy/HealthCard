@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface WrapScrollViewProps {
   children: React.ReactNode;
@@ -26,7 +27,7 @@ const WrapScrollView = ({ children, screenTitle }: WrapScrollViewProps) => {
       contentContainerStyle={styles.contentContainer}
     >
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-      <View style={styles.contentWrapper}>
+      <SafeAreaView style={styles.contentWrapper}>
         <View
           style={{
             flexDirection: "row",
@@ -52,7 +53,7 @@ const WrapScrollView = ({ children, screenTitle }: WrapScrollViewProps) => {
           </TouchableOpacity>
         </View>
         {children}
-      </View>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     backgroundColor: COLORS.background,
-    padding: SIZES.h4,
   },
   contentContainer: {
     alignItems: "center",
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   contentWrapper: {
     width: SCREEN_WIDTH,
     alignItems: "center",
-    paddingTop: SIZES.padding * 2,
+    paddingTop: SIZES.padding/2 ,
     paddingHorizontal: SIZES.h3,
   },
 });

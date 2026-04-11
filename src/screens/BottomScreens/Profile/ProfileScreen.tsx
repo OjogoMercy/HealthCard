@@ -242,7 +242,6 @@ const ProfileScreen = () => {
         />
       </View>
 
-      {/* ── Coming soon modal ── */}
       <Modal
         visible={showComingSoon}
         transparent
@@ -350,7 +349,7 @@ const styles = StyleSheet.create({
     padding: SIZES.base,
     borderRadius: SIZES.padding,
     marginTop: SIZES.padding,
-    width: "90%",
+    width: "100%",
   },
   listItem: {
     flexDirection: "row",

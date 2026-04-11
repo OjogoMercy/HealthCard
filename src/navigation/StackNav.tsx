@@ -6,6 +6,7 @@ import MomProfile from "../screens/BottomScreens/Home/MomProfile";
 import EditProfile from "../screens/BottomScreens/Profile/EditProfile";
 import VaccineDetails from "../screens/BottomScreens/VaccineScreens/VaccineDetails";
 import BabyForm from "../screens/BottomScreens/Home/BabyForm";
+import EditMomProfile from "../screens/BottomScreens/Profile/EditMomProfile";
 const Stack = createNativeStackNavigator<StackParamList>();
 export type StackParamList = {
   MomProfile: undefined;
@@ -14,6 +15,7 @@ export type StackParamList = {
   VaccineDetails: undefined;
   AgeCalc: undefined;
   BabyForm: undefined;
+  EditMomProfile: undefined;
 };
 
 export default function StackNav() {
@@ -28,6 +30,7 @@ export default function StackNav() {
       <Stack.Screen name="VaccineDetails" component={VaccineDetails} />
       <Stack.Screen name="AgeCalc" component={AgeCalc} />
       <Stack.Screen name="BabyForm" component={BabyForm} />
+      <Stack.Screen name="EditMomProfile" component={EditMomProfile} />
     </Stack.Navigator>
   );
 }

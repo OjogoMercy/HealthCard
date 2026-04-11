@@ -1,14 +1,10 @@
-import WrapScrollView from "@/src/components/WrapScrollView";
 import PrimaryButton from "@/src/components/PrimaryButton";
+import WrapScrollView from "@/src/components/WrapScrollView";
 import { images } from "@/src/constants/images";
-import {
-  COLORS,
-  SCREEN_WIDTH,
-  SIZES,
-} from "@/src/constants/THEME";
+import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
-import { useMomStore } from "@/src/store/useMomStore";
 import { useBabyStore } from "@/src/store/useBabyStore";
+import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -22,12 +18,11 @@ import {
   View,
 } from "react-native";
 
-
 const getAgeLabel = (dob: string): string => {
   const birth = new Date(dob);
   const now = new Date();
   const diffInDays = Math.floor(
-    (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24)
+    (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24),
   );
   const weeks = Math.floor(diffInDays / 7);
   const months =
@@ -39,7 +34,6 @@ const getAgeLabel = (dob: string): string => {
   if (months < 24) return `${months} month${months === 1 ? "" : "s"} old`;
   return `${years} year${years === 1 ? "" : "s"} old`;
 };
-
 
 const MomProfile = () => {
   const navigation = useNavigation<any>();
@@ -70,7 +64,7 @@ const MomProfile = () => {
             navigation.navigate("Home");
           },
         },
-      ]
+      ],
     );
   };
 
@@ -88,7 +82,7 @@ const MomProfile = () => {
       title: "Security",
       onPress: () =>
         triggerComingSoon(
-          "Security settings like password change and two-factor authentication are coming soon."
+          "Security settings like password change and two-factor authentication are coming soon.",
         ),
     },
     {
@@ -97,7 +91,7 @@ const MomProfile = () => {
       title: "Settings",
       onPress: () =>
         triggerComingSoon(
-          "App settings including language and notification preferences are on the way."
+          "App settings including language and notification preferences are on the way.",
         ),
     },
     {
@@ -106,7 +100,7 @@ const MomProfile = () => {
       title: "Help",
       onPress: () =>
         triggerComingSoon(
-          "Our help centre and support chat are coming soon. Hang tight!"
+          "Our help centre and support chat are coming soon. Hang tight!",
         ),
     },
     {
@@ -120,7 +114,6 @@ const MomProfile = () => {
 
   return (
     <WrapScrollView screenTitle="Mom Profile">
-
       <View style={styles.profileCard}>
         <TouchableOpacity style={styles.photoContainer} activeOpacity={0.7}>
           <Image
@@ -174,7 +167,7 @@ const MomProfile = () => {
           title="Add New Child"
           onPress={() =>
             triggerComingSoon(
-              "Multiple child profiles are on the way. You will be able to track all your children's vaccines in one place very soon!"
+              "Multiple child profiles are on the way. You will be able to track all your children's vaccines in one place very soon!",
             )
           }
         />
@@ -201,7 +194,9 @@ const MomProfile = () => {
               <Ionicons
                 name={item.iconName as any}
                 size={22}
-                color={item.danger ? COLORS.alert ?? "#CC0000" : COLORS.primary}
+                color={
+                  item.danger ? (COLORS.alert ?? "#CC0000") : COLORS.primary
+                }
               />
               <ThemedText
                 type="text4"
@@ -216,7 +211,7 @@ const MomProfile = () => {
                 name="chevron-forward"
                 size={20}
                 style={{ marginLeft: "auto" }}
-                color={item.danger ? COLORS.alert ?? "#CC0000" : COLORS.black}
+                color={item.danger ? (COLORS.alert ?? "#CC0000") : COLORS.black}
               />
             </TouchableOpacity>
           )}
@@ -238,10 +233,7 @@ const MomProfile = () => {
             >
               Coming Soon
             </ThemedText>
-            <ThemedText
-              type="text4gray"
-              style={styles.modalMessage}
-            >
+            <ThemedText type="text4gray" style={styles.modalMessage}>
               {comingSoonMessage}
             </ThemedText>
             <TouchableOpacity
@@ -256,7 +248,6 @@ const MomProfile = () => {
           </View>
         </View>
       </Modal>
-
     </WrapScrollView>
   );
 };
