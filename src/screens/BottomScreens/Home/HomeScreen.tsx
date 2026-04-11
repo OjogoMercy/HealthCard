@@ -267,10 +267,10 @@ const HomeScreen = () => {
             </View>
           )}
 
-          {/* <View style={[styles.bigCard, styles.scheduleRow]}>
-            <ThemedText type="text3">View Full Schedule</ThemedText>
+          <View style={[styles.bigCard, styles.scheduleRow]}>
+            <ThemedText type="text3">View Full History</ThemedText>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Immunisation")}
+              onPress={() => navigation.navigate("StackNav",{screen: "VaccineHistory"})}
               activeOpacity={0.5}
             >
               <Ionicons
@@ -279,7 +279,7 @@ const HomeScreen = () => {
                 color={COLORS.primary}
               />
             </TouchableOpacity>
-          </View> */}
+          </View>
         </>
       )}
     </CustomHeader>
