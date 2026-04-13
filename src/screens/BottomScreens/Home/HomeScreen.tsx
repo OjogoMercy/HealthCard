@@ -267,10 +267,18 @@ const HomeScreen = () => {
             </View>
           )}
 
-          <View style={[styles.bigCard, styles.scheduleRow]}>
+          <TouchableOpacity
+            style={[styles.bigCard, styles.scheduleRow]}
+            activeOpacity={0.5}
+            onPress={() =>
+              navigation.navigate("StackNav", { screen: "VaccineHistory" })
+            }
+          >
             <ThemedText type="text3">View Full History</ThemedText>
             <TouchableOpacity
-              onPress={() => navigation.navigate("StackNav",{screen: "VaccineHistory"})}
+              onPress={() =>
+                navigation.navigate("StackNav", { screen: "VaccineHistory" })
+              }
               activeOpacity={0.5}
             >
               <Ionicons
@@ -279,7 +287,7 @@ const HomeScreen = () => {
                 color={COLORS.primary}
               />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </>
       )}
     </CustomHeader>
@@ -316,7 +324,7 @@ const styles = StyleSheet.create({
     gap: SIZES.base,
   },
   cardShadow: {
-    height: SIZES.base ,
+    height: SIZES.base,
     backgroundColor: COLORS.primary + "50",
     borderBottomLeftRadius: SIZES.padding,
     borderBottomRightRadius: SIZES.padding,
