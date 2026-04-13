@@ -67,7 +67,7 @@ const CatchUpFlow = () => {
   const handleSave = () => {
     checkedIds.forEach((id) => markVaccineDone(id));
     setShowConfirmation(false);
-    navigation.navigate("Home");
+    navigation.navigate("Default");
   };
 
   const handleSkip = () => {
@@ -85,7 +85,7 @@ const CatchUpFlow = () => {
   };
 
   if (pastStages.length === 0) {
-    navigation.replace("Home");
+    navigation.replace("Default");
     return null;
   }
 
@@ -302,7 +302,6 @@ const CatchUpFlow = () => {
               You can always edit this later from the History screen.
             </ThemedText>
 
-            {/* Confirm / go back */}
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.modalSecondaryButton}

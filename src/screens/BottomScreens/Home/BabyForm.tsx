@@ -39,8 +39,7 @@ const BabyForm = () => {
     if (stage && stage !== "Birth") {
       navigation.navigate("StackNav", { Screen: "CatchUpFlow" });
     } else {
-      // navigation.goBack();
-      navigation.navigate("CatchUpFlow");
+      navigation.goBack();
     }
   };
 
