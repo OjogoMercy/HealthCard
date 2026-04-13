@@ -18,6 +18,7 @@ import {
 const BabyForm = () => {
   const navigation = useNavigation();
   const setBaby = useBabyStore((s) => s.setBaby);
+  const stage = useBabyStore((s)=> s.currentStageTitle)
 
   const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
@@ -36,7 +37,11 @@ const BabyForm = () => {
       name: name,
       dob: date.toISOString(),
     });
+    if(stage && stage !== "Birth"){
+      navigation.navigate("CatchUpFlow")
+    }else{
     navigation.goBack();
+    }
   };
 
   return (
