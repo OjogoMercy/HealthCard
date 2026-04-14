@@ -82,7 +82,6 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* {for the empty state } */}
       {!hasBaby && (
         <View style={styles.emptyState}>
           <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
@@ -110,7 +109,6 @@ const HomeScreen = () => {
         </View>
       )}
 
-      {/* {loading state for the baby } */}
       {hasBaby && (
         <>
           {allDone && (
@@ -136,7 +134,6 @@ const HomeScreen = () => {
               )}
             </View>
           )}
-          {/* card simulator  */}
           {!allDone && dueVaccines.length > 0 && (
             <>
               <LinearGradient

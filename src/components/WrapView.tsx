@@ -39,7 +39,7 @@ const WrapView = ({ children, style, screenTitle }: WrapViewProps) => {
             activeOpacity={0.7}
             onPress={() => navigation.goBack()}
           >
-            <Ionicons name="chevron-back" size={22} color={"black"} />
+            <Ionicons name="chevron-back" size={24} color={"black"} />
           </TouchableOpacity>
           <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
             {screenTitle}
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: "center",
     backgroundColor: COLORS.background,
-    padding: SIZES.h4,
+    paddingVertical: SIZES.h3,
+    paddingHorizontal:SIZES.h4
   },
 });

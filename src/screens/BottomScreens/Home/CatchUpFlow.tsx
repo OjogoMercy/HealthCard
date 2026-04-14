@@ -78,7 +78,7 @@ const CatchUpFlow = () => {
         { text: "Go Back", style: "cancel" },
         {
           text: "Skip for Now",
-          onPress: () => navigation.navigate("Home"),
+          onPress: () => navigation.navigate("Default"),
         },
       ],
     );

@@ -74,7 +74,7 @@ const MomProfile = () => {
       iconName: "person-outline",
       title: "Edit Profile",
       onPress: () =>
-        navigation.navigate("StackNav", { screen: "EditMomProfile" }),
+        navigation.navigate("EditMomProfile"),
     },
     {
       id: 2,
