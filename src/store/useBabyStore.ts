@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { VaccineData } from "../constants/Database";
 
 export interface Vaccine {
@@ -33,6 +33,7 @@ interface BabyStore {
   completedIds: string[];
   setBaby: (profile: BabyProfile) => void;
   markVaccineDone: (vaccineId: string) => void;
+  unMarkVaccine :(vaccineId:string) => void
   clearBaby: () => void;
 }
 
@@ -126,7 +127,7 @@ export const useBabyStore = create<BabyStore>()(
             : [...state.completedIds, vaccineId];
 
           const updatedCurrent = state.currentVaccines.map((v) =>
-            v.id === vaccineId ? { ...v, isDone: true } : v
+            v.id === vaccineId ? { ...v, isDone: true } : v,
           );
 
           return {
@@ -135,7 +136,21 @@ export const useBabyStore = create<BabyStore>()(
           };
         });
       },
-// to clear and persist baby info on storage
+      unMarkVaccine: (vaccineId: string) => {
+        set((state) => {
+          const newCompletedId = state.completedIds.filter(
+            (id) => id !== vaccineId,
+          );
+          const updatedCurrentList = state.completedIds.map((v) =>
+            v.id === vaccineId ? { ...v, isDone: false } : v,
+          );
+          return {
+            newCompleted : newCompletedId,
+            newCurrent: updatedCurrentList
+          }
+        });
+      },
+      // to clear and persist baby info on storage
       clearBaby: () =>
         set({
           baby: null,
@@ -152,6 +167,6 @@ export const useBabyStore = create<BabyStore>()(
         baby: state.baby,
         completedIds: state.completedIds,
       }),
-    }
-  )
+    },
+  ),
 );

@@ -4,7 +4,7 @@
     "slug": "HealthCard",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/logo.png",
+    "icon": "./src/assets/images/logo2.png",
     "scheme": "healthcard",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,9 +15,9 @@
       "package": "com.mercy.healthcard",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./src/assets/images/logo.png",
-        "backgroundImage": "./src/assets/images/logo.png",
-        "monochromeImage": "./src/assets/images/logo.png"
+        "foregroundImage": "./src/assets/images/logo2.png",
+        "backgroundImage": "./src/assets/images/logo2.png",
+        "monochromeImage": "./src/assets/images/logo2.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
@@ -31,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
+          "image": "./src/assets/images/logo2.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -43,7 +43,7 @@
       "expo-font",
       "expo-image",
       "expo-web-browser",
-      "@react-native-community/datetimepicker",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

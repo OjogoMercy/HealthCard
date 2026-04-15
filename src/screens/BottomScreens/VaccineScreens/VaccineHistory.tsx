@@ -9,7 +9,7 @@ import {
   SectionList,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View,Alert
 } from "react-native";
 interface VaccineRow {
   id: string;
@@ -39,11 +39,11 @@ const VaccineHistory = () => {
   const completedIds = useBabyStore((s) => s.completedIds);
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
+  const baby = useBabyStore((s) => s.baby)
 
   const [expandedStages, setExpandedStages] = useState<string[]>([
     currentStageTitle ?? "Birth",
   ]);
-
   const toggleStage = (title: string) => {
     setExpandedStages((prev) =>
       prev.includes(title)
@@ -77,6 +77,19 @@ const VaccineHistory = () => {
   const overallPercent = totalVaccines
     ? Math.round((totalDone / totalVaccines) * 100)
     : 0;
+    const handleMarkDone = (id: string, name: string) => {
+  Alert.alert(
+    "Mark as Administered?",
+    `Are you sure ${name} has been given to ${baby?.name ?? "your baby"}? Only mark this if the vaccine was actually administered.`,
+    [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Yes, Mark as Done",
+        onPress: () => markVaccineDone(id),
+      },
+    ]
+  );
+};
 
   return (
     <WrapScrollView screenTitle="Vaccine History">
@@ -226,7 +239,6 @@ const VaccineHistory = () => {
                 },
               ]}
             />
-
             <View style={{ flex: 1 }}>
               <ThemedText
                 type="text4"
@@ -248,12 +260,11 @@ const VaccineHistory = () => {
                 {item.isDone ? "✓ Administered" : "Not yet administered"}
               </ThemedText>
             </View>
-
             {!item.isDone && item.isCurrentStage && (
               <TouchableOpacity
                 style={styles.markButton}
                 activeOpacity={0.7}
-                onPress={() => markVaccineDone(item.id)}
+                onPress={()=> handleMarkDone(item.id, item.name)}
               >
                 <ThemedText
                   type="text4"
@@ -263,7 +274,6 @@ const VaccineHistory = () => {
                 </ThemedText>
               </TouchableOpacity>
             )}
-
             {item.isDone && (
               <Ionicons
                 name="checkmark-circle"
@@ -273,14 +283,12 @@ const VaccineHistory = () => {
             )}
           </View>
         )}
-
         renderSectionFooter={({ section }) =>
           expandedStages.includes(section.title) ? (
             <View style={styles.sectionFooter} />
           ) : null
         }
       />
-
     </WrapScrollView>
   );
 };

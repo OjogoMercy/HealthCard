@@ -109,7 +109,6 @@ const ProfileScreen = () => {
 
   return (
     <WrapView screenTitle="Profile">
-      {/* ── Profile card ── */}
       <View style={styles.profileCard}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.baby} style={styles.profileImage} />
@@ -301,7 +300,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
     alignItems: "center",
-    marginVertical: SIZES.padding,
+    marginVertical: SIZES.base,
     flexDirection: "row",
     elevation: 1,
   },
@@ -318,7 +317,7 @@ const styles = StyleSheet.create({
     padding: SIZES.base * 2,
     borderRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
-    marginVertical: SIZES.base,
+    marginTop: SIZES.base,
   },
   progressBar: {
     width: SCREEN_WIDTH * 0.8,
