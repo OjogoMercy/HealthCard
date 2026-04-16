@@ -1,15 +1,16 @@
 import WrapScrollView from "@/src/components/WrapScrollView";
+import { VaccineData } from "@/src/constants/Database";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
-import { VaccineData } from "@/src/constants/Database";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
 import {
+  Alert,
   SectionList,
   StyleSheet,
   TouchableOpacity,
-  View,Alert
+  View,
 } from "react-native";
 interface VaccineRow {
   id: string;
@@ -39,19 +40,18 @@ const VaccineHistory = () => {
   const completedIds = useBabyStore((s) => s.completedIds);
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
-  const baby = useBabyStore((s) => s.baby)
+  const markVaccineUndone = useBabyStore((s) => s.unMarkVaccine);
+  const baby = useBabyStore((s) => s.baby);
 
   const [expandedStages, setExpandedStages] = useState<string[]>([
     currentStageTitle ?? "Birth",
   ]);
   const toggleStage = (title: string) => {
     setExpandedStages((prev) =>
-      prev.includes(title)
-        ? prev.filter((s) => s !== title)
-        : [...prev, title]
+      prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title],
     );
   };
-// different sections 
+  // different sections
   const sections: StageSection[] = STAGE_ORDER.map((stageTitle) => {
     const found = VaccineData.find((v) => v.title === stageTitle);
     const isCurrentStage = stageTitle === currentStageTitle;
@@ -61,8 +61,7 @@ const VaccineHistory = () => {
       isDone: completedIds.includes(v.id),
       isCurrentStage,
     }));
-    const allDone =
-      vaccines.length > 0 && vaccines.every((v) => v.isDone);
+    const allDone = vaccines.length > 0 && vaccines.every((v) => v.isDone);
 
     return {
       title: stageTitle,
@@ -71,25 +70,39 @@ const VaccineHistory = () => {
       data: expandedStages.includes(stageTitle) ? vaccines : [],
     };
   });
-// to show completion 
-  const totalVaccines = sections.reduce((acc, s) => acc + (VaccineData.find(v => v.title === s.title)?.data.length ?? 0), 0);
+  // to show completion
+  const totalVaccines = sections.reduce(
+    (acc, s) =>
+      acc + (VaccineData.find((v) => v.title === s.title)?.data.length ?? 0),
+    0,
+  );
   const totalDone = completedIds.length;
   const overallPercent = totalVaccines
     ? Math.round((totalDone / totalVaccines) * 100)
     : 0;
-    const handleMarkDone = (id: string, name: string) => {
-  Alert.alert(
-    "Mark as Administered?",
-    `Are you sure ${name} has been given to ${baby?.name ?? "your baby"}? Only mark this if the vaccine was actually administered.`,
-    [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Yes, Mark as Done",
-        onPress: () => markVaccineDone(id),
-      },
-    ]
-  );
-};
+  const handleMarkDone = (id: string, name: string) => {
+    Alert.alert(
+      "Mark as Administered?",
+      `Are you sure ${name} has been given to ${baby?.name ?? "your baby"}? Only mark this if the vaccine was actually administered.`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes, Mark as Done",
+          onPress: () => markVaccineDone(id),
+        },
+      ],
+    );
+  };
+  const handleUnMark = (id: string, name: string) => {
+    Alert.alert(
+      "UnMark Vaccine?",
+      `Are you sure you want to unMark this Vaccine`,
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Yes UnMark", onPress: () => markVaccineUndone(id) ,style:"destructive"},
+      ],
+    );
+  };
 
   return (
     <WrapScrollView screenTitle="Vaccine History">
@@ -119,25 +132,31 @@ const VaccineHistory = () => {
 
         <View style={styles.progressBar}>
           <View
-            style={[
-              styles.progressFill,
-              { width: `${overallPercent}%` },
-            ]}
+            style={[styles.progressFill, { width: `${overallPercent}%` }]}
           />
         </View>
       </View>
 
       <View style={styles.legend}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: COLORS.primary }]} />
+          <View
+            style={[styles.legendDot, { backgroundColor: COLORS.primary }]}
+          />
           <ThemedText type="text5">Administered</ThemedText>
         </View>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: COLORS.accent }]} />
+          <View
+            style={[styles.legendDot, { backgroundColor: COLORS.accent }]}
+          />
           <ThemedText type="text5">Due / Upcoming</ThemedText>
         </View>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: COLORS.primary + "30" }]} />
+          <View
+            style={[
+              styles.legendDot,
+              { backgroundColor: COLORS.primary + "30" },
+            ]}
+          />
           <ThemedText type="text5">Current stage</ThemedText>
         </View>
       </View>
@@ -147,13 +166,16 @@ const VaccineHistory = () => {
         scrollEnabled={false}
         keyExtractor={(item) => item.id}
         stickySectionHeadersEnabled={false}
-
         renderSectionHeader={({ section }) => {
           const isExpanded = expandedStages.includes(section.title);
           const isCurrentStage = section.isCurrentStage;
-          const fullSection = VaccineData.find(v => v.title === section.title);
+          const fullSection = VaccineData.find(
+            (v) => v.title === section.title,
+          );
           const sectionTotal = fullSection?.data.length ?? 0;
-          const sectionDone = fullSection?.data.filter(v => completedIds.includes(v.id)).length ?? 0;
+          const sectionDone =
+            fullSection?.data.filter((v) => completedIds.includes(v.id))
+              .length ?? 0;
 
           return (
             <TouchableOpacity
@@ -173,11 +195,7 @@ const VaccineHistory = () => {
                     color={COLORS.primary}
                   />
                 ) : isCurrentStage ? (
-                  <Ionicons
-                    name="time"
-                    size={22}
-                    color={COLORS.accent}
-                  />
+                  <Ionicons name="time" size={22} color={COLORS.accent} />
                 ) : (
                   <Ionicons
                     name="ellipse-outline"
@@ -194,8 +212,8 @@ const VaccineHistory = () => {
                     color: isCurrentStage
                       ? COLORS.accent
                       : section.allDone
-                      ? COLORS.primary
-                      : COLORS.black,
+                        ? COLORS.primary
+                        : COLORS.black,
                   }}
                 >
                   {section.title}
@@ -204,7 +222,8 @@ const VaccineHistory = () => {
                       type="text4"
                       style={{ color: COLORS.accent, fontSize: 11 }}
                     >
-                      {" "}· Current stage
+                      {" "}
+                      · Current stage
                     </ThemedText>
                   )}
                 </ThemedText>
@@ -221,13 +240,9 @@ const VaccineHistory = () => {
             </TouchableOpacity>
           );
         }}
-
         renderItem={({ item }) => (
           <View
-            style={[
-              styles.vaccineRow,
-              item.isDone && styles.vaccineRowDone,
-            ]}
+            style={[styles.vaccineRow, item.isDone && styles.vaccineRowDone]}
           >
             <View
               style={[
@@ -264,7 +279,7 @@ const VaccineHistory = () => {
               <TouchableOpacity
                 style={styles.markButton}
                 activeOpacity={0.7}
-                onPress={()=> handleMarkDone(item.id, item.name)}
+                onPress={() => handleMarkDone(item.id, item.name)}
               >
                 <ThemedText
                   type="text4"
@@ -275,11 +290,28 @@ const VaccineHistory = () => {
               </TouchableOpacity>
             )}
             {item.isDone && (
-              <Ionicons
-                name="checkmark-circle"
-                size={20}
-                color={COLORS.primary}
-              />
+              <View style={{ flexDirection: "row" }}>
+                <Ionicons
+                  name="checkmark-circle"
+                  size={20}
+                  color={COLORS.primary}
+                />
+                <TouchableOpacity
+                  style={[
+                    styles.markButton,
+                    { backgroundColor: COLORS.accent, marginLeft: SIZES.h6 },
+                  ]}
+                  activeOpacity={0.7}
+                  onPress={() => handleUnMark(item.id, item.name)}
+                >
+                  <ThemedText
+                    type="text5"
+                    style={{ color: COLORS.white, fontSize: 11 }}
+                  >
+                    Undo
+                  </ThemedText>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
         )}
@@ -301,7 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.padding,
     padding: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
-    marginVertical: SIZES.base*1.3,
+    marginVertical: SIZES.base * 1.3,
     elevation: 1,
   },
   summaryRow: {
@@ -314,7 +346,7 @@ const styles = StyleSheet.create({
     width: 1,
     height: 40,
     backgroundColor: COLORS.primary + "20",
-    marginHorizontal: SIZES.base/2,
+    marginHorizontal: SIZES.base / 2,
   },
   progressBar: {
     width: "100%",
@@ -352,7 +384,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: SIZES.padding,
     padding: SIZES.base * 1.2,
-    marginVertical: SIZES.base/2,
+    marginVertical: SIZES.base / 2,
     width: SCREEN_WIDTH * 0.9,
     elevation: 1,
     gap: SIZES.base,
