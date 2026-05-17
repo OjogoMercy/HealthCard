@@ -70,7 +70,6 @@ const VaccineHistory = () => {
       data: expandedStages.includes(stageTitle) ? vaccines : [],
     };
   });
-  // to show completion
   const totalVaccines = sections.reduce(
     (acc, s) =>
       acc + (VaccineData.find((v) => v.title === s.title)?.data.length ?? 0),
@@ -99,7 +98,11 @@ const VaccineHistory = () => {
       `Are you sure you want to unMark this Vaccine`,
       [
         { text: "Cancel", style: "cancel" },
-        { text: "Yes UnMark", onPress: () => markVaccineUndone(id) ,style:"destructive"},
+        {
+          text: "Yes UnMark",
+          onPress: () => markVaccineUndone(id),
+          style: "destructive",
+        },
       ],
     );
   };
