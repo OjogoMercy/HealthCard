@@ -1,10 +1,9 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, SIZES } from "../constants/THEME";
+import { COLORS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 interface WrapViewProps {
   children: React.ReactNode;
@@ -66,6 +65,6 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     backgroundColor: COLORS.background,
     paddingVertical: SIZES.h3,
-    paddingHorizontal:SIZES.h4
+    paddingHorizontal: SIZES.h4,
   },
 });
