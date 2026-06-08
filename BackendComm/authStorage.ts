@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface UserSession {
+export interface UserSession {
   token: string;
   userId: string;
   email: string;
