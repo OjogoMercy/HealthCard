@@ -9,18 +9,22 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
-interface UserSession {
-  token: string;
-  userId: string;
-  email: string;
+interface RegisterPayload {
   userName: string;
+  email: string;
+  password: string;
+}
+
+interface LoginCredentials {
+  email: string;
+  password: string;
 }
 // interceptors to attatch the tokem to eevery request if in storage
 apiClient.interceptors.request.use(
   async (config) => {
     try {
       const data = await authStorage.getUserData();
-      const token = data?.token
+      const token = data?.token;
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -37,23 +41,22 @@ apiClient.interceptors.request.use(
   },
 );
 
-// auth functions 
-export const registerUser = async (userData: UserSession) => {
-const response = await apiClient.post("/api/register", userData);
-return response.data;
-}
+// auth functions
+export const registerUser = async (userData: RegisterPayload) => {
+  const response = await apiClient.post("/api/register", userData);
+  return response.data;
+};
 
-export const loginUser = async (credentials: UserSession)=>{
-    const response = await apiClient.post("/api/login", credentials)
-    return response.data;
-}
-export const logoutUser = async()=>{
-    await authStorage.clearUserData();
-
-}
-export const getUserProfile = async()=> {
-    const response = await apiClient.get("/api/profile");
-    return response.data;
-}
+export const loginUser = async (credentials: LoginCredentials) => {
+  const response = await apiClient.post("/api/login", credentials);
+  return response.data;
+};
+export const logoutUser = async () => {
+  await authStorage.clearUserData();
+};
+export const getUserProfile = async () => {
+  const response = await apiClient.get("/api/profile");
+  return response.data;
+};
 
 export default apiClient;

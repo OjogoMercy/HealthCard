@@ -9,6 +9,7 @@ import {
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import { useBabyStore } from "@/src/store/useBabyStore";
+import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -53,6 +54,7 @@ const HomeScreen = () => {
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
   const upcomingStage = useBabyStore((s) => s.upcomingStage);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
+  const mom = useMomStore((s) => s.mom);
 
   const hasBaby = !!baby;
   const progress = getProgressPercent(currentVaccines);
@@ -73,7 +75,7 @@ const HomeScreen = () => {
           {" "}
           Hey{" "}
           <ThemedText type="text2bold" style={{ color: COLORS.accent }}>
-            {baby?.name ?? "Mummy"}
+            {mom?.fullName ?? "Mummy"}
           </ThemedText>
           😉
         </ThemedText>
