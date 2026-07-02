@@ -54,9 +54,18 @@ export const loginUser = async (credentials: LoginCredentials) => {
 export const logoutUser = async () => {
   await authStorage.clearUserData();
 };
-export const getUserProfile = async (p0: string) => {
+export const getUserProfile = async () => {
   const response = await apiClient.get("/api/profile");
   return response.data;
 };
-
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const message =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Something went wrong";
+    return Promise.reject(new Error(message));
+  },
+);
 export default apiClient;

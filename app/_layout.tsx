@@ -15,14 +15,14 @@ function NavigationGateKeeper() {
   const clearBaby = useBabyStore((s) => s.clearBaby);
 
   useEffect(() => {
-    if (!session) {
+    if (!session?.userId) {
       clearBaby();
     }
 
     const getUserData = async () => {
       try {
         const UserData = await getUserProfile(session?.userId ?? "");
-        if (UserData) {
+        if (UserData.userName && UserData.userName !== session?.userName) {
           storeUserData.storeUserData({
             token: session.token,
             userId: session.userId,
@@ -38,7 +38,7 @@ function NavigationGateKeeper() {
       }
     };
     getUserData();
-  }, [session, setBaby, clearBaby]);
+  }, [session?.userId, setBaby, clearBaby]);
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -53,8 +53,8 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ErrorBoundary
-        retry={() => setError(undefined)}
-        error={error}
+        // retry={() => setError(undefined)}
+        // error={error}
         fallback={
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}

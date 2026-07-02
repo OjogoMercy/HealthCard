@@ -15,11 +15,11 @@ const LoginScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const loginAuth = useAuth()?.loginAuth;
-  const [loading, isLoading] = useState(false);
+  const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
-    isLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const data = await loginUser({ email, password });
@@ -28,9 +28,9 @@ const LoginScreen = () => {
       }
       navigation.navigate("Main");
     } catch (error) {
-      setError("Invalid email or password");
+      console.error("Error during login:", error);
     } finally {
-      isLoading(false);
+      setIsLoading(false);
     }
   };
 

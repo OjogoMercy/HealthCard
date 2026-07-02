@@ -23,6 +23,7 @@ const SignUp = () => {
   const [Username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const loginAuth = useAuth()?.loginAuth;
+
   const handleSignUp = async () => {
     try {
       if (password !== confirmPassword) {
