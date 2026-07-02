@@ -1,3 +1,5 @@
+import { loginUser, registerUser } from "@/BackendComm/APIClient";
+import { useAuth } from "@/BackendComm/AuthContext";
 import { general } from "@/src/constants/General";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -20,6 +22,21 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [Username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const loginAuth = useAuth()?.loginAuth;
+  const handleSignUp = async () => {
+    try {
+      if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+      await registerUser({ userName: Username, email, password });
+      const sessionData = await loginUser({ email, password });
+      await loginAuth?.(sessionData);
+      navigation.navigate("Main");
+    } catch (e) {
+      console.error("Error during sign up:", e);
+    }
+  };
   return (
     <CustomHeader authScreen={true}>
       <Image
@@ -95,7 +112,7 @@ const SignUp = () => {
         <ThemedText
           type="text4bold"
           style={{ color: COLORS.primary }}
-          onPress={() => navigation.navigate("Login")}
+          onPress={handleSignUp}
         >
           Login
         </ThemedText>

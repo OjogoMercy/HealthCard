@@ -21,7 +21,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 const getAgeLabel = (dob: string): string => {
   const birth = new Date(dob);
   const now = new Date();

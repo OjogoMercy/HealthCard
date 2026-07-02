@@ -95,11 +95,7 @@ const EditProfile = () => {
   };
 
   return (
-    <WrapScrollView
-      screenTitle="Edit Child Profile"
-      children={undefined}
-      style={undefined}
-    >
+    <WrapScrollView screenTitle="Edit Child Profile">
       <View style={styles.profileCard}>
         <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
           <Image source={images.baby} style={styles.profileImage} />
