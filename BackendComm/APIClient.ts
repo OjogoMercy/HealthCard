@@ -54,7 +54,7 @@ export const loginUser = async (credentials: LoginCredentials) => {
 export const logoutUser = async () => {
   await authStorage.clearUserData();
 };
-export const getUserProfile = async () => {
+export const getUserProfile = async (p0: string) => {
   const response = await apiClient.get("/api/profile");
   return response.data;
 };

@@ -1,11 +1,11 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AuthNavigator from './AuthNavigator';
-import BottomTabNavigator from './BottomTabNavigator';
-import SplashScreen from '../screens/IntroSlider/SplashScreen';
-import FirstScreen from '../screens/IntroSlider/FirstScreen';
-import StackNav from './StackNav';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import FirstScreen from "../screens/IntroSlider/FirstScreen";
+import SplashScreen from "../screens/IntroSlider/SplashScreen";
+import AuthNavigator from "./AuthNavigator";
+import BottomTabNavigator from "./BottomTabNavigator";
+import StackNav from "./StackNav";
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -18,21 +18,32 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function RootNavigator() {
+export default function RootNavigator({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{ 
-          headerShown: false, 
-          animation: 'slide_from_right' 
-        }} 
-        initialRouteName='Splash'
-      >       
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="First" component={FirstScreen} />
-        <Stack.Screen name="Auth" component={AuthNavigator} />
-        <Stack.Screen name="Main" component={BottomTabNavigator} />
-        <Stack.Screen name="StackNav" component={StackNav} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "slide_from_right",
+        }}
+        initialRouteName="Splash"
+      >
+        {isAuthenticated ? (
+          <>
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="First" component={FirstScreen} />
+            <Stack.Screen name="Auth" component={AuthNavigator} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
+            <Stack.Screen name="StackNav" component={StackNav} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

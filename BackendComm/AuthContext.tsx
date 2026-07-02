@@ -12,6 +12,7 @@ interface AuthContextType {
   isLoading: boolean;
   loginAuth: (sessionData: UserSession) => Promise<void>;
   logoutAuth: () => Promise<void>;
+  updateSession: (updates: Partial<UserSession>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -57,12 +58,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(null);
     }
   };
+
+  const updateSession = async (updates: Partial<UserSession>) => {
+    if (session) {
+      const updatedSession = { ...session, ...updates };
+      await authStorage.storeUserData(updatedSession);
+      setSession(updatedSession);
+    }
+  };
   return (
-    <AuthContext.Provider value={{ session, isLoading, loginAuth, logoutAuth }}>
+    <AuthContext.Provider
+      value={{ session, isLoading, loginAuth, logoutAuth, updateSession }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
+
+// to update a session
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

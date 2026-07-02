@@ -4,7 +4,7 @@ import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, View } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -23,7 +23,9 @@ const LoginScreen = () => {
     setError(null);
     try {
       const data = await loginUser({ email, password });
-      await loginAuth?.(data);
+      if (loginAuth) {
+        await loginAuth?.(data);
+      }
       navigation.navigate("Main");
     } catch (error) {
       setError("Invalid email or password");
@@ -31,6 +33,21 @@ const LoginScreen = () => {
       isLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: COLORS.opacity,
+        }}
+      >
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
   return (
     <CustomHeader authScreen={true}>
       <Image
