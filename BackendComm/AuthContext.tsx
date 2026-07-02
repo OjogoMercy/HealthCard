@@ -10,8 +10,8 @@ import authStorage, { UserSession } from "./authStorage";
 interface AuthContextType {
   session: UserSession | null;
   isLoading: boolean;
-  login: (sessionData: UserSession) => Promise<void>;
-  logout: () => Promise<void>;
+  loginAuth: (sessionData: UserSession) => Promise<void>;
+  logoutAuth: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     restoreSession();
   }, []);
 
-  const login = async (sessionData: UserSession) => {
+  const loginAuth = async (sessionData: UserSession) => {
     try {
       await authStorage.storeUserData(sessionData);
       setSession(sessionData);
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = async () => {
+  const logoutAuth = async () => {
     try {
       await authStorage.clearUserData();
     } catch (error) {
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   return (
-    <AuthContext.Provider value={{ session, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ session, isLoading, loginAuth, logoutAuth }}>
       {children}
     </AuthContext.Provider>
   );

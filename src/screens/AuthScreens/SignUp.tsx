@@ -1,3 +1,4 @@
+import { general } from "@/src/constants/General";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
@@ -10,16 +11,14 @@ import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { images } from "../../constants/images";
-import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
+import { COLORS, SIZES } from "../../constants/THEME";
 import { ThemedText } from "../../constants/ThemedText";
-import { general } from "@/src/constants/General";
 
 const SignUp = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState<number>();
   const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <CustomHeader authScreen={true}>
@@ -34,7 +33,7 @@ const SignUp = () => {
       <KeyboardAvoidingView style={general.form}>
         <ThemedText
           type="text3bold"
-          style={{ color: COLORS.primary, margin: SIZES.base/2 }}
+          style={{ color: COLORS.primary, margin: SIZES.base / 2 }}
         >
           Create an account to get started
         </ThemedText>
@@ -108,7 +107,6 @@ const SignUp = () => {
 export default SignUp;
 
 const styles = StyleSheet.create({
- 
   row: {
     flexDirection: "row",
     paddingHorizontal: SIZES.padding,

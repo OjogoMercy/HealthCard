@@ -1,19 +1,36 @@
+import { loginUser } from "@/BackendComm/APIClient";
+import { useAuth } from "@/BackendComm/AuthContext";
 import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
 import { ThemedText } from "../../constants/ThemedText";
-
 const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const loginAuth = useAuth()?.loginAuth;
+  const [loading, isLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  const handleLogin = async () => {
+    isLoading(true);
+    setError(null);
+    try {
+      const data = await loginUser({ email, password });
+      await loginAuth?.(data);
+      navigation.navigate("Main");
+    } catch (error) {
+      setError("Invalid email or password");
+    } finally {
+      isLoading(false);
+    }
+  };
   return (
     <CustomHeader authScreen={true}>
       <Image
@@ -46,7 +63,7 @@ const LoginScreen = () => {
           style={{
             fontSize: 13,
             textAlign: "right",
-            marginVertical: SIZES.base/3,
+            marginVertical: SIZES.base / 3,
           }}
           onPress={() => navigation.navigate("ForgotPassword")}
         >
@@ -66,13 +83,13 @@ const LoginScreen = () => {
         }}
       >
         Don't have an account?
-          <ThemedText
-                  type="text4bold"
-                  style={{ color: COLORS.primary }}
-                  onPress={() => navigation.navigate("SignUp")}
-                >
-                  SignUp
-                </ThemedText>
+        <ThemedText
+          type="text4bold"
+          style={{ color: COLORS.primary }}
+          onPress={handleLogin}
+        >
+          SignUp
+        </ThemedText>
       </ThemedText>
     </CustomHeader>
   );
