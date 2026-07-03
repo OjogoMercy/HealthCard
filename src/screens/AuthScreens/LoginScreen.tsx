@@ -4,7 +4,13 @@ import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { ActivityIndicator, Image, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  StyleSheet,
+  View,
+} from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -19,16 +25,31 @@ const LoginScreen = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Please fill in missing fields");
+      return;
+    }
     setIsLoading(true);
     setError(null);
     try {
-      const data = await loginUser({ email, password });
+      const response = await loginUser({ email, password });
       if (loginAuth) {
-        await loginAuth?.(data);
+        await loginAuth({
+          token: response.token,
+          userId: response.userId,
+          email: response.email,
+          userName: response.userName,
+        });
+        if(!loginAuth){
+          Alert.alert("User does not exist")
+          return;
+        }
+        console.log(response.userId);
+        navigation.navigate("Main");
       }
-      navigation.navigate("Main");
     } catch (error) {
       console.error("Error during login:", error);
+      setError("Invalid email or password");
     } finally {
       setIsLoading(false);
     }

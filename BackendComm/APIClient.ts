@@ -19,6 +19,13 @@ interface LoginCredentials {
   email: string;
   password: string;
 }
+
+export interface LoginResponse {
+  token: string;
+  userId: string;
+  email: string;
+  userName: string;
+}
 // interceptors to attatch the tokem to eevery request if in storage
 apiClient.interceptors.request.use(
   async (config) => {
@@ -47,8 +54,17 @@ export const registerUser = async (userData: RegisterPayload) => {
   return response.data;
 };
 
-export const loginUser = async (credentials: LoginCredentials) => {
+export const loginUser = async (
+  credentials: LoginCredentials,
+): Promise<LoginResponse> => {
   const response = await apiClient.post("/api/login", credentials);
+  if (!response.data) {
+    console.log("No data recieved from server");
+  }
+  const { token, userId, email: userEmail } = response.data;
+  if (!token || !userId || !userEmail) {
+    throw new Error("Invalid response structure from server");
+  }
   return response.data;
 };
 export const logoutUser = async () => {

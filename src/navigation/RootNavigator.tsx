@@ -30,7 +30,6 @@ export default function RootNavigator({
           headerShown: false,
           animation: "slide_from_right",
         }}
-        initialRouteName="Splash"
       >
         {isAuthenticated ? (
           <>
