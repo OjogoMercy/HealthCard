@@ -9,20 +9,52 @@ export interface UserSession {
 
 const storeUserData = async (userData: UserSession) => {
   try {
-    await AsyncStorage.setItem("User_Session", JSON.stringify(userData));
+    if (!userData.userId || !userData.token) {
+      throw new Error("Invalid User data object");
+    }
+    console.log("Storing userdata", {
+      hasUserId: !!userData.userId,
+      hasToken: !!userData.token,
+    });
+    const jsonString = JSON.stringify(userData);
+    await AsyncStorage.setItem("User_Session", jsonString);
+    console.log("UserData stored succesfully");
   } catch (e) {
-    const message = e instanceof Error ? e.message : "error storing user data";
-    throw new Error(`STORAGE_WRITE_ERROR: ${message}`);
+    throw new Error("Error storing userData");
   }
 };
 
-const getUserData = async (): Promise<UserSession | null> => {
+const getUserData = async () => {
   try {
     const session = await AsyncStorage.getItem("User_Session");
-    return session ? JSON.parse(session) : null;
+    console.log("[authStorage] Raw session data:", session);
+    if (!session) {
+      console.log("No user session found");
+      return null;
+    }
+    try {
+      const parsedData = JSON.parse(session) as UserSession;
+      console.log("parsed session data", {
+        hasToken: !!parsedData.token,
+        hasUserId: !!parsedData.userId,
+      });
+      return parsedData;
+    } catch (parsedError) {
+      console.log("Error parsing session data", parsedError);
+      await AsyncStorage.removeItem("User_Session");
+    }
   } catch (e) {
-    const message = e instanceof Error ? e.message : "error getting user data";
-    throw new Error(`STORAGE_READ_ERROR: ${message}`);
+    console.error("[authStorage] Error in getUserData:", e);
+
+    let errorMessage = "error getting user data";
+    if (e instanceof Error) {
+      errorMessage = e.message;
+    } else if (e && typeof e === "object") {
+      errorMessage = JSON.stringify(e);
+    }
+
+    console.log("throwing error for the null", errorMessage);
+    return null;
   }
 };
 

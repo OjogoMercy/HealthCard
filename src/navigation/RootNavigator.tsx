@@ -34,14 +34,14 @@ export default function RootNavigator({
       >
         {isAuthenticated ? (
           <>
-            <Stack.Screen name="Splash" component={SplashScreen} />
-            <Stack.Screen name="First" component={FirstScreen} />
-            <Stack.Screen name="Auth" component={AuthNavigator} />
+            <Stack.Screen name="Main" component={BottomTabNavigator} />
+            <Stack.Screen name="StackNav" component={StackNav} />
           </>
         ) : (
           <>
-            <Stack.Screen name="Main" component={BottomTabNavigator} />
-            <Stack.Screen name="StackNav" component={StackNav} />
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="First" component={FirstScreen} />
+            <Stack.Screen name="Auth" component={AuthNavigator} />
           </>
         )}
       </Stack.Navigator>

@@ -1,11 +1,10 @@
 import { getUserProfile } from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
+import authStorage from "@/BackendComm/authStorage"; // Fixed import
 import { COLORS } from "@/src/constants/THEME";
 import { useBabyStore } from "@/src/store/useBabyStore";
-import { ErrorBoundary } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
-import storeUserData from "../BackendComm/authStorage";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
 import RootNavigator from "../src/navigation/RootNavigator";
 
 function NavigationGateKeeper() {
@@ -15,30 +14,75 @@ function NavigationGateKeeper() {
   const clearBaby = useBabyStore((s) => s.clearBaby);
 
   useEffect(() => {
-    if (!session?.userId) {
-      clearBaby();
-    }
-
     const getUserData = async () => {
+      // Check if we have a valid session
+      if (!session?.userId) {
+        console.log("[NavigationGateKeeper] No valid session, clearing baby");
+        clearBaby();
+        return;
+      }
+
       try {
-        const UserData = await getUserProfile(session?.userId ?? "");
-        if (UserData.userName && UserData.userName !== session?.userName) {
-          storeUserData.storeUserData({
-            token: session.token,
-            userId: session.userId,
-            email: session.email,
-            userName: UserData.userName || session?.userName,
-          });
+        console.log(
+          "[NavigationGateKeeper] Fetching user profile for:",
+          session.userId,
+        );
+        const UserData = await getUserProfile(session.userId);
+
+        // Check if UserData exists
+        if (!UserData) {
+          console.warn("[NavigationGateKeeper] No user data returned");
+          return;
         }
+
+        console.log("[NavigationGateKeeper] User data received:", {
+          userName: UserData.userName,
+          hasBaby: !!UserData.baby,
+        });
+
+        if (UserData.userName && UserData.userName !== session?.userName) {
+          console.log(
+            "[NavigationGateKeeper] Updating username from",
+            session?.userName,
+            "to",
+            UserData.userName,
+          );
+
+          if (session?.token && session?.userId && session?.email) {
+            await authStorage.storeUserData({
+              token: session.token,
+              userId: session.userId,
+              email: session.email,
+              userName: UserData.userName,
+            });
+          } else {
+            console.warn(
+              "[NavigationGateKeeper] Cannot update user data - session missing required fields",
+            );
+          }
+        }
+
         if (UserData.baby) {
+          console.log(
+            "[NavigationGateKeeper] Setting baby data:",
+            UserData.baby,
+          );
           setBaby(UserData.baby);
+        } else {
+          console.log("[NavigationGateKeeper] No baby data in user profile");
         }
       } catch (e) {
-        console.error("Error fetching user data:", e);
+        console.error("[NavigationGateKeeper] Error fetching user data:", e);
+        if (e instanceof Error) {
+          console.error("[NavigationGateKeeper] Error message:", e.message);
+          console.error("[NavigationGateKeeper] Error stack:", e.stack);
+        }
       }
     };
+
     getUserData();
-  }, [session?.userId, setBaby, clearBaby]);
+  }, [session?.userId]);
+
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -46,25 +90,15 @@ function NavigationGateKeeper() {
       </View>
     );
   }
+
+  console.log("[NavigationGateKeeper] Is user authenticated?:", !!session);
   return <RootNavigator isAuthenticated={!!session} />;
 }
+
 export default function RootLayout() {
-  const [error, setError] = useState<Error | undefined>();
   return (
     <AuthProvider>
-      <ErrorBoundary
-        // retry={() => setError(undefined)}
-        // error={error}
-        fallback={
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text>Error loading app...</Text>
-          </View>
-        }
-      >
-        <NavigationGateKeeper />
-      </ErrorBoundary>
+      <NavigationGateKeeper />
     </AuthProvider>
   );
 }

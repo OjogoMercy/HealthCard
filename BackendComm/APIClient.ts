@@ -54,8 +54,12 @@ export const loginUser = async (credentials: LoginCredentials) => {
 export const logoutUser = async () => {
   await authStorage.clearUserData();
 };
-export const getUserProfile = async () => {
+export const getUserProfile = async (userId: string) => {
   const response = await apiClient.get("/api/profile");
+  console.log("response for user profile", response.data);
+  if (!userId) {
+    throw new Error("User ID is required to fetch profile");
+  }
   return response.data;
 };
 apiClient.interceptors.response.use(
