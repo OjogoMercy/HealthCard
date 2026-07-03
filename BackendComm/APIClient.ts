@@ -21,10 +21,10 @@ interface LoginCredentials {
 }
 
 export interface LoginResponse {
-  token: string;
-  userId: string;
-  email: string;
-  userName: string;
+  status: "success" | "error";
+  message: string;
+  token?: string;
+  userId?: string;
 }
 // interceptors to attatch the tokem to eevery request if in storage
 apiClient.interceptors.request.use(
@@ -55,17 +55,44 @@ export const registerUser = async (userData: RegisterPayload) => {
 };
 
 export const loginUser = async (
-  credentials: LoginCredentials,
+  email: string,
+  password: string,
 ): Promise<LoginResponse> => {
-  const response = await apiClient.post("/api/login", credentials);
-  if (!response.data) {
-    console.log("No data recieved from server");
+  console.log("[API] Login attempt for:", email);
+
+  try {
+    const response = await apiClient.post("/auth/login", { email, password });
+
+    console.log("[API] Login response:", {
+      status: response.data.status,
+      message: response.data.message,
+      hasToken: !!response.data.token,
+      hasUserId: !!response.data.userId,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.log("[API] Backend error response:", {
+        status: error.response.status,
+        data: error.response.data,
+        headers: error.response.headers,
+      });
+
+      console.error("[API] Login error:", error);
+
+      if (error.response?.data) {
+        console.log("[API] Error response from backend:", error.response.data);
+        return error.response.data;
+      }
+
+      return {
+        status: "error",
+        message:
+          error.message || "Network error - please check your connection",
+      };
+    }
   }
-  const { token, userId, email: userEmail } = response.data;
-  if (!token || !userId || !userEmail) {
-    throw new Error("Invalid response structure from server");
-  }
-  return response.data;
 };
 export const logoutUser = async () => {
   await authStorage.clearUserData();

@@ -26,30 +26,64 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("Please fill in missing fields");
+      Alert.alert("Error", "Please enter both email and password");
       return;
     }
+
     setIsLoading(true);
     setError(null);
+
     try {
-      const response = await loginUser({ email, password });
-      if (loginAuth) {
-        await loginAuth({
-          token: response.token,
-          userId: response.userId,
-          email: response.email,
-          userName: response.userName,
-        });
-        if(!loginAuth){
-          Alert.alert("User does not exist")
-          return;
-        }
-        console.log(response.userId);
-        navigation.navigate("Main");
+      console.log("[LoginScreen] Starting login for:", email);
+
+      const response = await loginUser(email, password);
+      console.log("[LoginScreen] Response received:", response);
+
+      if (response.status === "error") {
+        console.log("[LoginScreen] Backend returned error:", response.message);
+        Alert.alert("Login Failed", response.message);
+        setIsLoading(false);
+        return;
       }
+
+      // Handle success response - verify data
+      if (!response.token || !response.userId) {
+        console.error("[LoginScreen] Missing token or userId in response");
+        Alert.alert("Error", "Invalid response from server");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("[LoginScreen] Storing session...");
+      await loginAuth({
+        token: response.token,
+        userId: response.userId,
+        email: email,
+      });
+
+      console.log("[LoginScreen] Login successful for user:", response.userId);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
     } catch (error) {
-      console.error("Error during login:", error);
-      setError("Invalid email or password");
+      console.error("[LoginScreen] Login error:", error);
+
+      let errorMessage = "Login failed. Please try again.";
+
+      if (error instanceof Error) {
+        if (error.message.includes("Network")) {
+          errorMessage = "Network error - please check your connection";
+        } else if (error.message.includes("timeout")) {
+          errorMessage = "Request timed out - please try again";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      setError(errorMessage);
+      Alert.alert("Login Error", errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +96,7 @@ const LoginScreen = () => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: COLORS.opacity,
+          backgroundColor: "rgba(0, 0, 0,0.2)",
         }}
       >
         <ActivityIndicator size="large" color={COLORS.primary} />
@@ -107,10 +141,7 @@ const LoginScreen = () => {
         >
           Forgot Password?
         </ThemedText>
-        <PrimaryButton
-          title="Login"
-          onPress={() => navigation.navigate("Main")}
-        />
+        <PrimaryButton title="Login" onPress={handleLogin} />
       </View>
 
       <ThemedText
@@ -124,7 +155,7 @@ const LoginScreen = () => {
         <ThemedText
           type="text4bold"
           style={{ color: COLORS.primary }}
-          onPress={handleLogin}
+          onPress={() => navigation.navigate("SignUp")}
         >
           SignUp
         </ThemedText>

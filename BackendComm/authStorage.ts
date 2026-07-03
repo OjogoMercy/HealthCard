@@ -4,7 +4,6 @@ export interface UserSession {
   token: string;
   userId: string;
   email: string;
-  userName: string;
 }
 
 const storeUserData = async (userData: UserSession) => {
