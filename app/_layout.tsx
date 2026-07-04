@@ -35,10 +35,7 @@ function NavigationGateKeeper() {
           return;
         }
 
-        console.log("[NavigationGateKeeper] User data received:", {
-          userName: UserData.userName,
-          hasBaby: !!UserData.baby,
-        });
+        console.log("[NavigationGateKeeper] User data received:");
 
         if (UserData.userName && UserData.userName !== session?.userName) {
           console.log(
