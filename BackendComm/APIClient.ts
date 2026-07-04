@@ -15,11 +15,6 @@ interface RegisterPayload {
   password: string;
 }
 
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
 export interface LoginResponse {
   status: "success" | "error";
   message: string;
@@ -58,42 +53,27 @@ export const loginUser = async (
   email: string,
   password: string,
 ): Promise<LoginResponse> => {
-  console.log("[API] Login attempt for:", email);
-
   try {
-    const response = await apiClient.post("/auth/login", { email, password });
+    const response = await apiClient.post("/api/login", { email, password });
 
-    console.log("[API] Login response:", {
-      status: response.data.status,
-      message: response.data.message,
-      hasToken: !!response.data.token,
-      hasUserId: !!response.data.userId,
-    });
+    console.log("[API] Login success!");
 
     return response.data;
   } catch (error: any) {
-    if (error.response) {
-      console.log("[API] Backend error response:", {
-        status: error.response.status,
-        data: error.response.data,
-        headers: error.response.headers,
-      });
+    console.error("[API] Login error:", error);
 
-      console.error("[API] Login error:", error);
-
-      if (error.response?.data) {
-        console.log("[API] Error response from backend:", error.response.data);
-        return error.response.data;
-      }
-
-      return {
-        status: "error",
-        message:
-          error.message || "Network error - please check your connection",
-      };
+    if (error.response?.data) {
+      console.log("[API] Backend error response:", error.response.data);
+      return error.response.data;
     }
+
+    return {
+      status: "error",
+      message: error.message || "Network error - please check your connection",
+    };
   }
 };
+
 export const logoutUser = async () => {
   await authStorage.clearUserData();
 };

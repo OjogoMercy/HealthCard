@@ -34,26 +34,21 @@ const LoginScreen = () => {
     setError(null);
 
     try {
-      console.log("[LoginScreen] Starting login for:", email);
-
       const response = await loginUser(email, password);
+
       console.log("[LoginScreen] Response received:", response);
-
       if (response.status === "error") {
-        console.log("[LoginScreen] Backend returned error:", response.message);
+        console.log("[LoginScreen] Backend error:", response.message);
         Alert.alert("Login Failed", response.message);
+        setError(response.message);
         setIsLoading(false);
         return;
       }
-
-      // Handle success response - verify data
       if (!response.token || !response.userId) {
-        console.error("[LoginScreen] Missing token or userId in response");
+        console.error("[LoginScreen] Missing token or user ID ");
         Alert.alert("Error", "Invalid response from server");
-        setIsLoading(false);
         return;
       }
-
       console.log("[LoginScreen] Storing session...");
       await loginAuth({
         token: response.token,
@@ -70,20 +65,7 @@ const LoginScreen = () => {
     } catch (error) {
       console.error("[LoginScreen] Login error:", error);
 
-      let errorMessage = "Login failed. Please try again.";
-
-      if (error instanceof Error) {
-        if (error.message.includes("Network")) {
-          errorMessage = "Network error - please check your connection";
-        } else if (error.message.includes("timeout")) {
-          errorMessage = "Request timed out - please try again";
-        } else {
-          errorMessage = error.message;
-        }
-      }
-
-      setError(errorMessage);
-      Alert.alert("Login Error", errorMessage);
+      setError(error instanceof Error ? error.message : "Login failed");
     } finally {
       setIsLoading(false);
     }
@@ -91,14 +73,7 @@ const LoginScreen = () => {
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "rgba(0, 0, 0,0.2)",
-        }}
-      >
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );

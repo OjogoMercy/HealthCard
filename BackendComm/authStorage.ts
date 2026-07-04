@@ -11,10 +11,6 @@ const storeUserData = async (userData: UserSession) => {
     if (!userData.userId || !userData.token) {
       throw new Error("Invalid User data object");
     }
-    console.log("Storing userdata", {
-      hasUserId: !!userData.userId,
-      hasToken: !!userData.token,
-    });
     const jsonString = JSON.stringify(userData);
     await AsyncStorage.setItem("User_Session", jsonString);
     console.log("UserData stored succesfully");
