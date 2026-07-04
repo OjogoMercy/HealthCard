@@ -85,6 +85,99 @@ export const getUserProfile = async (userId: string) => {
   }
   return response.data;
 };
+// endpoints for children
+export const createChild = async (
+  name: string,
+  dateOfBirth: Date,
+  gender: string,
+  userId: string,
+) => {
+  if (!userId) {
+    throw new Error("User ID is required to fetch profile");
+  }
+  const response = await apiClient.post("/api/children", {
+    name,
+    dateOfBirth,
+    gender,
+    userId,
+  });
+  return response.data;
+};
+
+export const getChildren = async (userId: string) => {
+  if (!userId) {
+    throw new Error("User ID is required to fetch profile");
+  }
+  const response = await apiClient.get(`/api/children`);
+
+  return response.data;
+};
+
+export const getGrowthRecords = async (childId: string, userId: string) => {
+  if (!childId || !userId) {
+    throw new Error(
+      "Child ID and User ID are required to fetch growth records",
+    );
+  }
+  const response = await apiClient.get(
+    `api/children/${childId}/growth-records`,
+  );
+  return response.data;
+};
+
+// endpoints for innumisation
+export const createImmunisation = async (
+  vaccineId: string,
+  dueDate: Date,
+  childId: string,
+  userId: string,
+) => {
+  console.log("Creating immunisation record");
+  if (!userId || !childId) {
+    throw new Error("User ID and Child ID are required to create immunisation");
+  }
+  const response = await apiClient.post("/api/immunisations", {
+    vaccineId,
+    dueDate,
+    childId,
+    userId,
+  });
+  return response.data;
+};
+
+export const deleteImmunisation = async (immunisationId: string) => {
+  const response = await apiClient.delete(
+    `/api/immunisations/${immunisationId}`,
+  );
+  return response.data;
+};
+export const getImmunisationsByChild = async (
+  childId: string,
+  userId: string,
+) => {
+  if (!childId || !userId) {
+    throw new Error(" ID is required to fetch immunisations");
+  }
+  const response = await apiClient.get(`/api/children/immunisations`);
+
+  return response.data;
+};
+
+export const updateImmunisation = async (
+  immunisationId: string,
+  userId: string,
+  data: { administered: boolean },
+) => {
+  if (!userId) {
+    throw new Error("User ID is required to update immunisation");
+  }
+  const response = await apiClient.patch(
+    `/api/immunisations/${immunisationId}`,
+    data,
+  );
+  return response.data;
+};
+
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
