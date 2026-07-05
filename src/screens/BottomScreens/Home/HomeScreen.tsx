@@ -49,7 +49,8 @@ const getProgressPercent = (vaccines: { isDone: boolean }[]): number => {
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
   // pulling the data needed form the store
-  const baby = useBabyStore((s) => s.baby);
+  const activeChild = useBabyStore((s) => s.getActiveChild);
+  const baby = activeChild();
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
   const upcomingStage = useBabyStore((s) => s.upcomingStage);
@@ -195,7 +196,9 @@ const HomeScreen = () => {
               >
                 {" "}
                 {baby.name}{" "}
-                <ThemedText type="text4">| {getAgeLabel(baby.dob)}</ThemedText>
+                <ThemedText type="text4">
+                  | {getAgeLabel(baby.dateOfBirth)}
+                </ThemedText>
               </ThemedText>
             </View>
 

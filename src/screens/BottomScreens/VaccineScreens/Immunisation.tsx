@@ -1,8 +1,10 @@
 import WrapView from "@/src/components/WrapView";
+import { getAgeLabel } from "@/src/constants/age";
 import { VaccineData } from "@/src/constants/Database";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
+import { useBabyStore } from "@/src/store/useBabyStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
@@ -13,8 +15,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useBabyStore } from "@/src/store/useBabyStore";
-import { getAgeLabel } from "@/src/constants/age";
 
 const Immunisation = () => {
   const navigation = useNavigation();
@@ -27,7 +27,8 @@ const Immunisation = () => {
   const handleOpen = (item: { id: string; name: string; summary: string }) => {
     setSelected((previous) => (previous?.id === item.id ? null : item));
   };
-  const baby = useBabyStore((s) => s.baby);
+  const activeChild = useBabyStore((s) => s.getActiveChild);
+  const baby = activeChild();
 
   return (
     <WrapView style={styles.container} screenTitle="Vaccination Timeline">
@@ -40,7 +41,10 @@ const Immunisation = () => {
           style={{ color: COLORS.primary, marginRight: "auto" }}
         >
           {" "}
-         {baby.name} <ThemedText type="text4">| {getAgeLabel(baby.dob)}</ThemedText>
+          {baby?.name}{" "}
+          <ThemedText type="text4">
+            | {getAgeLabel(baby?.dateOfBirth)}
+          </ThemedText>
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons name="chevron-down" size={25} color={COLORS.primary} />

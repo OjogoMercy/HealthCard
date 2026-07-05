@@ -49,10 +49,11 @@ const ProfileScreen = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);
 
-  const baby = useBabyStore((s) => s.baby);
+  const getActiveChild = useBabyStore((s) => s.getActiveChild);
+  const baby = getActiveChild();
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
-  const clearBaby = useBabyStore((s) => s.clearBaby);
+  const clearBaby = useBabyStore((s) => s.clearChildren);
 
   const { percent, done, total } = getProgressStats(currentVaccines);
   const nextDueVaccines = currentVaccines.filter((v) => !v.isDone);
@@ -130,7 +131,7 @@ const ProfileScreen = () => {
             {baby?.name ?? "No baby added yet"}
           </ThemedText>
           <ThemedText type="text4">
-            {baby ? getAgeLabel(baby.dob) : "—"}
+            {baby ? getAgeLabel(baby.dateOfBirth) : "—"}
           </ThemedText>
         </View>
 
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
     padding: SIZES.base * 2,
     borderRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.9,
-    marginTop: SIZES.base,
+    marginTop: SIZES.base / 2,
   },
   progressBar: {
     width: SCREEN_WIDTH * 0.8,
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondary + "20",
     padding: SIZES.base,
     borderRadius: SIZES.padding,
-    marginTop: SIZES.padding,
+    marginTop: SIZES.base / 2,
     width: "100%",
   },
   listItem: {
