@@ -96,6 +96,7 @@ export const createChild = async (
     dateOfBirth,
     gender,
   });
+  console.log("child created successfully");
   return response.data;
 };
 

@@ -1,3 +1,4 @@
+import { createChild } from "@/BackendComm/APIClient";
 import CustomInput from "@/src/components/CustomInput";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapScrollView from "@/src/components/WrapScrollView";
@@ -19,8 +20,8 @@ import {
   View,
 } from "react-native";
 
-const getAgeLabel = (dob: string): string => {
-  const birth = new Date(dob);
+const getAgeLabel = (dateOfBirth: string): string => {
+  const birth = new Date(dateOfBirth);
   const now = new Date();
   const diffInDays = Math.floor(
     (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24),
@@ -42,14 +43,17 @@ const EditProfile = () => {
   const navigation = useNavigation<any>();
 
   // ── Store ──
-  const baby = useBabyStore((s) => s.baby);
-  const setBaby = useBabyStore((s) => s.setBaby);
+  const activeChild = useBabyStore((s) => s.getActiveChild);
+  const baby = activeChild();
 
   const [babyName, setBabyName] = useState(baby?.name ?? "");
-  const [date, setDate] = useState(baby?.dob ? new Date(baby.dob) : new Date());
+  const [date, setDate] = useState(
+    baby?.dateOfBirth ? new Date(baby.dateOfBirth) : new Date(),
+  );
   const [gender, setGender] = useState(baby?.gender ?? "");
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [isDateSelected, setIsDateSelected] = useState(!!baby?.dob);
+  const [isDateSelected, setIsDateSelected] = useState(!!baby?.dateOfBirth);
+  const [error, setError] = useState("");
 
   const [doctor, setDoctor] = useState("Dr Adewale Johnson");
   const [hospital, setHospital] = useState("Lagos State Hospital");
@@ -63,8 +67,9 @@ const EditProfile = () => {
       setPickerOpen(false);
     }
   };
+  const children = useBabyStore((s) => s.children);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!babyName.trim()) {
       Alert.alert("Missing Information", "Please enter your baby's name.");
       return;
@@ -80,12 +85,18 @@ const EditProfile = () => {
       Alert.alert("Missing Information", "Please select your baby's gender.");
       return;
     }
+    const isDuplicate = children.some(
+      (child) =>
+        child.name.toLowerCase().trim() === babyName.toLowerCase().trim() &&
+        new Date(child.dateOfBirth).toDateString() === date.toDateString(),
+    );
 
-    setBaby({
-      name: babyName.trim(),
-      dob: date.toISOString(),
-      gender,
-    });
+    if (isDuplicate) {
+      setError("A child with this name and date of birth already exists");
+      return;
+    }
+
+    await createChild(gender, date, babyName.trim());
 
     Alert.alert(
       "Profile Saved",
@@ -113,7 +124,7 @@ const EditProfile = () => {
           {baby?.name ?? "New Baby"}
         </ThemedText>
         <ThemedText type="text4">
-          {baby?.dob ? getAgeLabel(baby.dob) : "Age not set"}
+          {baby?.dateOfBirth ? getAgeLabel(baby.dateOfBirth) : "Age not set"}
         </ThemedText>
       </View>
 
@@ -129,7 +140,7 @@ const EditProfile = () => {
           value={babyName}
           onChangeText={setBabyName}
           placeholder="Child's Name"
-          editable={false}
+          editable={true}
         />
 
         <ThemedText type="text4bold" style={styles.label}>

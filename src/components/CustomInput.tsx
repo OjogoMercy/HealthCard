@@ -1,5 +1,4 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { SCREEN_WIDTH } from "@gorhom/bottom-sheet";
 import React from "react";
 import {
   KeyboardTypeOptions,
@@ -10,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { COLORS, FONTS, SIZES } from "../constants/THEME";
+import { COLORS, FONTS, SCREEN_WIDTH, SIZES } from "../constants/THEME";
 
 type Props = {
   label?: string;
@@ -23,9 +22,8 @@ type Props = {
   error?: string;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
-  editable: boolean;
+  editable?: boolean;
 };
-
 const CustomInput = ({
   value,
   onChangeText,
@@ -33,10 +31,9 @@ const CustomInput = ({
   secure,
   containerStyle,
   keyboardType,
-  editable,
+  editable = true,
 }: Props) => {
   const [show, setShow] = React.useState(false);
-
   return (
     <View style={[styles.container, containerStyle]}>
       <TextInput
@@ -66,9 +63,7 @@ const CustomInput = ({
     </View>
   );
 };
-
 export default CustomInput;
-
 const styles = StyleSheet.create({
   container: {
     width: SCREEN_WIDTH * 0.85,

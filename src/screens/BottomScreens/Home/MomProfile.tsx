@@ -1,11 +1,15 @@
+import { createChild } from "@/BackendComm/APIClient";
+import CustomInput from "@/src/components/CustomInput";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapScrollView from "@/src/components/WrapScrollView";
+import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
@@ -13,11 +17,11 @@ import {
   FlatList,
   Image,
   Modal,
+  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
-
 const getAgeLabel = (dob: string): string => {
   const birth = new Date(dob);
   const now = new Date();
@@ -39,10 +43,10 @@ const MomProfile = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [comingSoonMessage, setComingSoonMessage] = useState("");
+  const [formActive, setFormActive] = useState(false);
 
   const mom = useMomStore((s) => s.mom);
   const clearMom = useMomStore((s) => s.clearMom);
-  const baby = useBabyStore((s) => s.getActiveChild);
   const clearBaby = useBabyStore((s) => s.clearChildren);
 
   const triggerComingSoon = (message: string) => {
@@ -111,7 +115,63 @@ const MomProfile = () => {
       danger: true,
     },
   ];
+  const activeChild = useBabyStore((s) => s.getActiveChild);
+  const baby = activeChild();
 
+  const [babyName, setBabyName] = useState(baby?.name ?? "");
+  const [date, setDate] = useState(
+    baby?.dateOfBirth ? new Date(baby.dateOfBirth) : new Date(),
+  );
+  const [gender, setGender] = useState(baby?.gender ?? null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [isDateSelected, setIsDateSelected] = useState(!!baby?.dateOfBirth);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const formatDate = (d: Date): string => d.toLocaleDateString("en-GB");
+
+  const onChange = (event: { type: string }, selectedDate?: Date) => {
+    setPickerOpen(Platform.OS === "ios");
+    if (event.type === "set" && selectedDate) {
+      setDate(selectedDate);
+      setIsDateSelected(true);
+    } else {
+      setPickerOpen(false);
+    }
+  };
+  const setChildren = useBabyStore((s) => s.setChildren);
+  const children = useBabyStore((s) => s.children);
+
+  const handleSave = async () => {
+    if (!babyName.trim() || !date || !gender) {
+      Alert.alert("Please enter the child's full details");
+      return;
+    }
+    setIsSubmitting(true);
+    setError(null);
+    const isDuplicate = children.some(
+      (child) =>
+        child.name.toLowerCase().trim() === babyName.toLowerCase().trim() &&
+        new Date(child.dateOfBirth).toDateString() === date.toDateString(),
+    );
+
+    if (isDuplicate) {
+      Alert.alert("A child with this name and date of birth already exists");
+      return;
+    }
+
+    try {
+      const newChild = await createChild(babyName.trim(), date, gender);
+      setChildren([...children, newChild]);
+      setBabyName("");
+      setDate(new Date());
+      setGender(null);
+      setFormActive(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to add child");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <WrapScrollView screenTitle="Mom Profile">
       <View style={styles.profileCard}>
@@ -150,7 +210,7 @@ const MomProfile = () => {
             <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
               {baby.name}{" "}
               <ThemedText type="text4" style={{ color: COLORS.black }}>
-                | {getAgeLabel(baby.dob)}
+                | {getAgeLabel(baby.dateOfBirth)}
               </ThemedText>
             </ThemedText>
           </View>
@@ -165,11 +225,7 @@ const MomProfile = () => {
 
         <PrimaryButton
           title="Add New Child"
-          onPress={() =>
-            triggerComingSoon(
-              "Multiple child profiles are on the way. You will be able to track all your children's vaccines in one place very soon!",
-            )
-          }
+          onPress={() => setFormActive(true)}
         />
       </View>
 
@@ -217,6 +273,117 @@ const MomProfile = () => {
           )}
         />
       </View>
+      <Modal
+        visible={formActive}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setFormActive(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalCard, { padding: SIZES.base }]}>
+            <View style={[general.form, { width: "100%", marginVertical: 0 }]}>
+              <ThemedText
+                type="text3bold"
+                style={{
+                  color: COLORS.primary,
+                }}
+              >
+                Basic Information
+              </ThemedText>
+
+              <ThemedText type="text4bold" style={styles.label}>
+                Name
+              </ThemedText>
+              <CustomInput
+                value={babyName}
+                onChangeText={setBabyName}
+                placeholder="Child's Name"
+                editable={true}
+                containerStyle={{ width: "100%" }}
+              />
+
+              <ThemedText type="text4bold" style={styles.label}>
+                Date Of Birth
+              </ThemedText>
+              <TouchableOpacity
+                onPress={() => setPickerOpen(true)}
+                style={styles.date}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={18}
+                  color={COLORS.gray}
+                />
+                <ThemedText
+                  type="text4"
+                  style={{ color: COLORS.gray, marginLeft: SIZES.base }}
+                >
+                  {isDateSelected ? formatDate(date) : "Child's D.O.B"}
+                </ThemedText>
+              </TouchableOpacity>
+
+              {pickerOpen && (
+                <View style={styles.pickerContainer}>
+                  <DateTimePicker
+                    value={date}
+                    mode="date"
+                    display="spinner"
+                    onChange={onChange}
+                    maximumDate={new Date()}
+                    themeVariant="light"
+                  />
+                </View>
+              )}
+
+              <ThemedText type="text4bold" style={styles.label}>
+                Gender
+              </ThemedText>
+              <View style={styles.genderRow}>
+                {["Male", "Female"].map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    activeOpacity={0.7}
+                    style={[
+                      styles.genderButton,
+                      gender === option && styles.genderButtonActive,
+                    ]}
+                    onPress={() => setGender(option)}
+                  >
+                    <Ionicons
+                      name={option === "Male" ? "male" : "female"}
+                      size={18}
+                      color={gender === option ? COLORS.white : COLORS.primary}
+                    />
+                    <ThemedText
+                      type="text4bold"
+                      style={{
+                        marginLeft: SIZES.base * 0.5,
+                        color:
+                          gender === option ? COLORS.white : COLORS.primary,
+                      }}
+                    >
+                      {option}
+                    </ThemedText>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <View style={{ width: "100%" }}>
+                <PrimaryButton title="Save Changes" onPress={handleSave} />
+                <PrimaryButton
+                  title="Cancel"
+                  onPress={() => setFormActive(false)}
+                  style={{
+                    paddingHorizontal: SIZES.padding * 2,
+                    backgroundColor: "white",
+                  }}
+                  textStyle={{ color: COLORS.primary }}
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <Modal
         visible={showComingSoon}
@@ -254,6 +421,46 @@ const MomProfile = () => {
 
 export default MomProfile;
 const styles = StyleSheet.create({
+  label: {
+    marginLeft: SIZES.base / 2,
+    marginTop: SIZES.base,
+  },
+  date: {
+    width: "100%",
+    flexDirection: "row",
+    backgroundColor: "white",
+    alignItems: "center",
+    borderRadius: SIZES.padding / 1.5,
+    marginVertical: SIZES.base,
+    paddingHorizontal: SIZES.base,
+    paddingVertical: SIZES.padding / 1.7,
+  },
+  pickerContainer: {
+    backgroundColor: "white",
+    borderRadius: SIZES.padding,
+    marginBottom: SIZES.base,
+    overflow: "hidden",
+  },
+  genderRow: {
+    flexDirection: "row",
+    gap: SIZES.base,
+    marginVertical: SIZES.base,
+  },
+  genderButton: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: SIZES.base,
+    borderRadius: SIZES.padding,
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    backgroundColor: "transparent",
+  },
+  genderButtonActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
   profileCard: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.padding,
