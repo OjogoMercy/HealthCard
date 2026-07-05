@@ -9,15 +9,14 @@ import RootNavigator from "../src/navigation/RootNavigator";
 
 function NavigationGateKeeper() {
   const { session, isLoading } = useAuth();
-  const setBaby = useBabyStore((s) => s.setBaby);
-  const clearBaby = useBabyStore((s) => s.clearBaby);
+  const setChild = useBabyStore((s) => s.setChildren);
+  const clearChildren = useBabyStore((s) => s.clearChildren);
 
   useEffect(() => {
     const getUserData = async () => {
-      // Check if we have a valid session
       if (!session?.userId) {
         console.log("[NavigationGateKeeper] No valid session, clearing baby");
-        clearBaby();
+        clearChildren();
         return;
       }
       try {
@@ -48,13 +47,10 @@ function NavigationGateKeeper() {
         }
         const profile = UserData.profile;
         if (profile.children && profile.children.length > 0) {
-          const firstChild = profile.children[0];
-          setBaby({
-            name: firstChild.name,
-            dob: firstChild.dateOfBirth,
-            gender: firstChild.gender,
-          });
+          setChild(profile.children);
           console.log("child data stored successfully");
+        } else {
+          clearChildren();
         }
       } catch (e) {
         console.error("[NavigationGateKeeper] Error fetching user data:", e);

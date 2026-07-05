@@ -49,6 +49,7 @@ const MomProfile = () => {
     setComingSoonMessage(message);
     setShowComingSoon(true);
   };
+
   const handleLogout = () => {
     Alert.alert(
       "Log Out",
@@ -73,8 +74,7 @@ const MomProfile = () => {
       id: 1,
       iconName: "person-outline",
       title: "Edit Profile",
-      onPress: () =>
-        navigation.navigate("EditMomProfile"),
+      onPress: () => navigation.navigate("EditMomProfile"),
     },
     {
       id: 2,

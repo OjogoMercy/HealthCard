@@ -80,6 +80,12 @@ const ProfileScreen = () => {
 
   const Data = [
     {
+      id: 0,
+      iconName: "person-circle",
+      title: "My Profile",
+      onPress: () => navigation.navigate("StackNav", { screen: "MomProfile" }),
+    },
+    {
       id: 1,
       iconName: "person",
       title: "Child Information",
