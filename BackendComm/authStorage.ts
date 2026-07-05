@@ -4,6 +4,7 @@ export interface UserSession {
   token: string;
   userId: string;
   email: string;
+  userName: string;
 }
 
 const storeUserData = async (userData: UserSession) => {
@@ -22,17 +23,14 @@ const storeUserData = async (userData: UserSession) => {
 const getUserData = async () => {
   try {
     const session = await AsyncStorage.getItem("User_Session");
-    console.log("[authStorage] Raw session data:", session);
+    console.log("[authStorage] Raw session data retrieved");
     if (!session) {
       console.log("No user session found");
       return null;
     }
     try {
       const parsedData = JSON.parse(session) as UserSession;
-      console.log("parsed session data", {
-        hasToken: !!parsedData.token,
-        hasUserId: !!parsedData.userId,
-      });
+      console.log("data parsed successfully");
       return parsedData;
     } catch (parsedError) {
       console.log("Error parsing session data", parsedError);

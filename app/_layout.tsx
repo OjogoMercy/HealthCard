@@ -1,6 +1,6 @@
 import { getUserProfile } from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
-import authStorage from "@/BackendComm/authStorage"; // Fixed import
+import authStorage from "@/BackendComm/authStorage";
 import { COLORS } from "@/src/constants/THEME";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import { useEffect } from "react";
@@ -9,7 +9,6 @@ import RootNavigator from "../src/navigation/RootNavigator";
 
 function NavigationGateKeeper() {
   const { session, isLoading } = useAuth();
-  const baby = useBabyStore((s) => s.baby);
   const setBaby = useBabyStore((s) => s.setBaby);
   const clearBaby = useBabyStore((s) => s.clearBaby);
 
@@ -21,52 +20,41 @@ function NavigationGateKeeper() {
         clearBaby();
         return;
       }
-
       try {
         console.log(
-          "[NavigationGateKeeper] Fetching user profile for:",
+          "[NavigationGateKeeper] Fetching user profile",
           session.userId,
         );
         const UserData = await getUserProfile(session.userId);
+        console.log("userdaata", UserData);
 
-        // Check if UserData exists
         if (!UserData) {
           console.warn("[NavigationGateKeeper] No user data returned");
           return;
         }
-
         console.log("[NavigationGateKeeper] User data received:");
 
-        if (UserData.userName && UserData.userName !== session?.userName) {
-          console.log(
-            "[NavigationGateKeeper] Updating username from",
-            session?.userName,
-            "to",
-            UserData.userName,
-          );
-
-          if (session?.token && session?.userId && session?.email) {
-            await authStorage.storeUserData({
-              token: session.token,
-              userId: session.userId,
-              email: session.email,
-              userName: UserData.userName,
-            });
-          } else {
-            console.warn(
-              "[NavigationGateKeeper] Cannot update user data - session missing required fields",
-            );
-          }
-        }
-
-        if (UserData.baby) {
-          console.log(
-            "[NavigationGateKeeper] Setting baby data:",
-            UserData.baby,
-          );
-          setBaby(UserData.baby);
+        if (session?.token && session?.userId && session?.email) {
+          await authStorage.storeUserData({
+            token: session.token,
+            userId: session.userId,
+            email: session.email,
+            userName: UserData.profile?.userName || "",
+          });
         } else {
-          console.log("[NavigationGateKeeper] No baby data in user profile");
+          console.warn(
+            "[NavigationGateKeeper] Cannot update user data - session missing required fields",
+          );
+        }
+        const profile = UserData.profile;
+        if (profile.children && profile.children.length > 0) {
+          const firstChild = profile.children[0];
+          setBaby({
+            name: firstChild.name,
+            dob: firstChild.dateOfBirth,
+            gender: firstChild.gender,
+          });
+          console.log("child data stored successfully");
         }
       } catch (e) {
         console.error("[NavigationGateKeeper] Error fetching user data:", e);
