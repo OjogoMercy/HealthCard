@@ -90,16 +90,11 @@ export const createChild = async (
   name: string,
   dateOfBirth: Date,
   gender: string,
-  userId: string,
 ) => {
-  if (!userId) {
-    throw new Error("User ID is required to fetch profile");
-  }
   const response = await apiClient.post("/api/children", {
     name,
     dateOfBirth,
     gender,
-    userId,
   });
   return response.data;
 };

@@ -42,8 +42,8 @@ const MomProfile = () => {
 
   const mom = useMomStore((s) => s.mom);
   const clearMom = useMomStore((s) => s.clearMom);
-  const baby = useBabyStore((s) => s.baby);
-  const clearBaby = useBabyStore((s) => s.clearBaby);
+  const baby = useBabyStore((s) => s.getActiveChild);
+  const clearBaby = useBabyStore((s) => s.clearChildren);
 
   const triggerComingSoon = (message: string) => {
     setComingSoonMessage(message);
