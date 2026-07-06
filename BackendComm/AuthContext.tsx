@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { registerLogoutHandler } from "./APIClient";
 import authStorage, { UserSession } from "./authStorage";
 
 interface AuthContextType {
@@ -38,6 +39,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     restoreSession();
   }, []);
+  useEffect(() => {
+    registerLogoutHandler(logoutAuth);
+  }, []);
 
   const loginAuth = async (sessionData: UserSession) => {
     try {
@@ -51,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logoutAuth = async () => {
     try {
+      setSession(null);
       await authStorage.clearUserData();
     } catch (error) {
       console.error("Error clearing user session during logout:", error);

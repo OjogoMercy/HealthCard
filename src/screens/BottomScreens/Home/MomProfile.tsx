@@ -166,6 +166,8 @@ const MomProfile = () => {
       setDate(new Date());
       setGender(null);
       setFormActive(false);
+
+      Alert.alert("Child recor created successfully");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
     } finally {

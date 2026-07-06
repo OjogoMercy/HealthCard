@@ -21,6 +21,11 @@ export interface LoginResponse {
   token?: string;
   userId?: string;
 }
+let logoutHandler: (() => void) | null = null;
+
+export const registerLogoutHandler = (handler: () => void) => {
+  logoutHandler = handler;
+};
 // interceptors to attatch the tokem to eevery request if in storage
 apiClient.interceptors.request.use(
   async (config) => {
@@ -176,7 +181,11 @@ export const updateImmunisation = async (
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
+
+  async (error) => {
+    if (error.response?.status === 401 && logoutHandler) {
+      logoutHandler();
+    }
     const message =
       error?.response?.data?.message ||
       error?.message ||
