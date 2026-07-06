@@ -142,10 +142,7 @@ const SignUp = () => {
           onChangeText={setConfirmPassword}
           secure={true}
         />
-        <PrimaryButton
-          title="Sign Up"
-          onPress={() => navigation.navigate("Main")}
-        />
+        <PrimaryButton title="Sign Up" onPress={handleSignUp} />
       </KeyboardAvoidingView>
 
       <TouchableOpacity style={styles.row}>
@@ -177,7 +174,7 @@ const SignUp = () => {
         <ThemedText
           type="text4bold"
           style={{ color: COLORS.primary }}
-          onPress={handleSignUp}
+          onPress={() => navigation.navigate("Login")}
         >
           Login
         </ThemedText>

@@ -128,7 +128,7 @@ const LoginScreen = () => {
       >
         Don't have an account?
         <ThemedText
-          type="text4bold"
+          type="text3bold"
           style={{ color: COLORS.primary }}
           onPress={() => navigation.navigate("SignUp")}
         >
