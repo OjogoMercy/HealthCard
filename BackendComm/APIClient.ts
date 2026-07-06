@@ -69,8 +69,17 @@ apiClient.interceptors.request.use(
 );
 
 export const registerUser = async (userData: RegisterPayload) => {
-  const response = await apiClient.post("/api/register", userData);
-  return response.data;
+  try {
+    const response = await apiClient.post("/api/register", userData);
+    console.log("User successfully registered");
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.data) {
+      console.log("Backend error message");
+      return error.response.data;
+    }
+    throw new Error(error.message || "Registration Failed");
+  }
 };
 
 export const loginUser = async (

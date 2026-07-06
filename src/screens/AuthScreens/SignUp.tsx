@@ -4,10 +4,13 @@ import { general } from "@/src/constants/General";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   KeyboardAvoidingView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
@@ -23,21 +26,82 @@ const SignUp = () => {
   const [Username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const loginAuth = useAuth()?.loginAuth;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSignUp = async () => {
     try {
+      if (!Username.trim() || !email.trim() || !password.trim()) {
+        Alert.alert("Error", "Please fill in all fields");
+        return;
+      }
+      if (!validateEmail(email)) {
+        Alert.alert("Please enter  valid email address");
+        return;
+      }
+
+      if (password.length < 6) {
+        Alert.alert("Error", "Password must be at least 6 characters long");
+        return;
+      }
       if (password !== confirmPassword) {
         alert("Passwords do not match");
         return;
       }
-      await registerUser({ userName: Username, email, password });
-      const sessionData = await loginUser({ email, password });
+      setLoading(true);
+      const registerResponse = await registerUser({
+        userName: Username,
+        email,
+        password,
+      });
+
+      if (registerResponse.status === "error") {
+        const errorMsg = registerResponse.message || "Registration failed";
+        setError(errorMsg);
+        Alert.alert("Error during registration");
+        return;
+      }
+      const loginResponse = await loginUser(email.trim(), password);
+      if (loginResponse.status === "error") {
+        const errorMsg =
+          loginResponse.message || "Login failed after registration";
+        setError(errorMsg);
+        Alert.alert("Login Failed", errorMsg);
+        return;
+      }
+
+      if (!loginResponse.token || !loginResponse.userId) {
+        setError("Invalid session data received");
+        Alert.alert("Error", "Invalid session data received");
+        return;
+      }
+      const sessionData = {
+        token: loginResponse.token,
+        userId: loginResponse.userId,
+        email: email.trim(),
+        userName: Username.trim(),
+      };
+
       await loginAuth?.(sessionData);
-      navigation.navigate("Main");
     } catch (e) {
       console.error("Error during sign up:", e);
+      setError(e instanceof Error ? e.message : "Erorr during registration", e);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
   return (
     <CustomHeader authScreen={true}>
       <Image
