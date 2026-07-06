@@ -1,4 +1,4 @@
-import { getUserProfile, logoutUser } from "@/BackendComm/APIClient";
+import { getUserProfile } from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
 import authStorage from "@/BackendComm/authStorage";
 import { COLORS } from "@/src/constants/THEME";
@@ -11,12 +11,30 @@ import RootNavigator from "../src/navigation/RootNavigator";
 function NavigationGateKeeper() {
   const setChild = useBabyStore((s) => s.setChildren);
   const clearChildren = useBabyStore((s) => s.clearChildren);
-  const { session, isLoading } = useAuth();
+  const { session, isLoading, logoutAuth } = useAuth();
+
+  const isTokenExpired = (token: string): boolean => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      return true;
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
     const getUserData = async () => {
       if (isLoading) return;
+
+      if (session?.token && isTokenExpired(session.token)) {
+        console.log("[NavigationGateKeeper] Token expired");
+        Alert.alert("Session Expired", "Please log in again");
+        await logoutAuth();
+        clearChildren();
+        return;
+      }
 
       if (!session?.userId) {
         console.log("[NavigationGateKeeper] No valid session, clearing baby");
@@ -61,7 +79,7 @@ function NavigationGateKeeper() {
         if (axios.isAxiosError(e)) {
           if (e.response?.status === 401) {
             Alert.alert("User session expired, please log in again");
-            logoutUser();
+            await logoutAuth();
           }
         }
         console.error("[NavigationGateKeeper] Error message:", e);
@@ -72,7 +90,7 @@ function NavigationGateKeeper() {
     return () => {
       isMounted = false;
     };
-  }, [clearChildren, isLoading, setChild]);
+  }, [clearChildren, isLoading, setChild, logoutAuth, session]);
 
   if (isLoading) {
     return (

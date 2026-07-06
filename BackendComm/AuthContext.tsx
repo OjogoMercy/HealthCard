@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     restoreSession();
   }, []);
+
   useEffect(() => {
     registerLogoutHandler(logoutAuth);
   }, []);
@@ -71,6 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(updatedSession);
     }
   };
+
   return (
     <AuthContext.Provider
       value={{ session, isLoading, loginAuth, logoutAuth, updateSession }}
@@ -79,9 +81,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
-// to update a session
-
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

@@ -1,7 +1,8 @@
+// APIClient.ts
 import axios from "axios";
 import authStorage from "./authStorage";
 
-const BASE_URL = "https://backend-healthcard.onrender.com";
+const BASE_URL = "https://backend-healthCard.onrender.com";
 const apiClient = axios.create({
   baseURL: BASE_URL,
   timeout: 5000,
@@ -9,6 +10,7 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
 interface RegisterPayload {
   userName: string;
   email: string;
@@ -21,18 +23,36 @@ export interface LoginResponse {
   token?: string;
   userId?: string;
 }
+
 let logoutHandler: (() => void) | null = null;
 
 export const registerLogoutHandler = (handler: () => void) => {
   logoutHandler = handler;
 };
-// interceptors to attatch the tokem to eevery request if in storage
+
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const currentTime = Math.floor(Date.now() / 1000);
+    return payload.exp < currentTime;
+  } catch (error) {
+    return true;
+  }
+};
+
 apiClient.interceptors.request.use(
   async (config) => {
     try {
       const data = await authStorage.getUserData();
       const token = data?.token;
+
       if (token && config.headers) {
+        if (isTokenExpired(token)) {
+          if (logoutHandler) {
+            logoutHandler();
+          }
+          return Promise.reject(new Error("Token expired"));
+        }
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (e) {
@@ -48,7 +68,6 @@ apiClient.interceptors.request.use(
   },
 );
 
-// auth functions
 export const registerUser = async (userData: RegisterPayload) => {
   const response = await apiClient.post("/api/register", userData);
   return response.data;
@@ -60,9 +79,7 @@ export const loginUser = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await apiClient.post("/api/login", { email, password });
-
     console.log("[API] Login success!");
-
     return response.data;
   } catch (error: any) {
     console.error("[API] Login error:", error);
@@ -82,6 +99,7 @@ export const loginUser = async (
 export const logoutUser = async () => {
   await authStorage.clearUserData();
 };
+
 export const getUserProfile = async (userId: string) => {
   const response = await apiClient.get("/api/profile");
   console.log("response for user profile", response.data);
@@ -90,7 +108,7 @@ export const getUserProfile = async (userId: string) => {
   }
   return response.data;
 };
-// endpoints for children
+
 export const createChild = async (
   name: string,
   dateOfBirth: Date,
@@ -110,7 +128,6 @@ export const getChildren = async (userId: string) => {
     throw new Error("User ID is required to fetch profile");
   }
   const response = await apiClient.get(`/api/children`);
-
   return response.data;
 };
 
@@ -126,7 +143,6 @@ export const getGrowthRecords = async (childId: string, userId: string) => {
   return response.data;
 };
 
-// endpoints for innumisation
 export const createImmunisation = async (
   vaccineId: string,
   dueDate: Date,
@@ -152,6 +168,7 @@ export const deleteImmunisation = async (immunisationId: string) => {
   );
   return response.data;
 };
+
 export const getImmunisationsByChild = async (
   childId: string,
   userId: string,
@@ -160,7 +177,6 @@ export const getImmunisationsByChild = async (
     throw new Error(" ID is required to fetch immunisations");
   }
   const response = await apiClient.get(`/api/children/immunisations`);
-
   return response.data;
 };
 
@@ -181,7 +197,6 @@ export const updateImmunisation = async (
 
 apiClient.interceptors.response.use(
   (response) => response,
-
   async (error) => {
     if (error.response?.status === 401 && logoutHandler) {
       logoutHandler();
@@ -193,4 +208,5 @@ apiClient.interceptors.response.use(
     return Promise.reject(new Error(message));
   },
 );
+
 export default apiClient;

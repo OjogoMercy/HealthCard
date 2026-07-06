@@ -65,4 +65,5 @@ const authStorage = {
   getUserData,
   clearUserData,
 };
+
 export default authStorage;
