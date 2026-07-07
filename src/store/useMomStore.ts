@@ -1,9 +1,9 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface MomProfile {
-  fullName: string;
+  userName: string;
   email: string;
   phone: string;
   photoUri?: string;
@@ -15,6 +15,7 @@ interface MomStore {
   updateMom: (partial: Partial<MomProfile>) => void;
   clearMom: () => void;
 }
+
 export const useMomStore = create<MomStore>()(
   persist(
     (set, get) => ({
@@ -38,6 +39,6 @@ export const useMomStore = create<MomStore>()(
       partialize: (state) => ({
         mom: state.mom,
       }),
-    }
-  )
+    },
+  ),
 );
