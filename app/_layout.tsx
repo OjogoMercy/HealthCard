@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
 import authStorage from "@/BackendComm/authStorage";
 import { COLORS } from "@/src/constants/THEME";
 import { useBabyStore } from "@/src/store/useBabyStore";
+import { useMomStore } from "@/src/store/useMomStore";
 import axios from "axios";
 import { useEffect } from "react";
 import { ActivityIndicator, Alert, View } from "react-native";
@@ -11,6 +12,7 @@ import RootNavigator from "../src/navigation/RootNavigator";
 function NavigationGateKeeper() {
   const setChild = useBabyStore((s) => s.setChildren);
   const clearChildren = useBabyStore((s) => s.clearChildren);
+  const setMom = useMomStore((s) => s.setMom);
   const { session, isLoading, logoutAuth } = useAuth();
 
   const isTokenExpired = (token: string): boolean => {
@@ -67,6 +69,7 @@ function NavigationGateKeeper() {
           );
         }
         const profile = UserData.profile;
+
         if (profile.children && profile.children.length > 0) {
           setChild(profile.children);
           console.log("child data stored successfully");
