@@ -1,4 +1,4 @@
-import { createChild } from "@/BackendComm/APIClient";
+import { createChild, logoutUser } from "@/BackendComm/APIClient";
 import CustomInput from "@/src/components/CustomInput";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapScrollView from "@/src/components/WrapScrollView";
@@ -66,7 +66,7 @@ const MomProfile = () => {
           onPress: () => {
             clearMom();
             clearBaby();
-            navigation.navigate("Home");
+            logoutUser();
           },
         },
       ],

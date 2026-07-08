@@ -5,8 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 export interface MomProfile {
   userName: string;
   email: string;
-  phone: string;
-  photoUri?: string;
+  userId: string;
 }
 
 interface MomStore {

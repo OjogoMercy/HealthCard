@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
 import { general } from "@/src/constants/General";
+import { useMomStore } from "@/src/store/useMomStore";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -34,6 +35,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stageIndex, setStageIndex] = useState(Number);
+  const setMom = useMomStore((s) => s.setMom);
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -131,6 +133,12 @@ const SignUp = () => {
         email: email.trim(),
         userName: Username.trim(),
       };
+      setMom({
+        userName: Username.trim(),
+        email: email.trim(),
+        userId: loginResponse.userId,
+      });
+
       setStageIndex(2);
       await loginAuth?.(sessionData);
       await wait(MIN_STAGE_MS);
