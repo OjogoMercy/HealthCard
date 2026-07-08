@@ -1,3 +1,4 @@
+import { logoutUser } from "@/BackendComm/APIClient";
 import WrapView from "@/src/components/WrapView";
 import { images } from "@/src/constants/images";
 import {
@@ -72,7 +73,7 @@ const ProfileScreen = () => {
           style: "destructive",
           onPress: () => {
             clearBaby();
-            navigation.navigate("Home");
+            logoutUser();
           },
         },
       ],

@@ -104,9 +104,12 @@ export const loginUser = async (
     };
   }
 };
-
-export const logoutUser = async () => {
-  await authStorage.clearUserData();
+export const logoutUser = () => {
+  if (logoutHandler) {
+    logoutHandler();
+  } else {
+    console.warn("[apiClient] No logout handler registered yet");
+  }
 };
 
 export const getUserProfile = async (userId: string) => {
