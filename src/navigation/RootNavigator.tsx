@@ -20,8 +20,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator({
   isAuthenticated,
+  hasOnboarded,
 }: {
   isAuthenticated: boolean;
+  hasOnboarded: boolean;
 }) {
   return (
     <NavigationContainer>
@@ -30,6 +32,9 @@ export default function RootNavigator({
           headerShown: false,
           animation: "slide_from_right",
         }}
+        initialRouteName={
+          isAuthenticated ? "Main" : hasOnboarded ? "Auth" : "Splash"
+        }
       >
         {isAuthenticated ? (
           <>

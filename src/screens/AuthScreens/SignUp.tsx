@@ -1,5 +1,6 @@
 import { loginUser, registerUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
+import { getIfOnboarded } from "@/BackendComm/authStorage";
 import { general } from "@/src/constants/General";
 import { useMomStore } from "@/src/store/useMomStore";
 import { useNavigation } from "@react-navigation/native";
@@ -138,6 +139,7 @@ const SignUp = () => {
         email: email.trim(),
         userId: loginResponse.userId,
       });
+      getIfOnboarded();
 
       setStageIndex(2);
       await loginAuth?.(sessionData);

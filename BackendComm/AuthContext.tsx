@@ -21,6 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<UserSession | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
 
   useEffect(() => {
     const restoreSession = async () => {
@@ -29,6 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const storedSession = await authStorage.getUserData();
         if (storedSession) {
           setSession(storedSession);
+          const onBoarded = await authStorage.getIfOnboarded();
+          setIsOnboarded(onBoarded);
         }
       } catch (error) {
         console.error("Failed to restore auth session on boot:", error);

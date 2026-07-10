@@ -7,6 +7,15 @@ export interface UserSession {
   email: string;
   userName: string;
 }
+const ONBOARDED_KEY = "healthCard-has-onboarder";
+
+export const hasOnboarded = async () => {
+  await AsyncStorage.setItem(ONBOARDED_KEY, "true");
+};
+export const getIfOnboarded = async (): Promise<boolean> => {
+  const value = await AsyncStorage.getItem(ONBOARDED_KEY);
+  return value === "true";
+};
 
 const storeUserData = async (userData: UserSession) => {
   try {
@@ -67,6 +76,7 @@ const authStorage = {
   storeUserData,
   getUserData,
   clearUserData,
+  getIfOnboarded,
 };
 
 export default authStorage;
