@@ -18,6 +18,7 @@ interface RegisterPayload {
 }
 
 export interface LoginResponse {
+  userName: string;
   status: "success" | "error";
   message: string;
   token?: string;

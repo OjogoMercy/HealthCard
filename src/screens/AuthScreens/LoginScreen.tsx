@@ -2,6 +2,7 @@ import { loginUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
 import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
+import { useMomStore } from "@/src/store/useMomStore";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
@@ -23,6 +24,7 @@ const LoginScreen = () => {
   const loginAuth = useAuth()?.loginAuth;
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const setMom = useMomStore((s) => s.setMom);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -38,14 +40,12 @@ const LoginScreen = () => {
 
       console.log("[LoginScreen] Response received:", response);
       if (response.status === "error") {
-        console.log("[LoginScreen] Backend error:", response.message);
         Alert.alert("Login Failed", response.message);
         setError(response.message);
         setIsLoading(false);
         return;
       }
       if (!response.token || !response.userId) {
-        console.error("[LoginScreen] Missing token or user ID ");
         Alert.alert("Error", "Invalid response from server");
         return;
       }
@@ -54,6 +54,12 @@ const LoginScreen = () => {
         token: response.token,
         userId: response.userId,
         email: email,
+        userName: response.userName,
+      });
+      setMom({
+        userName: response.userName,
+        email: email,
+        userId: response.userId,
       });
 
       console.log("[LoginScreen] Login successful for user:", response.userId);

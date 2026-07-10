@@ -72,13 +72,12 @@ const HomeScreen = () => {
         >
           <Image source={images.mom} style={styles.profileImage} />
         </TouchableOpacity>
-        <ThemedText type="text2" style={{ marginRight: "auto" }}>
+        <ThemedText type="text2bold" style={{ marginRight: "auto" }}>
           {" "}
           Hey{" "}
           <ThemedText type="text2bold" style={{ color: COLORS.accent }}>
-            {mom?.fullName ?? "Mummy"}
+            {mom?.userName ?? "Mummy"}
           </ThemedText>
-          😉
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
           <Ionicons name="notifications" size={24} color={COLORS.primary} />
@@ -88,20 +87,33 @@ const HomeScreen = () => {
       {!hasBaby && (
         <View style={styles.emptyState}>
           <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-            Welcome to HealthCard
+            When did your baby last get vaccinated?
           </ThemedText>
-          <ThemedText>Track your baby's vaccines easily</ThemedText>
+          <ThemedText type="text4">
+            HealthCard keeps every dose recorded, and reminds you before you
+            miss the next one.
+          </ThemedText>
 
           <View style={styles.mascotContainer}>
             <Image style={styles.mascotImage} source={images.mascot} />
           </View>
 
           <View style={{ alignItems: "center", width: "100%" }}>
-            <ThemedText type="text3bold">
+            <ThemedText
+              type="text3bold"
+              style={{ marginBottom: SIZES.padding / 2 }}
+            >
               Let's set up your baby's profile
             </ThemedText>
-            <ThemedText type="text4gray" style={{ marginVertical: 5 }}>
-              So we can track vaccines and reminders
+            <ThemedText
+              type="text5"
+              style={{
+                marginBottom: -10,
+                textAlign: "center",
+                color: COLORS.gray,
+              }}
+            >
+              Takes less than a minute
             </ThemedText>
             <PrimaryButton
               title="Add Baby Profile"

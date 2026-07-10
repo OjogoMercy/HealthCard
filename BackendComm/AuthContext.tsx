@@ -1,3 +1,4 @@
+import { useMomStore } from "@/src/store/useMomStore";
 import React, {
   createContext,
   ReactNode,
@@ -57,6 +58,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setSession(null);
       await authStorage.clearUserData();
+      const clearMom = useMomStore.getState().clearMom;
+      clearMom();
     } catch (error) {
       console.error("Error clearing user session during logout:", error);
     } finally {
