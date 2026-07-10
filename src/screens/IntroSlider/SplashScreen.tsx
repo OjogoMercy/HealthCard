@@ -1,16 +1,12 @@
-import { useNavigation } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, StatusBar, StyleSheet, View } from "react-native";
+import { Image, StatusBar, View } from "react-native";
 import { images } from "../../constants/images";
 import { SCREEN_WIDTH } from "../../constants/THEME";
 
 const SplashScreen = () => {
-  const navigation = useNavigation();
   useEffect(() => {
     StatusBar.setBarStyle("dark-content");
-    setTimeout(() => {
-      navigation.navigate("First");
-    }, 1500);
+    setTimeout(() => {}, 1500);
   });
 
   return (
@@ -36,5 +32,3 @@ const SplashScreen = () => {
 };
 
 export default SplashScreen;
-
-const styles = StyleSheet.create({});
