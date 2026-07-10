@@ -38,7 +38,7 @@ const LoginScreen = () => {
     try {
       const response = await loginUser(email, password);
 
-      console.log("[LoginScreen] Response received:", response);
+      console.log("[LoginScreen] Response received:");
       if (response.status === "error") {
         Alert.alert("Login Failed", response.message);
         setError(response.message);
@@ -62,7 +62,7 @@ const LoginScreen = () => {
         userId: response.userId,
       });
 
-      console.log("[LoginScreen] Login successful for user:", response.userId);
+      console.log("[LoginScreen] Login successful for user:");
 
       navigation.reset({
         index: 0,

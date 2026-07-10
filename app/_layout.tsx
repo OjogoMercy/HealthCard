@@ -46,7 +46,6 @@ function NavigationGateKeeper() {
         console.log(session.userId);
         if (!isMounted) return;
         const UserData = await getUserProfile(session.userId);
-        console.log("userdaata", UserData);
 
         if (!UserData) {
           console.warn("[NavigationGateKeeper] No user data returned");
