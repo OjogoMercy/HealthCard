@@ -167,7 +167,7 @@ const MomProfile = () => {
       setGender(null);
       setFormActive(false);
 
-      Alert.alert("Child recor created successfully");
+      Alert.alert("Child record created successfully");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
     } finally {
@@ -179,23 +179,17 @@ const MomProfile = () => {
     <WrapScrollView screenTitle="Mom Profile">
       <View style={styles.profileCard}>
         <TouchableOpacity style={styles.photoContainer} activeOpacity={0.7}>
-          <Image
-            source={mom?.photoUri ? { uri: mom.photoUri } : images.mom}
-            style={styles.photo}
-          />
+          <Image source={images.mom} style={styles.photo} />
           <View style={styles.cameraIcon}>
             <Ionicons name="camera" size={16} color={COLORS.white} />
           </View>
         </TouchableOpacity>
 
         <ThemedText type="text2bold" style={styles.name}>
-          {mom?.fullName ?? "Your Name"}
+          {mom?.userName}
         </ThemedText>
         <ThemedText type="text4" style={styles.subInfo}>
           {mom?.email ?? "email@example.com"}
-        </ThemedText>
-        <ThemedText type="text4" style={styles.subInfo}>
-          {mom?.phone ?? "Phone not set"}
         </ThemedText>
       </View>
 

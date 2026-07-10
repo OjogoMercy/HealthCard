@@ -15,7 +15,6 @@ interface AuthContextType {
   logoutAuth: () => Promise<void>;
   updateSession: (updates: Partial<UserSession>) => Promise<void>;
 }
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

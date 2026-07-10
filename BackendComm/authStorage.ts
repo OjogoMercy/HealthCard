@@ -1,3 +1,4 @@
+import { useMomStore } from "@/src/store/useMomStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface UserSession {
@@ -54,6 +55,8 @@ const getUserData = async () => {
 const clearUserData = async () => {
   try {
     await AsyncStorage.removeItem("User_Session");
+    const clearMom = useMomStore.getState().clearMom;
+    clearMom();
   } catch (e) {
     const message = e instanceof Error ? e.message : "error clearing user data";
     throw new Error(`STORAGE_DELETE_ERROR: ${message}`);
