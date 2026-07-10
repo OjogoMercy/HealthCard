@@ -28,14 +28,10 @@ export default function RootNavigator({
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          animation: "slide_from_right",
-        }}
-        initialRouteName={
-          isAuthenticated ? "Main" : hasOnboarded ? "Auth" : "Splash"
-        }
+        screenOptions={{ headerShown: false, animation: "slide_from_right" }}
+        initialRouteName="Splash"
       >
+        <Stack.Screen name="Splash" component={SplashScreen} />
         {isAuthenticated ? (
           <>
             <Stack.Screen name="Main" component={BottomTabNavigator} />
@@ -43,7 +39,6 @@ export default function RootNavigator({
           </>
         ) : (
           <>
-            <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="First" component={FirstScreen} />
             <Stack.Screen name="Auth" component={AuthNavigator} />
           </>

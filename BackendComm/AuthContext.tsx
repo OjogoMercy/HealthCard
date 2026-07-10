@@ -15,6 +15,7 @@ interface AuthContextType {
   loginAuth: (sessionData: UserSession) => Promise<void>;
   logoutAuth: () => Promise<void>;
   updateSession: (updates: Partial<UserSession>) => Promise<void>;
+  isOnboarded: boolean;
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
