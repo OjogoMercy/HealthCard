@@ -162,9 +162,6 @@ const MomProfile = () => {
     try {
       const newChild = await createChild(babyName.trim(), date, gender);
       setChildren([...children, newChild]);
-      setBabyName("");
-      setDate(new Date());
-      setGender(null);
       setFormActive(false);
 
       Alert.alert("Child record created successfully");

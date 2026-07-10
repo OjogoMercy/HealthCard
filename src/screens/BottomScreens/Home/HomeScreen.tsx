@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    marginBottom: SIZES.padding,
+    marginVertical: SIZES.padding / 2,
   },
   profileContainer: {
     borderRadius: SIZES.navTitle,
