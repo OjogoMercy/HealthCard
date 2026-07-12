@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { VaccineData } from "../constants/Database";
+import { useSyncQueueStore } from "./useQueusStore";
 
 export interface ChildProfile {
   id: string;
@@ -121,7 +122,7 @@ interface BabyStore {
   setChildren: (children: ChildProfile[]) => void;
   setActiveChild: (childId: string) => void;
   setCompletedIds: (ids: string[]) => void;
-  markVaccineDone: (vaccineId: string) => void;
+  markVaccineDone: (vaccineId: string, childId: string, dueDate: Date) => void;
   unMarkVaccine: (vaccineId: string) => void;
   clearChildren: () => void;
 
@@ -203,10 +204,9 @@ export const useBabyStore = create<BabyStore>()(
         });
       },
 
-      markVaccineDone: (vaccineId: string) => {
+      markVaccineDone: (vaccineId: string, childId: string, dueDate: Date) => {
         set((state) => {
           if (state.completedIds.includes(vaccineId)) return state;
-
           const newCompletedIds = [...state.completedIds, vaccineId];
           const updatedVaccines = state.currentVaccines.map((v) =>
             v.id === vaccineId ? { ...v, isDone: true } : v,
@@ -217,6 +217,8 @@ export const useBabyStore = create<BabyStore>()(
             currentVaccines: updatedVaccines,
           };
         });
+
+        useSyncQueueStore.getState().enqueue({ vaccineId, childId, dueDate });
       },
 
       unMarkVaccine: (vaccineId: string) => {

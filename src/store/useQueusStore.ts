@@ -7,7 +7,7 @@ interface PendingImmunisation {
   queueId: string;
   vaccineId: string;
   childId: string;
-  administeredDate: string;
+  dueDate: Date;
 }
 
 interface SyncQueueStore {
@@ -41,7 +41,7 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
             await createImmunisation({
               vaccineId: entry.vaccineId,
               childId: entry.childId,
-              dueDate: entry.administeredDate,
+              dueDate: entry.dueDate,
               userId: "",
             });
             // success — remove just this entry
