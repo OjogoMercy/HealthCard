@@ -138,7 +138,6 @@ export const useBabyStore = create<BabyStore>()(
       upcomingStage: null,
       completedIds: [],
 
-      // Called on login with children array from getUserProfile
       setChildren: (children: ChildProfile[]) => {
         const { activeChildId, completedIds } = get();
 
