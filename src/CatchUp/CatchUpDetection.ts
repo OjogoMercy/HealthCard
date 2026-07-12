@@ -58,9 +58,9 @@ export function hasOpenCatchupQuestions(
   );
 }
 
-export type approximateTime = "on_time" | "within_week" | "not_received";
+export type ApproximateTime = "on_time" | "within_week" | "not_received";
 
-export function returnApproximateTime(dueDate: Date, timing: approximateTime) {
+export function returnApproximateTime(dueDate: Date, timing: ApproximateTime) {
   if (timing === "not_received") return null;
   if (timing === "on_time") return dueDate;
   if (timing === "within_week") return addDays(3, dueDate);

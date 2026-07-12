@@ -117,6 +117,7 @@ interface BabyStore {
   upcomingStage: VaccineCategory | null;
 
   completedIds: string[];
+  declinedIds: string[];
 
   // Actions
   setChildren: (children: ChildProfile[]) => void;
@@ -125,6 +126,8 @@ interface BabyStore {
   markVaccineDone: (vaccineId: string, childId: string, dueDate: Date) => void;
   unMarkVaccine: (vaccineId: string) => void;
   clearChildren: () => void;
+  clearCatchUpState: () => void;
+  markVaccineDeclined: (vaccineId: string) => void;
 
   getActiveChild: () => ChildProfile | null;
 }
@@ -138,6 +141,7 @@ export const useBabyStore = create<BabyStore>()(
       currentVaccines: [],
       upcomingStage: null,
       completedIds: [],
+      declinedIds: [],
 
       setChildren: (children: ChildProfile[]) => {
         const { activeChildId, completedIds } = get();
@@ -211,15 +215,27 @@ export const useBabyStore = create<BabyStore>()(
           const updatedVaccines = state.currentVaccines.map((v) =>
             v.id === vaccineId ? { ...v, isDone: true } : v,
           );
+          const newDeclinedIds = state.declinedIds?.filter(
+            (id) => id !== vaccineId,
+          );
 
           return {
             completedIds: newCompletedIds,
             currentVaccines: updatedVaccines,
+            declinedIds: newDeclinedIds,
           };
         });
 
         useSyncQueueStore.getState().enqueue({ vaccineId, childId, dueDate });
       },
+      markVaccineDeclined: (vaccineId: string) => {
+        set((state) => {
+          if (state.declinedIds.includes(vaccineId)) return state;
+          return { declinedIds: [...state.declinedIds, vaccineId] };
+        });
+      },
+
+      clearCatchUpState: () => set({ declinedIds: [] }),
 
       unMarkVaccine: (vaccineId: string) => {
         set((state) => {
