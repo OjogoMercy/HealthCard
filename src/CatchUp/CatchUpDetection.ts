@@ -1,9 +1,20 @@
+const STAGE_OFFSET_DAYS: Record<string, number> = {
+  Birth: 0,
+  "6 Weeks": 42,
+  "10 Weeks": 70,
+  "14 Weeks": 98,
+  "6 Months": 182,
+  "9 Months": 273,
+  "12 Months": 365,
+  "15 Months": 456,
+  "9–13 Years": 3287,
+};
+
 export interface VaccineGroup {
   title: string;
-  offsetDays: number;
+  status: string;
   data: { id: string; name: string; [key: string]: any }[];
 }
-
 export interface OpenCatchupGroup {
   title: string;
   dueDate: Date;
@@ -27,7 +38,9 @@ export function openCatchUpGroups(
   const openedGroups: OpenCatchupGroup[] = [];
 
   for (const group of schedule) {
-    const dueDate = addDays(group.offsetDays, dob);
+    const offsetDays = STAGE_OFFSET_DAYS[group.title];
+    if (offsetDays === undefined) continue;
+    const dueDate = addDays(offsetDays, dob);
     if (dueDate > today) continue;
 
     const openVaccines = group.data.filter((v) => !answered.has(v.id));

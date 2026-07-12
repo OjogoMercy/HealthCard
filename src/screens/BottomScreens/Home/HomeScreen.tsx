@@ -56,11 +56,13 @@ const HomeScreen = () => {
   const upcomingStage = useBabyStore((s) => s.upcomingStage);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
   const mom = useMomStore((s) => s.mom);
+  const activeChildId = useBabyStore((s) => s.activeChildId);
 
   const hasBaby = !!baby;
   const progress = getProgressPercent(currentVaccines);
   const dueVaccines = currentVaccines.filter((v) => !v.isDone);
   const allDone = dueVaccines.length === 0 && currentVaccines.length > 0;
+  if (!activeChild) return;
 
   return (
     <CustomHeader title="Home" authScreen={false} tabScreen={true}>
@@ -250,7 +252,10 @@ const HomeScreen = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.markButton}
-                      onPress={() => markVaccineDone({vaccineId:item.id,childId:item.id,dueDate:})}
+                      onPress={() => {
+                        if (!activeChildId) return;
+                        markVaccineDone(item.id, activeChildId, new Date());
+                      }}
                     >
                       <ThemedText
                         type="text4"

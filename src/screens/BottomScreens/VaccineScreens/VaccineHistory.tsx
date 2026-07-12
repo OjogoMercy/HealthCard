@@ -41,7 +41,8 @@ const VaccineHistory = () => {
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
   const markVaccineUndone = useBabyStore((s) => s.unMarkVaccine);
-  const baby = useBabyStore((s) => s.baby);
+  const activeChild = useBabyStore((s) => s.getActiveChild);
+  const baby = activeChild();
 
   const [expandedStages, setExpandedStages] = useState<string[]>([
     currentStageTitle ?? "Birth",
