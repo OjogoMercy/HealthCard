@@ -1,6 +1,7 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { useMemo, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { COLORS } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 import { useBabyStore } from "../store/useBabyStore";
 import {
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   },
   laterText: { color: "#888", fontSize: 14 },
   continueButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

@@ -250,7 +250,7 @@ const HomeScreen = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.markButton}
-                      onPress={() => markVaccineDone(item.id)}
+                      onPress={() => markVaccineDone({vaccineId:item.id,childId:item.id,dueDate:})}
                     >
                       <ThemedText
                         type="text4"
