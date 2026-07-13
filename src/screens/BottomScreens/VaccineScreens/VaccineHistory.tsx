@@ -1,10 +1,12 @@
+import { useCatchupPrompt } from "@/src/CatchUp/UseCatchUpPrompt";
 import WrapScrollView from "@/src/components/WrapScrollView";
 import { VaccineData } from "@/src/constants/Database";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   SectionList,
@@ -42,6 +44,7 @@ const VaccineHistory = () => {
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
   const markVaccineUndone = useBabyStore((s) => s.unMarkVaccine);
   const activeChild = useBabyStore((s) => s.getActiveChild);
+  const babyId = useBabyStore((s) => s.activeChildId);
   const baby = activeChild();
 
   const [expandedStages, setExpandedStages] = useState<string[]>([
@@ -52,6 +55,21 @@ const VaccineHistory = () => {
       prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title],
     );
   };
+  const safeDate = baby?.dateOfBirth ? new Date(baby.dateOfBirth) : new Date();
+
+  const {
+    openGroups,
+    sheetVisible,
+    triggerIfFirstVisit,
+    dismiss,
+    onAllAnswered,
+  } = useCatchupPrompt(babyId || "", safeDate);
+  useFocusEffect(
+    useCallback(() => {
+      triggerIfFirstVisit();
+    }, [babyId]),
+  );
+
   // different sections
   const sections: StageSection[] = STAGE_ORDER.map((stageTitle) => {
     const found = VaccineData.find((v) => v.title === stageTitle);
