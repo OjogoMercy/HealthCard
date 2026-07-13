@@ -1,17 +1,19 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, Modal, TouchableWithoutFeedback, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import WrapView from "../components/WrapView";
 import { images } from "../constants/images";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../constants/THEME";
+import { COLORS, SCREEN_HEIGHT, SCREEN_WIDTH } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 import { useBabyStore } from "../store/useBabyStore";
 
 interface Props {
   openVaccineCount: number;
   onPress: () => void;
+  close: boolean;
+  setClose: () => void;
 }
-const PromptModal = ({ openVaccineCount, onPress }: Props) => {
+const PromptModal = ({ openVaccineCount, onPress, close, setClose }: Props) => {
   function getAgeLabel(dob: string): string {
     const birth = new Date(dob);
     const now = new Date();
@@ -43,19 +45,28 @@ const PromptModal = ({ openVaccineCount, onPress }: Props) => {
 
   return (
     <WrapView>
-      <ThemedText>
-        We noticed your baby is {getAgeLabel(baby.dateOfBirth)} Recording
-        earlier vaccinations helps us keep reminders accurate.
-      </ThemedText>
-      <Image
-        source={images.mascotCry}
-        style={{
-          width: SCREEN_WIDTH * 0.3,
-          height: SCREEN_HEIGHT * 0.25,
-          resizeMode: "contain",
-        }}
-      />
-      <PrimaryButton title="Continue" onPress={onPress} />
+      <Modal onRequestClose={() => setClose} visible={close}>
+        <TouchableWithoutFeedback
+          onPress={setClose}
+          style={{ flex: 1, backgroundColor: COLORS.opacity }}
+        >
+          <View style={{ height: SCREEN_HEIGHT * 0.5, width: "100%" }}>
+            <ThemedText>
+              We noticed your baby is {getAgeLabel(baby.dateOfBirth)} Recording
+              earlier vaccinations helps us keep reminders accurate.
+            </ThemedText>
+            <Image
+              source={images.mascotCry}
+              style={{
+                width: SCREEN_WIDTH * 0.3,
+                height: SCREEN_HEIGHT * 0.25,
+                resizeMode: "contain",
+              }}
+            />
+            <PrimaryButton title="Continue" onPress={onPress} />
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </WrapView>
   );
 };

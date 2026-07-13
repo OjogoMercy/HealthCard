@@ -1,3 +1,5 @@
+import CatchupBottomSheet from "@/src/CatchUp/CatchupBottomSheet";
+import PromptModal from "@/src/CatchUp/PromptModal";
 import { useCatchupPrompt } from "@/src/CatchUp/UseCatchUpPrompt";
 import WrapScrollView from "@/src/components/WrapScrollView";
 import { VaccineData } from "@/src/constants/Database";
@@ -46,6 +48,8 @@ const VaccineHistory = () => {
   const activeChild = useBabyStore((s) => s.getActiveChild);
   const babyId = useBabyStore((s) => s.activeChildId);
   const baby = activeChild();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const [expandedStages, setExpandedStages] = useState<string[]>([
     currentStageTitle ?? "Birth",
@@ -55,7 +59,7 @@ const VaccineHistory = () => {
       prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title],
     );
   };
-  const safeDate = baby?.dateOfBirth ? new Date(baby.dateOfBirth) : new Date();
+  const safeDate = baby?.dateOfBirth ? new Date(baby.dateOfBirth) : null;
 
   const {
     openGroups,
@@ -63,11 +67,14 @@ const VaccineHistory = () => {
     triggerIfFirstVisit,
     dismiss,
     onAllAnswered,
+    openVaccineCount,
   } = useCatchupPrompt(babyId || "", safeDate);
   useFocusEffect(
     useCallback(() => {
-      triggerIfFirstVisit();
-    }, [babyId]),
+      if (babyId && safeDate) {
+        triggerIfFirstVisit();
+      }
+    }, [babyId, safeDate]),
   );
 
   // different sections
@@ -342,6 +349,22 @@ const VaccineHistory = () => {
             <View style={styles.sectionFooter} />
           ) : null
         }
+      />
+      {babyId && (
+        <PromptModal
+          openVaccineCount={openVaccineCount}
+          setClose={() => setModalVisible(false)}
+          close={modalVisible}
+          onPress={() => setVisible(true)}
+        />
+      )}
+      <CatchupBottomSheet
+        groups={openGroups}
+        dob={safeDate}
+        childId={babyId || ""}
+        visible={sheetVisible}
+        onDismiss={dismiss}
+        onAllAnswered={onAllAnswered}
       />
     </WrapScrollView>
   );

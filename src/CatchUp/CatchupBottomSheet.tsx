@@ -153,7 +153,6 @@ export default function CatchupBottomSheet({
                 },
               ]}
             >
-              {/* Drag handle */}
               <View
                 {...panResponder.panHandlers}
                 style={styles.dragHandleContainer}
