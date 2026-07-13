@@ -25,13 +25,20 @@ export default function RootNavigator({
   isAuthenticated: boolean;
   hasOnboarded: boolean;
 }) {
+  const getInitialRoute = () => {
+    if (!hasOnboarded) return "First";
+    if (!isAuthenticated) return "Auth";
+    return "Splash";
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false, animation: "slide_from_right" }}
-        initialRouteName="Splash"
+        initialRouteName={getInitialRoute()}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
+
         {isAuthenticated ? (
           <>
             <Stack.Screen name="Main" component={BottomTabNavigator} />

@@ -22,7 +22,6 @@ function NavigationGateKeeper() {
       return true;
     }
   };
-
   useEffect(() => {
     let isMounted = true;
     const getUserData = async () => {
