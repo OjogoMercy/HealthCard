@@ -7,7 +7,7 @@ import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
@@ -351,21 +351,26 @@ const VaccineHistory = () => {
         }
       />
       {babyId && (
-        <PromptModal
-          openVaccineCount={openVaccineCount}
-          setClose={() => setModalVisible(false)}
-          close={modalVisible}
-          onPress={() => setVisible(true)}
-        />
+        <>
+          <PromptModal
+            openVaccineCount={openVaccineCount}
+            setClose={() => setModalVisible(false)}
+            close={modalVisible}
+            onPress={() => {
+              setModalVisible(false);
+              setVisible(true);
+            }}
+          />
+          <CatchupBottomSheet
+            groups={openGroups}
+            dob={safeDate}
+            childId={babyId || ""}
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            onAllAnswered={onAllAnswered}
+          />
+        </>
       )}
-      <CatchupBottomSheet
-        groups={openGroups}
-        dob={safeDate}
-        childId={babyId || ""}
-        visible={sheetVisible}
-        onDismiss={dismiss}
-        onAllAnswered={onAllAnswered}
-      />
     </WrapScrollView>
   );
 };
