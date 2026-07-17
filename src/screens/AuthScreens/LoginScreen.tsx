@@ -1,5 +1,6 @@
 import { loginUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
+import { getIfOnboarded } from "@/BackendComm/authStorage";
 import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { useMomStore } from "@/src/store/useMomStore";
@@ -61,6 +62,7 @@ const LoginScreen = () => {
         email: email,
         userId: response.userId,
       });
+      await getIfOnboarded();
 
       console.log("[LoginScreen] Login successful for user:");
 

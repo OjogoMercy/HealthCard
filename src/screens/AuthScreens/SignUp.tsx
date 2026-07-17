@@ -139,7 +139,7 @@ const SignUp = () => {
         email: email.trim(),
         userId: loginResponse.userId,
       });
-      getIfOnboarded();
+      await getIfOnboarded();
 
       setStageIndex(2);
       await loginAuth?.(sessionData);
