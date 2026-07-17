@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, PanResponder, StyleSheet, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { COLORS } from "../constants/THEME";
 import { ToastMessage } from "./ToastContext";
 
 interface Props {
@@ -9,7 +10,10 @@ interface Props {
   onDismiss: () => void;
 }
 
-const VARIANT_STYLES: Record<ToastMessage["variant"], { bg: string; icon: string }> = {
+const VARIANT_STYLES: Record<
+  ToastMessage["variant"],
+  { bg: string; icon: string }
+> = {
   success: { bg: "#2E7D32", icon: "✓" },
   error: { bg: "#C62828", icon: "✕" },
   warning: { bg: "#B26A00", icon: "!" },
@@ -30,8 +34,16 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(translateY, { toValue: 0, duration: 250, useNativeDriver: true }),
-      Animated.timing(opacity, { toValue: 1, duration: 250, useNativeDriver: true }),
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }),
     ]).start();
 
     dismissTimer.current = setTimeout(() => handleDismiss(), toast.duration);
@@ -44,8 +56,16 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
   const handleDismiss = () => {
     if (dismissTimer.current) clearTimeout(dismissTimer.current);
     Animated.parallel([
-      Animated.timing(translateY, { toValue: -100, duration: 200, useNativeDriver: true }),
-      Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+      Animated.timing(translateY, {
+        toValue: -100,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
     ]).start(() => onDismiss());
   };
 
@@ -59,7 +79,10 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
         if (gesture.dy < -20) {
           handleDismiss();
         } else {
-          Animated.spring(translateY, { toValue: 0, useNativeDriver: true }).start();
+          Animated.spring(translateY, {
+            toValue: 0,
+            useNativeDriver: true,
+          }).start();
         }
       },
     }),
@@ -72,13 +95,15 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
         styles.toast,
         {
           top: topOffset,
-          backgroundColor: variantStyle.bg,
+          borderColor: variantStyle.bg,
           opacity,
           transform: [{ translateY }],
         },
       ]}
     >
-      <Text style={styles.icon}>{variantStyle.icon}</Text>
+      <Text style={[styles.icon, { color: variantStyle.bg }]}>
+        {variantStyle.icon}
+      </Text>
       <Text style={styles.message} numberOfLines={2}>
         {toast.message}
       </Text>
@@ -102,9 +127,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 6,
+    backgroundColor: COLORS.primary,
+    borderWidth: 1,
   },
   icon: {
-    color: "#FFF",
     fontWeight: "700",
     fontSize: 14,
     width: 20,

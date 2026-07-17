@@ -1,24 +1,18 @@
 import { loginUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
 import { getIfOnboarded } from "@/BackendComm/authStorage";
+import { useToast } from "@/src/components/ToastContext";
 import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { useMomStore } from "@/src/store/useMomStore";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 import CustomHeader from "../../components/CustomHeader";
 import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
 import { ThemedText } from "../../constants/ThemedText";
-import { useToast } from "@/src/components/ToastContext";
 const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = React.useState("");
@@ -27,6 +21,7 @@ const LoginScreen = () => {
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setMom = useMomStore((s) => s.setMom);
+    const { showToast } = useToast();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -36,20 +31,19 @@ const LoginScreen = () => {
 
     setIsLoading(true);
     setError(null);
-    const {showToast }= useToast()
 
     try {
       const response = await loginUser(email, password);
 
       console.log("[LoginScreen] Response received:");
       if (response.status === "error") {
-       showToast("Login failed"+ response.message, "error")
+        showToast("Login failed" + response.message, "error");
         setError(response.message);
         setIsLoading(false);
         return;
       }
       if (!response.token || !response.userId) {
-     showToast("Invalid response from server", "error")
+        showToast("Invalid response from server", "error");
         return;
       }
       console.log("[LoginScreen] Storing session...");
@@ -59,7 +53,7 @@ const LoginScreen = () => {
         email: email,
         userName: response.userName,
       });
-      showToast("Logging you in...", "success")
+      showToast("Logging you in...", "success");
       setMom({
         userName: response.userName,
         email: email,
@@ -82,13 +76,13 @@ const LoginScreen = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //       <ActivityIndicator size="large" color={COLORS.primary} />
+  //     </View>
+  //   );
+  // }
   return (
     <CustomHeader authScreen={true}>
       <Image
@@ -127,7 +121,7 @@ const LoginScreen = () => {
         >
           Forgot Password?
         </ThemedText>
-        <PrimaryButton title="Login" onPress={handleLogin} />
+        <PrimaryButton title="Login" onPress={handleLogin} loading={loading} />
       </View>
 
       <ThemedText

@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   disabledStyle: {
-    backgroundColor: COLORS.secondary,
+    opacity:0.6
   },
 });

@@ -7,6 +7,7 @@ import { useBabyStore } from "@/src/store/useBabyStore";
 import axios from "axios";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import RootNavigator from "../src/navigation/RootNavigator";
 
 function NavigationGateKeeper() {
@@ -109,10 +110,12 @@ function NavigationGateKeeper() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <NavigationGateKeeper />
-      </ToastProvider>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <NavigationGateKeeper />
+        </ToastProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
