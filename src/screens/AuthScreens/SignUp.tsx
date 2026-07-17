@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "@/BackendComm/APIClient";
 import { useAuth } from "@/BackendComm/AuthContext";
 import { getIfOnboarded } from "@/BackendComm/authStorage";
+import { useToast } from "@/src/components/ToastContext";
 import { general } from "@/src/constants/General";
 import { useMomStore } from "@/src/store/useMomStore";
 import { useNavigation } from "@react-navigation/native";
@@ -64,6 +65,7 @@ const SignUp = () => {
     inputRange: [0, 1],
     outputRange: ["0%", "100%"],
   });
+  const { showToast } = useToast();
 
   const handleSignUp = async () => {
     try {
@@ -96,7 +98,7 @@ const SignUp = () => {
       if (!registerResponse || registerResponse.status >= 400) {
         const errorMsg = registerResponse?.message || "Registration failed";
         setError(errorMsg);
-        Alert.alert("Registration Error", errorMsg);
+        showToast(errorMsg, "error");
         return;
       }
       setStageIndex(1);
@@ -116,18 +118,20 @@ const SignUp = () => {
         const errorMsg =
           loginResponse.message || "Login failed after registration";
         setError(errorMsg);
-        Alert.alert("Login Failed", errorMsg);
+        showToast(errorMsg, "error");
         return;
       }
 
       // Verify login data
       if (!loginResponse.token || !loginResponse.userId) {
         setError("Invalid session data received");
-        Alert.alert("Error", "Invalid session data received");
+        console.log("Error", "Invalid session data received");
         return;
       }
 
       // Save session
+      showToast("Registration Successful", "success");
+
       const sessionData = {
         token: loginResponse.token,
         userId: loginResponse.userId,
@@ -139,6 +143,7 @@ const SignUp = () => {
         email: email.trim(),
         userId: loginResponse.userId,
       });
+      showToast("Setting up your account", "success");
       await getIfOnboarded();
 
       setStageIndex(2);

@@ -18,6 +18,7 @@ import CustomInput from "../../components/CustomInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import { COLORS, SCREEN_WIDTH, SIZES } from "../../constants/THEME";
 import { ThemedText } from "../../constants/ThemedText";
+import { useToast } from "@/src/components/ToastContext";
 const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const [email, setEmail] = React.useState("");
@@ -35,19 +36,20 @@ const LoginScreen = () => {
 
     setIsLoading(true);
     setError(null);
+    const {showToast }= useToast()
 
     try {
       const response = await loginUser(email, password);
 
       console.log("[LoginScreen] Response received:");
       if (response.status === "error") {
-        Alert.alert("Login Failed", response.message);
+       showToast("Login failed"+ response.message, "error")
         setError(response.message);
         setIsLoading(false);
         return;
       }
       if (!response.token || !response.userId) {
-        Alert.alert("Error", "Invalid response from server");
+     showToast("Invalid response from server", "error")
         return;
       }
       console.log("[LoginScreen] Storing session...");
@@ -57,6 +59,7 @@ const LoginScreen = () => {
         email: email,
         userName: response.userName,
       });
+      showToast("Logging you in...", "success")
       setMom({
         userName: response.userName,
         email: email,

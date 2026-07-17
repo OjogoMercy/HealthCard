@@ -1,17 +1,19 @@
 import { getUserProfile } from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
 import authStorage, { hasOnboarded } from "@/BackendComm/authStorage";
+import { ToastProvider, useToast } from "@/src/components/ToastContext";
 import { COLORS } from "@/src/constants/THEME";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import axios from "axios";
 import { useEffect } from "react";
-import { ActivityIndicator, Alert, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import RootNavigator from "../src/navigation/RootNavigator";
 
 function NavigationGateKeeper() {
   const setChild = useBabyStore((s) => s.setChildren);
   const clearChildren = useBabyStore((s) => s.clearChildren);
   const { session, isLoading, logoutAuth } = useAuth();
+  const { showToast } = useToast();
 
   const isTokenExpired = (token: string): boolean => {
     try {
@@ -29,7 +31,7 @@ function NavigationGateKeeper() {
 
       if (session?.token && isTokenExpired(session.token)) {
         console.log("[NavigationGateKeeper] Token expired");
-        Alert.alert("Session Expired", "Please log in again");
+        showToast("Session Expired , Please log in again", "error");
         await logoutAuth();
         clearChildren();
         return;
@@ -77,7 +79,7 @@ function NavigationGateKeeper() {
 
         if (axios.isAxiosError(e)) {
           if (e.response?.status === 401) {
-            Alert.alert("User session expired, please log in again");
+            showToast("User session expired, please log in again", "error");
             await logoutAuth();
           }
         }
@@ -108,7 +110,9 @@ function NavigationGateKeeper() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <NavigationGateKeeper />
+      <ToastProvider>
+        <NavigationGateKeeper />
+      </ToastProvider>
     </AuthProvider>
   );
 }

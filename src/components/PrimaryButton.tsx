@@ -1,6 +1,6 @@
 import * as Haptics from "expo-haptics";
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS, SIZES } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 
@@ -10,6 +10,7 @@ interface PrimaryButtonProps {
   style?: object;
   textStyle?: object;
   type?: "impact" | "success" | "error" | "light";
+  loading: boolean;
 }
 
 export default function PrimaryButton({
@@ -18,6 +19,7 @@ export default function PrimaryButton({
   style,
   textStyle,
   type = "light",
+  loading = false,
 }: PrimaryButtonProps) {
   const handlePress = () => {
     if (type === "impact") {
@@ -36,11 +38,16 @@ export default function PrimaryButton({
     <TouchableOpacity
       onPress={handlePress}
       activeOpacity={0.7}
-      style={[styles.button, style]}
+      style={[styles.button, style, loading && styles.disabledStyle]}
+      disabled={loading}
     >
-      <ThemedText type="text3white" style={[textStyle]}>
-        {title}
-      </ThemedText>
+      {loading ? (
+        <ActivityIndicator size={"small"} color={"white"} />
+      ) : (
+        <ThemedText type="text3white" style={[textStyle]}>
+          {title}
+        </ThemedText>
+      )}
     </TouchableOpacity>
   );
 }
@@ -55,5 +62,8 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderColor: COLORS.primary,
     borderWidth: 1,
+  },
+  disabledStyle: {
+    backgroundColor: COLORS.secondary,
   },
 });
