@@ -380,6 +380,7 @@ const VaccineHistory = () => {
             setClose={() => setModalVisible(false)}
             close={modalVisible}
             onPress={() => {
+              console.log("Button Pressed here");
               setModalVisible(false);
               setVisible(true);
             }}
