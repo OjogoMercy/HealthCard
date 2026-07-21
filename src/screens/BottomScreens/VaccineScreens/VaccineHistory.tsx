@@ -1,19 +1,26 @@
 import CatchupBottomSheet from "@/src/CatchUp/CatchupBottomSheet";
 import PromptModal from "@/src/CatchUp/PromptModal";
 import { useCatchupPrompt } from "@/src/CatchUp/UseCatchUpPrompt";
+import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapScrollView from "@/src/components/WrapScrollView";
-import { VaccineData } from "@/src/constants/Database";
+import WrapView from "@/src/components/WrapView";
+import { Vaccine, VaccineData } from "@/src/constants/Database";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
+import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
+  Modal,
+  Pressable,
   SectionList,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 interface VaccineRow {
@@ -50,7 +57,10 @@ const VaccineHistory = () => {
   const baby = activeChild();
   const [modalVisible, setModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  const [VaccineVisible, setVaccineVisible] = useState(false);
+  const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
+  const activeChildId = useBabyStore((s) => s.activeChildId);
+  const mom = useMomStore((s) => s.mom);
   const [expandedStages, setExpandedStages] = useState<string[]>([
     currentStageTitle ?? "Birth",
   ]);
@@ -105,18 +115,31 @@ const VaccineHistory = () => {
   const overallPercent = totalVaccines
     ? Math.round((totalDone / totalVaccines) * 100)
     : 0;
-  const handleMarkDone = (id: string, name: string) => {
-    Alert.alert(
-      "Mark as Administered?",
-      `Are you sure ${name} has been given to ${baby?.name ?? "your baby"}? Only mark this if the vaccine was actually administered.`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Yes, Mark as Done",
-          onPress: () => markVaccineDone(id),
-        },
-      ],
+  if (!baby || !mom) {
+    return (
+      <WrapView>
+        <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
+          No active baby found
+        </ThemedText>
+      </WrapView>
     );
+  }
+  const handleMarkDone = (item: Vaccine) => {
+    if (!activeChildId) return;
+    setSelectedVaccine(item);
+    setModalVisible(true);
+  };
+
+  const confirmMarkDone = () => {
+    if (!selectedVaccine || !activeChildId) return;
+    markVaccineDone(
+      selectedVaccine.title,
+      activeChildId,
+      new Date(),
+      mom.userId,
+    );
+    setModalVisible(false);
+    setSelectedVaccine(null);
   };
   const handleUnMark = (id: string, name: string) => {
     Alert.alert(
@@ -308,7 +331,7 @@ const VaccineHistory = () => {
               <TouchableOpacity
                 style={styles.markButton}
                 activeOpacity={0.7}
-                onPress={() => handleMarkDone(item.id, item.name)}
+                onPress={() => handleMarkDone(item)}
               >
                 <ThemedText
                   type="text4"
@@ -371,6 +394,46 @@ const VaccineHistory = () => {
           />
         </>
       )}
+      <Modal
+        visible={VaccineVisible}
+        onRequestClose={() => setVaccineVisible(false)}
+        transparent
+        animationType="fade"
+      >
+        <Pressable
+          style={styles.backDrop}
+          onPress={() => setVaccineVisible(false)}
+        >
+          <TouchableWithoutFeedback>
+            <View style={styles.modal}>
+              <ThemedText type="text3green">Mark as Administered?</ThemedText>
+              <ThemedText style={{ textAlign: "center" }}>
+                Are you sure {selectedVaccine?.name} has been given to{" "}
+                <Text style={{ fontWeight: "bold" }}>{baby?.name}?</Text>
+                Only mark this if the vaccine was actually administered.
+              </ThemedText>
+              <View style={{ width: "100%" }}>
+                <PrimaryButton
+                  title="Mark Completed"
+                  onPress={confirmMarkDone}
+                />
+                <PrimaryButton
+                  title="Cancel"
+                  onPress={() => {
+                    setVaccineVisible(false);
+                    setSelectedVaccine(null);
+                  }}
+                  style={{
+                    backgroundColor: "white",
+                    marginVertical: 0,
+                  }}
+                  textStyle={{ color: COLORS.primary }}
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Pressable>
+      </Modal>
     </WrapScrollView>
   );
 };
@@ -378,6 +441,21 @@ const VaccineHistory = () => {
 export default VaccineHistory;
 
 const styles = StyleSheet.create({
+  backDrop: {
+    backgroundColor: COLORS.opacity,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modal: {
+    backgroundColor: "white",
+    width: "80%",
+    height: "40%",
+    borderRadius: SIZES.padding,
+    padding: SIZES.padding,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   summaryCard: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.padding,

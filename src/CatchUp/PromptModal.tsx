@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Image,
-  Modal,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Image, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import WrapView from "../components/WrapView";
 import { images } from "../constants/images";
@@ -58,36 +52,46 @@ const PromptModal = ({ openVaccineCount, onPress, close, setClose }: Props) => {
       transparent
       statusBarTranslucent
     >
-      <TouchableWithoutFeedback
+      <Pressable
         onPress={setClose}
         style={{
           flex: 1,
           backgroundColor: COLORS.opacity,
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <View
           style={{
-            height: SCREEN_HEIGHT * 0.5,
-            width: "100%",
-            backgroundColor: "red",
-            padding: SIZES.padding,
+            height: SCREEN_HEIGHT * 0.55,
+            width: "80%",
+            backgroundColor: "white",
+            paddingHorizontal: SIZES.h2,
+            borderRadius: SIZES.h2,
+            paddingVertical: SIZES.h3,
+            alignItems: "center",
           }}
         >
-          <ThemedText>
-            We noticed your baby is {getAgeLabel(baby.dateOfBirth)} Recording
-            earlier vaccinations helps us keep reminders accurate.
+          <ThemedText style={{ textAlign: "center" }}>
+            We noticed your baby is{" "}
+            <Text style={{ fontWeight: "bold", color: COLORS.primary }}>
+              {getAgeLabel(baby.dateOfBirth)}.
+            </Text>{" "}
+            Recording earlier vaccinations helps us keep reminders accurate.
           </ThemedText>
           <Image
             source={images.mascotCry}
             style={{
-              width: SCREEN_WIDTH * 0.3,
+              width: SCREEN_WIDTH * 0.35,
               height: SCREEN_HEIGHT * 0.25,
               resizeMode: "contain",
             }}
           />
-          <PrimaryButton title="Continue" onPress={onPress} />
+          <View style={{ width: "100%" }}>
+            <PrimaryButton title="Continue" onPress={onPress} />
+          </View>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     </Modal>
   );
 };

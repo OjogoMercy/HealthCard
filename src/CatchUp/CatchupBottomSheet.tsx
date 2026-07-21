@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
   Modal,
   PanResponder,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -28,7 +30,6 @@ interface Props {
   onAllAnswered: () => void;
 }
 
-// local selection state per vaccine within the currently-open visit group
 type Selections = Record<string, ApproximateTime | undefined>;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -46,7 +47,7 @@ export default function CatchupBottomSheet({
   const [selections, setSelections] = useState<Selections>({});
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
   const markVaccineDeclined = useBabyStore((s) => s.markVaccineDeclined);
-  const [panY] = useState(new Animated.Value(0));
+  const panY = useRef(new Animated.Value(0)).current;
 
   const currentGroup = groups[groupIndex];
   const allSelected = useMemo(
@@ -56,7 +57,26 @@ export default function CatchupBottomSheet({
     [currentGroup, selections],
   );
 
-  // Pan responder for drag to dismiss
+  useEffect(() => {
+    if (visible) {
+      panY.setValue(0);
+    }
+  }, [visible, panY]);
+
+  const handleDismiss = useMemo(() => {
+    return () => {
+      Animated.spring(panY, {
+        toValue: BOTTOM_SHEET_HEIGHT,
+        useNativeDriver: true,
+        tension: 300,
+        friction: 30,
+      }).start(() => {
+        panY.setValue(0);
+        onDismiss();
+      });
+    };
+  }, [panY, onDismiss]);
+
   const panResponder = useMemo(
     () =>
       PanResponder.create({
@@ -82,22 +102,41 @@ export default function CatchupBottomSheet({
           }
         },
       }),
-    [panY],
+    [panY, handleDismiss],
   );
 
-  const handleDismiss = () => {
-    Animated.spring(panY, {
-      toValue: BOTTOM_SHEET_HEIGHT,
-      useNativeDriver: true,
-      tension: 300,
-      friction: 30,
-    }).start(() => {
-      panY.setValue(0);
-      onDismiss();
-    });
-  };
+  if (!visible) return null;
 
-  if (!visible || !currentGroup) return null;
+  if (!groups.length || !currentGroup) {
+    return (
+      <Modal
+        visible={visible}
+        transparent
+        animationType="slide"
+        onRequestClose={handleDismiss}
+        statusBarTranslucent
+      >
+        <TouchableWithoutFeedback onPress={handleDismiss}>
+          <View style={styles.overlay}>
+            <View style={styles.bottomSheet}>
+              <View style={styles.dragHandleContainer}>
+                <View style={styles.dragHandle} />
+              </View>
+              <View style={styles.container}>
+                <ThemedText type="text2bold">No vaccines available</ThemedText>
+                <TouchableOpacity
+                  style={styles.continueButton}
+                  onPress={handleDismiss}
+                >
+                  <Text style={styles.continueText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    );
+  }
 
   const selectTiming = (vaccineId: string, timing: ApproximateTime) => {
     setSelections((prev) => ({ ...prev, [vaccineId]: timing }));
@@ -121,8 +160,8 @@ export default function CatchupBottomSheet({
     if (groupIndex + 1 < groups.length) {
       setGroupIndex(groupIndex + 1);
     } else {
-      handleDismiss();
       onAllAnswered();
+      handleDismiss();
     }
   };
 
@@ -134,8 +173,11 @@ export default function CatchupBottomSheet({
       onRequestClose={handleDismiss}
       statusBarTranslucent
     >
-      <TouchableWithoutFeedback onPress={handleDismiss}>
-        <View style={styles.overlay}>
+      <Pressable onPress={handleDismiss}>
+        <ScrollView
+          style={styles.overlay}
+          contentContainerStyle={{ justifyContent: "flex-end" }}
+        >
           <TouchableWithoutFeedback>
             <Animated.View
               style={[
@@ -160,78 +202,86 @@ export default function CatchupBottomSheet({
                 <View style={styles.dragHandle} />
               </View>
 
-              <View style={styles.container}>
-                <ThemedText type="text2bold">
-                  {currentGroup.title} visit
-                </ThemedText>
-                <ThemedText type="text4gray">
-                  Were these vaccines given?
-                </ThemedText>
+              <ScrollView
+                style={styles.scrollContainer}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+              >
+                <View style={styles.container}>
+                  <ThemedText type="text2bold">
+                    {currentGroup.title} visit
+                  </ThemedText>
+                  <ThemedText type="text4gray">
+                    Were these vaccines given?
+                  </ThemedText>
 
-                {currentGroup.vaccines.map((vaccine) => (
-                  <View key={vaccine.id} style={styles.vaccineBlock}>
-                    <Text style={styles.vaccineName}>{vaccine.name}</Text>
+                  {currentGroup.vaccines.map((vaccine) => (
+                    <View key={vaccine.id} style={styles.vaccineBlock}>
+                      <Text style={styles.vaccineName}>{vaccine.name}</Text>
 
-                    <View style={styles.optionsRow}>
-                      {(
-                        [
-                          { key: "on_time", label: "Around that time" },
-                          { key: "within_week", label: "A bit later" },
-                          { key: "not_received", label: "Not received" },
-                        ] as { key: ApproximateTime; label: string }[]
-                      ).map((opt) => {
-                        const selected = selections[vaccine.id] === opt.key;
-                        return (
-                          <TouchableOpacity
-                            key={opt.key}
-                            style={[
-                              styles.optionPill,
-                              selected && styles.optionPillSelected,
-                            ]}
-                            onPress={() => selectTiming(vaccine.id, opt.key)}
-                          >
-                            <Text
+                      <View style={styles.optionsRow}>
+                        {(
+                          [
+                            { key: "on_time", label: "Around that time" },
+                            { key: "within_week", label: "A bit later" },
+                            { key: "not_received", label: "Not received" },
+                          ] as { key: ApproximateTime; label: string }[]
+                        ).map((opt) => {
+                          const isSelected = selections[vaccine.id] === opt.key;
+                          return (
+                            <TouchableOpacity
+                              key={opt.key}
                               style={[
-                                styles.optionLabel,
-                                selected && styles.optionLabelSelected,
+                                styles.optionPill,
+                                isSelected && styles.optionPillSelected,
                               ]}
+                              onPress={() => selectTiming(vaccine.id, opt.key)}
                             >
-                              {opt.label}
-                            </Text>
-                          </TouchableOpacity>
-                        );
-                      })}
+                              <Text
+                                style={[
+                                  styles.optionLabel,
+                                  isSelected && styles.optionLabelSelected,
+                                ]}
+                              >
+                                {opt.label}
+                              </Text>
+                            </TouchableOpacity>
+                          );
+                        })}
+                      </View>
                     </View>
+                  ))}
+
+                  <View style={styles.footer}>
+                    <TouchableOpacity onPress={handleDismiss}>
+                      <Text style={styles.laterText}>I'll do this later</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.continueButton,
+                        !allSelected && styles.continueButtonDisabled,
+                      ]}
+                      disabled={!allSelected}
+                      onPress={commitGroupAndAdvance}
+                    >
+                      <Text style={styles.continueText}>
+                        {groupIndex + 1 < groups.length
+                          ? "Next visit"
+                          : "Finish"}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
-                ))}
 
-                <View style={styles.footer}>
-                  <TouchableOpacity onPress={handleDismiss}>
-                    <Text style={styles.laterText}>I'll do this later</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[
-                      styles.continueButton,
-                      !allSelected && styles.continueButtonDisabled,
-                    ]}
-                    disabled={!allSelected}
-                    onPress={commitGroupAndAdvance}
-                  >
-                    <Text style={styles.continueText}>
-                      {groupIndex + 1 < groups.length ? "Next visit" : "Finish"}
-                    </Text>
-                  </TouchableOpacity>
+                  <Text style={styles.progress}>
+                    Visit {groupIndex + 1} of {groups.length}
+                  </Text>
                 </View>
-
-                <Text style={styles.progress}>
-                  Visit {groupIndex + 1} of {groups.length}
-                </Text>
-              </View>
+              </ScrollView>
             </Animated.View>
           </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
+        </ScrollView>
+      </Pressable>
     </Modal>
   );
 }
@@ -240,14 +290,18 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "flex-end",
   },
   bottomSheet: {
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    minHeight: BOTTOM_SHEET_HEIGHT,
     maxHeight: BOTTOM_SHEET_HEIGHT,
+  },
+  scrollContainer: {
+    maxHeight: BOTTOM_SHEET_HEIGHT,
+  },
+  scrollContent: {
+    paddingBottom: 20,
   },
   dragHandleContainer: {
     paddingTop: 12,
@@ -264,7 +318,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     gap: 16,
-    paddingBottom: 40,
   },
   vaccineBlock: {
     gap: 8,
@@ -283,15 +336,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#DDD",
+    borderColor: COLORS.gray4,
   },
   optionPillSelected: {
-    backgroundColor: "#378ADD",
-    borderColor: "#378ADD",
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
   },
   optionLabel: {
     fontSize: 13,
-    color: "#333",
+    color: COLORS.black,
   },
   optionLabelSelected: {
     color: "#FFF",
@@ -304,7 +357,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   laterText: {
-    color: "#888",
+    color: COLORS.gray,
     fontSize: 14,
   },
   continueButton: {
@@ -314,7 +367,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   continueButtonDisabled: {
-    backgroundColor: "#CCC",
+    backgroundColor: COLORS.gray4,
   },
   continueText: {
     color: "#FFF",
@@ -323,6 +376,6 @@ const styles = StyleSheet.create({
   progress: {
     textAlign: "center",
     fontSize: 12,
-    color: "#AAA",
+    color: COLORS.gray,
   },
 });
