@@ -254,7 +254,7 @@ const HomeScreen = () => {
                       style={styles.markButton}
                       onPress={() => {
                         if (!activeChildId) return;
-                        markVaccineDone(item.id, activeChildId, new Date());
+                        markVaccineDone(item.id, activeChildId, new Date(),mom?.userId);
                       }}
                     >
                       <ThemedText

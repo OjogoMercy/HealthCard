@@ -14,7 +14,7 @@ const VARIANT_STYLES: Record<
   ToastMessage["variant"],
   { bg: string; icon: string }
 > = {
-  success: { bg: "#2E7D32", icon: "✓" },
+  success: { bg: COLORS.primary, icon: "✓" },
   error: { bg: "#C62828", icon: "✕" },
   warning: { bg: "#B26A00", icon: "!" },
   info: { bg: "#37474F", icon: "i" },
@@ -95,7 +95,7 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
         styles.toast,
         {
           top: topOffset,
-          borderColor: variantStyle.bg,
+          // borderColor: variantStyle.bg,
           opacity,
           transform: [{ translateY }],
         },
@@ -104,7 +104,7 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
       <Text style={[styles.icon, { color: variantStyle.bg }]}>
         {variantStyle.icon}
       </Text>
-      <Text style={styles.message} numberOfLines={2}>
+      <Text style={[styles.message,{color:variantStyle.bg}]} numberOfLines={2}>
         {toast.message}
       </Text>
     </Animated.View>
@@ -122,13 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 6,
-    backgroundColor: COLORS.primary,
-    borderWidth: 1,
+    backgroundColor:'white'
   },
   icon: {
     fontWeight: "700",
@@ -137,7 +131,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   message: {
-    color: "#FFF",
     fontSize: 14,
     flex: 1,
   },

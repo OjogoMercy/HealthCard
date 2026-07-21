@@ -8,6 +8,7 @@ interface PendingImmunisation {
   vaccineId: string;
   childId: string;
   dueDate: Date;
+  userId:string
 }
 
 interface SyncQueueStore {

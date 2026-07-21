@@ -123,7 +123,7 @@ interface BabyStore {
   setChildren: (children: ChildProfile[]) => void;
   setActiveChild: (childId: string) => void;
   setCompletedIds: (ids: string[]) => void;
-  markVaccineDone: (vaccineId: string, childId: string, dueDate: Date) => void;
+  markVaccineDone: (vaccineId: string, childId: string, dueDate: Date,userId:string) => void;
   unMarkVaccine: (vaccineId: string) => void;
   clearChildren: () => void;
   clearCatchUpState: () => void;
@@ -208,7 +208,7 @@ export const useBabyStore = create<BabyStore>()(
         });
       },
 
-      markVaccineDone: (vaccineId: string, childId: string, dueDate: Date) => {
+      markVaccineDone: (vaccineId: string, childId: string, dueDate: Date, userId:string) => {
         set((state) => {
           if (state.completedIds.includes(vaccineId)) return state;
           const newCompletedIds = [...state.completedIds, vaccineId];
@@ -226,7 +226,10 @@ export const useBabyStore = create<BabyStore>()(
           };
         });
 
-        useSyncQueueStore.getState().enqueue({ vaccineId, childId, dueDate });
+        useSyncQueueStore.getState().enqueue({
+          vaccineId, childId, dueDate,
+          userId: userId
+        });
       },
       markVaccineDeclined: (vaccineId: string) => {
         set((state) => {
