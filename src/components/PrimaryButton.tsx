@@ -10,7 +10,7 @@ interface PrimaryButtonProps {
   style?: object;
   textStyle?: object;
   type?: "impact" | "success" | "error" | "light";
-  loading: boolean;
+  loading?: boolean;
 }
 
 export default function PrimaryButton({
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   disabledStyle: {
-    opacity:0.6
+    opacity: 0.6,
   },
 });

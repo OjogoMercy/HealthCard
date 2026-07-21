@@ -8,21 +8,24 @@ import {
 } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
-import { useBabyStore } from "@/src/store/useBabyStore";
+import { useBabyStore, Vaccine } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
+  Modal,
+  Pressable,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
-// helper functions
 const getAgeLabel = (dob: string): string => {
   const birth = new Date(dob);
   const now = new Date();
@@ -47,22 +50,46 @@ const getProgressPercent = (vaccines: { isDone: boolean }[]): number => {
 };
 
 const HomeScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
   const navigation = useNavigation<any>();
-  // pulling the data needed form the store
-  const activeChild = useBabyStore((s) => s.getActiveChild);
-  const baby = activeChild();
+  const getActiveChild = useBabyStore((s) => s.getActiveChild);
+  const baby = getActiveChild();
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
   const upcomingStage = useBabyStore((s) => s.upcomingStage);
   const markVaccineDone = useBabyStore((s) => s.markVaccineDone);
   const mom = useMomStore((s) => s.mom);
   const activeChildId = useBabyStore((s) => s.activeChildId);
-
   const hasBaby = !!baby;
   const progress = getProgressPercent(currentVaccines);
   const dueVaccines = currentVaccines.filter((v) => !v.isDone);
   const allDone = dueVaccines.length === 0 && currentVaccines.length > 0;
-  if (!activeChild) return;
+
+  if (!baby || !mom) {
+    return (
+      <CustomHeader title="Home" authScreen={false} tabScreen={true}>
+        <View style={styles.emptyState}>
+          <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
+            No active baby found
+          </ThemedText>
+        </View>
+      </CustomHeader>
+    );
+  }
+
+  const handleMarkDone = (item: Vaccine) => {
+    if (!activeChildId) return;
+    setSelectedVaccine(item);
+    setModalVisible(true);
+  };
+
+  const confirmMarkDone = () => {
+    if (!selectedVaccine || !activeChildId) return;
+    markVaccineDone(selectedVaccine.id, activeChildId, new Date(), mom.userId);
+    setModalVisible(false);
+    setSelectedVaccine(null);
+  };
 
   return (
     <CustomHeader title="Home" authScreen={false} tabScreen={true}>
@@ -252,10 +279,7 @@ const HomeScreen = () => {
                     <TouchableOpacity
                       activeOpacity={0.7}
                       style={styles.markButton}
-                      onPress={() => {
-                        if (!activeChildId) return;
-                        markVaccineDone(item.id, activeChildId, new Date(),mom?.userId);
-                      }}
+                      onPress={() => handleMarkDone(item)}
                     >
                       <ThemedText
                         type="text4"
@@ -309,12 +333,69 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </>
       )}
+
+      <Modal
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        transparent
+        animationType="fade"
+      >
+        <Pressable
+          style={styles.backDrop}
+          onPress={() => setModalVisible(false)}
+        >
+          <TouchableWithoutFeedback>
+            <View style={styles.modal}>
+              <ThemedText type="text3green">Mark as Administered?</ThemedText>
+              <ThemedText style={{ textAlign: "center" }}>
+                Are you sure {selectedVaccine?.name} has been given to{" "}
+                <Text style={{ fontWeight: "bold" }}>{baby?.name}?</Text>
+                Only mark this if the vaccine was actually administered.
+              </ThemedText>
+              <View style={{ width: "100%" }}>
+                <PrimaryButton
+                  title="Mark Completed"
+                  onPress={confirmMarkDone}
+                />
+                <PrimaryButton
+                  title="Cancel"
+                  onPress={() => {
+                    setModalVisible(false);
+                    setSelectedVaccine(null);
+                  }}
+                  style={{
+                    backgroundColor: "white",
+                    marginVertical: 0,
+                  }}
+                  textStyle={{ color: COLORS.primary }}
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Pressable>
+      </Modal>
     </CustomHeader>
   );
 };
 
 export default HomeScreen;
+
 const styles = StyleSheet.create({
+  backDrop: {
+    backgroundColor: COLORS.opacity,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modal: {
+    backgroundColor: "white",
+    width: "80%",
+    height: "40%",
+    borderRadius: SIZES.padding,
+    padding: SIZES.padding,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   row: {
     flexDirection: "row",
     alignItems: "center",
