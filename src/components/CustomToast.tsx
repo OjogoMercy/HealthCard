@@ -98,13 +98,17 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
           // borderColor: variantStyle.bg,
           opacity,
           transform: [{ translateY }],
+          borderColor: variantStyle.bg,
         },
       ]}
     >
       <Text style={[styles.icon, { color: variantStyle.bg }]}>
         {variantStyle.icon}
       </Text>
-      <Text style={[styles.message,{color:variantStyle.bg}]} numberOfLines={2}>
+      <Text
+        style={[styles.message, { color: variantStyle.bg }]}
+        numberOfLines={2}
+      >
         {toast.message}
       </Text>
     </Animated.View>
@@ -122,7 +126,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    backgroundColor:'white'
+    backgroundColor: COLORS.background,
+    borderWidth: 1,
   },
   icon: {
     fontWeight: "700",

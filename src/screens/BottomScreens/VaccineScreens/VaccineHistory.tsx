@@ -218,6 +218,7 @@ const VaccineHistory = () => {
         scrollEnabled={false}
         keyExtractor={(item) => item.id}
         stickySectionHeadersEnabled={false}
+        showsVerticalScrollIndicator={false}
         renderSectionHeader={({ section }) => {
           const isExpanded = expandedStages.includes(section.title);
           const isCurrentStage = section.isCurrentStage;
