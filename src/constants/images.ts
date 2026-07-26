@@ -1,6 +1,6 @@
 export const images = {
   icon: require("../assets/images/icon.png"),
-  logo: require("../assets/images/logo.png"),
+  logo: require("../assets/images/logo2.png"),
   mamaIntro: require("../assets/images/mamaIntro.png"),
   slide3: require("../assets/images/slide3.png"),
   slide4: require("../assets/images/slide4.png"),
