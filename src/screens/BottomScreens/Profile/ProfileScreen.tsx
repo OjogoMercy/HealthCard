@@ -1,5 +1,6 @@
 import { logoutUser } from "@/BackendComm/APIClient";
 import WrapView from "@/src/components/WrapView";
+import { getAgeLabel } from "@/src/constants/Functions";
 import { images } from "@/src/constants/images";
 import {
   COLORS,
@@ -22,46 +23,41 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-const getAgeLabel = (dob: string): string => {
-  const birth = new Date(dob);
-  const now = new Date();
-  const diffInDays = Math.floor(
-    (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24),
-  );
-  const weeks = Math.floor(diffInDays / 7);
-  const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 +
-    (now.getMonth() - birth.getMonth());
-  const years = now.getFullYear() - birth.getFullYear();
-  if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} old`;
-  if (months < 24) return `${months} month${months === 1 ? "" : "s"} old`;
-  return `${years} year${years === 1 ? "" : "s"} old`;
-};
+
 const getProgressStats = (
   vaccines: { isDone: boolean }[],
-): { percent: string; done: number; total: number } => {
-  const total = vaccines.length;
-  const done = vaccines.filter((v) => v.isDone).length;
-  const percent = total ? `${Math.round((done / total) * 100)}%` : "0%";
+): { percent: number; done: number; total: number } => {
+  const total = vaccines?.length || 0;
+  const done = vaccines?.filter((v) => v.isDone).length || 0;
+  const percent = total ? Math.round((done / total) * 100) : 0;
   return { percent, done, total };
 };
 
 const ProfileScreen = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const getActiveChild = useBabyStore((s) => s.getActiveChild);
   const baby = getActiveChild();
-  const currentVaccines = useBabyStore((s) => s.currentVaccines);
-  const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
-  const clearBaby = useBabyStore((s) => s.clearChildren);
-
+  const currentVaccines = useBabyStore((s) => s.currentVaccines) || [];
+  const currentStageTitle = useBabyStore((s) => s.currentStageTitle) || "N/A";
+  const clearChildren = useBabyStore((s) => s.clearChildren);
+  const setActiveChildId = useBabyStore((s) => s.activeChildId);
   const { percent, done, total } = getProgressStats(currentVaccines);
   const nextDueVaccines = currentVaccines.filter((v) => !v.isDone);
   const nextVaccineNames =
     nextDueVaccines.length > 0
-      ? nextDueVaccines.map((v) => v.name).join(" + ")
+      ? nextDueVaccines
+          .slice(0, 3)
+          .map((v) => v.name)
+          .join(" + ") +
+        (nextDueVaccines.length > 3
+          ? ` +${nextDueVaccines.length - 3} more`
+          : "")
       : null;
+  const allDone = currentVaccines.length > 0 && nextDueVaccines.length === 0;
+
   const handleLogout = () => {
     Alert.alert(
       "Clear Profile",
@@ -71,9 +67,17 @@ const ProfileScreen = () => {
         {
           text: "Clear",
           style: "destructive",
-          onPress: () => {
-            clearBaby();
-            logoutUser();
+          onPress: async () => {
+            setIsLoggingOut(true);
+            try {
+              clearChildren();
+              setActiveChildId(null);
+              await logoutUser();
+            } catch (error) {
+              Alert.alert("Error", "Failed to logout. Please try again.");
+            } finally {
+              setIsLoggingOut(false);
+            }
           },
         },
       ],
@@ -103,14 +107,15 @@ const ProfileScreen = () => {
       id: 3,
       iconName: "help-circle",
       title: "Help and Support",
-      onPress: () => {},
+      onPress: () => setShowComingSoon(true),
     },
     {
       id: 4,
       iconName: "log-out-outline",
-      title: "Logout",
+      title: isLoggingOut ? "Logging out..." : "Logout",
       onPress: handleLogout,
       danger: true,
+      disabled: isLoggingOut,
     },
   ];
 
@@ -151,16 +156,16 @@ const ProfileScreen = () => {
       </View>
 
       <LinearGradient
-        colors={[COLORS.primary, COLORS.primary + "80"]}
+        colors={[COLORS.primary, `${COLORS.primary}80`]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.progress}
       >
         <ThemedText type="text3boldwhite">Vaccination Progress</ThemedText>
         <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: percent }]} />
+          <View style={[styles.progressFill, { width: `${percent}%` }]} />
         </View>
-        <ThemedText type="text4white">Completion: {percent}</ThemedText>
+        <ThemedText type="text4white">Completion: {percent}%</ThemedText>
         <ThemedText type="text4white">
           {done} of {total} vaccines completed
         </ThemedText>
@@ -174,7 +179,18 @@ const ProfileScreen = () => {
           </ThemedText>
         </View>
 
-        {nextVaccineNames ? (
+        {currentVaccines.length === 0 ? (
+          <ThemedText type="text4" style={{ marginTop: 4, color: COLORS.gray }}>
+            No vaccines scheduled yet
+          </ThemedText>
+        ) : allDone ? (
+          <ThemedText
+            type="text4"
+            style={{ marginTop: 4, color: COLORS.primary }}
+          >
+            ✓ All vaccines for this stage are done!
+          </ThemedText>
+        ) : (
           <>
             <ThemedText type="text4" style={{ marginTop: 4 }}>
               {nextVaccineNames}
@@ -195,13 +211,6 @@ const ProfileScreen = () => {
               </ThemedText>
             </View>
           </>
-        ) : (
-          <ThemedText
-            type="text4"
-            style={{ marginTop: 4, color: COLORS.primary }}
-          >
-            ✓ All vaccines for this stage are done!
-          </ThemedText>
         )}
       </View>
 
@@ -217,22 +226,33 @@ const ProfileScreen = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={styles.listItem}
+              style={[
+                styles.listItem,
+                item.disabled && styles.listItemDisabled,
+              ]}
               activeOpacity={0.6}
-              onPress={item.onPress}
+              onPress={item.disabled ? undefined : item.onPress}
             >
               <Ionicons
                 name={item.iconName as any}
                 size={24}
                 color={
-                  item.danger ? (COLORS.alert ?? "#CC0000") : COLORS.primary
+                  item.danger
+                    ? COLORS.alert || "#CC0000"
+                    : item.disabled
+                      ? COLORS.gray
+                      : COLORS.primary
                 }
               />
               <ThemedText
                 type="text4"
                 style={{
                   marginLeft: SIZES.base,
-                  color: item.danger ? (COLORS.alert ?? "#CC0000") : undefined,
+                  color: item.danger
+                    ? COLORS.alert || "#CC0000"
+                    : item.disabled
+                      ? COLORS.gray
+                      : undefined,
                 }}
               >
                 {item.title}
@@ -241,7 +261,13 @@ const ProfileScreen = () => {
                 style={{ marginLeft: "auto" }}
                 name="chevron-forward"
                 size={22}
-                color={item.danger ? (COLORS.alert ?? "#CC0000") : COLORS.black}
+                color={
+                  item.danger
+                    ? COLORS.alert || "#CC0000"
+                    : item.disabled
+                      ? COLORS.gray
+                      : COLORS.black
+                }
               />
             </TouchableOpacity>
           )}
@@ -287,6 +313,7 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
+
 const styles = StyleSheet.create({
   profileContainer: {
     borderRadius: SIZES.navTitle,
@@ -329,9 +356,10 @@ const styles = StyleSheet.create({
   progressBar: {
     width: SCREEN_WIDTH * 0.8,
     height: SIZES.base * 1.5,
-    backgroundColor: COLORS.primary,
+    backgroundColor: `${COLORS.primary}40`,
     borderRadius: SIZES.padding,
     marginVertical: SIZES.padding / 2,
+    overflow: "hidden",
   },
   progressFill: {
     height: "100%",
@@ -340,7 +368,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   nextContainer: {
-    backgroundColor: COLORS.accent + "30",
+    backgroundColor: `${COLORS.accent}30`,
     width: SCREEN_WIDTH * 0.9,
     paddingVertical: SIZES.padding / 2,
     borderRadius: SIZES.padding,
@@ -351,7 +379,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   card: {
-    backgroundColor: COLORS.secondary + "20",
+    backgroundColor: `${COLORS.secondary || "#F5F5F5"}20`,
     padding: SIZES.base,
     borderRadius: SIZES.padding,
     marginTop: SIZES.base / 2,
@@ -363,7 +391,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: SIZES.base,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.gray4 ?? "#F0F0F0",
+    borderBottomColor: COLORS.gray4 || "#F0F0F0",
+  },
+  listItemDisabled: {
+    opacity: 0.5,
   },
   modalOverlay: {
     flex: 1,
