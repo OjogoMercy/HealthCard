@@ -27,6 +27,7 @@ export interface VaccineCategory {
   status: string;
   data: Vaccine[];
 }
+
 const getAgeInWeeks = (dob: Date): number =>
   Math.floor((Date.now() - dob.getTime()) / (1000 * 60 * 60 * 24 * 7));
 
@@ -119,17 +120,34 @@ interface BabyStore {
   completedIds: string[];
   declinedIds: string[];
 
+  // Loading and error states for refresh
+  isLoading: boolean;
+  refreshError: string | null;
+
   // Actions
   setChildren: (children: ChildProfile[]) => void;
   setActiveChild: (childId: string) => void;
   setCompletedIds: (ids: string[]) => void;
-  markVaccineDone: (vaccineId: string, childId: string, dueDate: Date,userId:string) => void;
+  markVaccineDone: (
+    vaccineId: string,
+    childId: string,
+    dueDate: Date,
+    userId: string,
+  ) => void;
   unMarkVaccine: (vaccineId: string) => void;
   clearChildren: () => void;
   clearCatchUpState: () => void;
   markVaccineDeclined: (vaccineId: string) => void;
 
   getActiveChild: () => ChildProfile | null;
+
+  // New refresh/fetch actions
+  refreshBabyData: () => Promise<void>;
+  fetchChildrenFromStorage: () => Promise<ChildProfile[]>;
+  fetchCompletedIdsFromStorage: () => Promise<string[]>;
+  setLoading: (loading: boolean) => void;
+  setRefreshError: (error: string | null) => void;
+  refreshVaccines: () => Promise<void>;
 }
 
 export const useBabyStore = create<BabyStore>()(
@@ -142,6 +160,8 @@ export const useBabyStore = create<BabyStore>()(
       upcomingStage: null,
       completedIds: [],
       declinedIds: [],
+      isLoading: false,
+      refreshError: null,
 
       setChildren: (children: ChildProfile[]) => {
         const { activeChildId, completedIds } = get();
@@ -167,6 +187,7 @@ export const useBabyStore = create<BabyStore>()(
           children,
           activeChildId: validActiveId,
           ...vaccineState,
+          refreshError: null,
         });
       },
 
@@ -188,8 +209,8 @@ export const useBabyStore = create<BabyStore>()(
 
         set({
           activeChildId: childId,
-          completedIds: [],
           ...vaccineState,
+          refreshError: null,
         });
       },
 
@@ -205,10 +226,136 @@ export const useBabyStore = create<BabyStore>()(
         set({
           completedIds: ids,
           ...vaccineState,
+          refreshError: null,
         });
       },
 
-      markVaccineDone: (vaccineId: string, childId: string, dueDate: Date, userId:string) => {
+      setLoading: (loading: boolean) => set({ isLoading: loading }),
+
+      setRefreshError: (error: string | null) => set({ refreshError: error }),
+
+      // Fetch children data directly from AsyncStorage
+      fetchChildrenFromStorage: async () => {
+        try {
+          const storedData = await AsyncStorage.getItem(
+            "healthcard-baby-storage",
+          );
+          if (storedData) {
+            const parsed = JSON.parse(storedData);
+            return parsed.state?.children || [];
+          }
+          return [];
+        } catch (error) {
+          console.error("Error fetching children from storage:", error);
+          return [];
+        }
+      },
+
+      // Fetch completed vaccine IDs from AsyncStorage
+      fetchCompletedIdsFromStorage: async () => {
+        try {
+          const storedData = await AsyncStorage.getItem(
+            "healthcard-baby-storage",
+          );
+          if (storedData) {
+            const parsed = JSON.parse(storedData);
+            return parsed.state?.completedIds || [];
+          }
+          return [];
+        } catch (error) {
+          console.error("Error fetching completed IDs from storage:", error);
+          return [];
+        }
+      },
+
+      // Refresh vaccines for current active child
+      refreshVaccines: async () => {
+        const {
+          activeChildId,
+          children,
+          setCompletedIds,
+          fetchCompletedIdsFromStorage,
+        } = get();
+
+        if (!activeChildId) {
+          console.warn("No active child to refresh vaccines for");
+          return;
+        }
+
+        const activeChild = children.find((c) => c.id === activeChildId);
+        if (!activeChild) {
+          console.warn("Active child not found");
+          return;
+        }
+
+        try {
+          // Fetch the latest completed IDs from storage
+          const completedIds = await fetchCompletedIdsFromStorage();
+
+          // Update the state with the new vaccine data
+          setCompletedIds(completedIds);
+        } catch (error) {
+          console.error("Error refreshing vaccines:", error);
+          throw error;
+        }
+      },
+
+      // Main refresh function for all baby data
+      refreshBabyData: async () => {
+        const {
+          setLoading,
+          setRefreshError,
+          fetchChildrenFromStorage,
+          setChildren,
+          activeChildId,
+          refreshVaccines,
+        } = get();
+
+        setLoading(true);
+        setRefreshError(null);
+
+        try {
+          // Fetch the latest children data from storage
+          const childrenData = await fetchChildrenFromStorage();
+
+          if (childrenData.length > 0) {
+            // Update children in state
+            setChildren(childrenData);
+
+            // If there's an active child, refresh their vaccines
+            if (activeChildId) {
+              await refreshVaccines();
+            }
+          } else {
+            // No children found - clear the state
+            set({
+              children: [],
+              activeChildId: null,
+              currentStageTitle: null,
+              currentVaccines: [],
+              upcomingStage: null,
+              completedIds: [],
+            });
+          }
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "Failed to refresh baby data";
+          setRefreshError(errorMessage);
+          console.error("Refresh baby data error:", error);
+          throw error;
+        } finally {
+          setLoading(false);
+        }
+      },
+
+      markVaccineDone: (
+        vaccineId: string,
+        childId: string,
+        dueDate: Date,
+        userId: string,
+      ) => {
         set((state) => {
           if (state.completedIds.includes(vaccineId)) return state;
           const newCompletedIds = [...state.completedIds, vaccineId];
@@ -223,18 +370,25 @@ export const useBabyStore = create<BabyStore>()(
             completedIds: newCompletedIds,
             currentVaccines: updatedVaccines,
             declinedIds: newDeclinedIds,
+            refreshError: null,
           };
         });
 
         useSyncQueueStore.getState().enqueue({
-          vaccineId, childId, dueDate,
-          userId: userId
+          vaccineId,
+          childId,
+          dueDate,
+          userId: userId,
         });
       },
+
       markVaccineDeclined: (vaccineId: string) => {
         set((state) => {
           if (state.declinedIds.includes(vaccineId)) return state;
-          return { declinedIds: [...state.declinedIds, vaccineId] };
+          return {
+            declinedIds: [...state.declinedIds, vaccineId],
+            refreshError: null,
+          };
         });
       },
 
@@ -252,6 +406,7 @@ export const useBabyStore = create<BabyStore>()(
           return {
             completedIds: newCompletedIds,
             currentVaccines: updatedVaccines,
+            refreshError: null,
           };
         });
       },
@@ -264,6 +419,8 @@ export const useBabyStore = create<BabyStore>()(
           currentVaccines: [],
           upcomingStage: null,
           completedIds: [],
+          declinedIds: [],
+          refreshError: null,
         }),
 
       getActiveChild: () => {
@@ -277,6 +434,9 @@ export const useBabyStore = create<BabyStore>()(
       partialize: (state) => ({
         children: state.children,
         activeChildId: state.activeChildId,
+        completedIds: state.completedIds,
+        declinedIds: state.declinedIds,
+        // Don't persist loading and error states
       }),
     },
   ),

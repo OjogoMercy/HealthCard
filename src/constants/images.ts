@@ -6,7 +6,7 @@ export const images = {
   slide4: require("../assets/images/slide4.png"),
   slide5: require("../assets/images/slide5.png"),
   slide6: require("../assets/images/slide6.png"),
-  splashIcon: require("../assets/images/splash-icon.png"),
+  splashIcon: require("../assets/images/cover.png"),
   slide2: require("../assets/images/slide2.png"),
   mom: require("../assets/images/mom.webp"),
   baby: require("../assets/images/baby.webp"),
