@@ -4,11 +4,9 @@ module.exports = function (api) {
     presets: [["babel-preset-expo"]],
     plugins: [
       ["react-native-reanimated/plugin"],
-      [
-        [
-          process.env.NODE_ENV === "production" && "transform-remove-console",
-        ].filter(Boolean),
-      ],
+      ...[
+        process.env.NODE_ENV === "production" && "transform-remove-console",
+      ].filter(Boolean),
     ],
   };
 };
