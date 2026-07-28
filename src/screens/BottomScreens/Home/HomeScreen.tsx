@@ -531,14 +531,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   card: {
-    borderRadius: SIZES.navTitle,
+    borderRadius: SIZES.h1,
     padding: SIZES.padding,
-    width: SCREEN_WIDTH * 0.9,
-    gap: SIZES.base,
+    width: SCREEN_WIDTH * 0.86,
+    // gap: SIZES.base,
   },
   cardShadow: {
     height: SIZES.base,
-    backgroundColor: COLORS.primary + "50",
+    backgroundColor: COLORS.primary + "60",
     borderBottomLeftRadius: SIZES.padding,
     borderBottomRightRadius: SIZES.padding,
     width: SCREEN_WIDTH * 0.75,
@@ -550,7 +550,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   bigCard: {
-    width: SCREEN_WIDTH * 0.9,
+    width: SCREEN_WIDTH * 0.87,
     backgroundColor: "white",
     borderRadius: SIZES.navTitle,
     padding: SIZES.padding,
