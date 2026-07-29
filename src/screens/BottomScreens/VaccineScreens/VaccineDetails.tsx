@@ -22,9 +22,9 @@ const VaccineDetails = () => {
     return (
       <View style={styles.header}>
         {params.item.isDone ? (
-          <Image source={images.mascot} style={styles.mascotImage} />
+          <Image source={images.mascotDoctor} style={styles.mascotImage} />
         ) : (
-          <Image source={images.mascotCry} style={styles.mascotImage} />
+          <Image source={images.mascotSleep} style={styles.mascotImage} />
         )}
       </View>
     );

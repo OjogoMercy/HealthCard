@@ -2,6 +2,7 @@ import { createChild, logoutUser } from "@/BackendComm/APIClient";
 import CustomInput from "@/src/components/CustomInput";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapScrollView from "@/src/components/WrapScrollView";
+import { getAgeLabel } from "@/src/constants/Functions";
 import { general } from "@/src/constants/General";
 import { images } from "@/src/constants/images";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
@@ -22,23 +23,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-const getAgeLabel = (dob: string): string => {
-  const birth = new Date(dob);
-  const now = new Date();
-  const diffInDays = Math.floor(
-    (now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24),
-  );
-  const weeks = Math.floor(diffInDays / 7);
-  const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 +
-    (now.getMonth() - birth.getMonth());
-  const years = now.getFullYear() - birth.getFullYear();
-
-  if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} old`;
-  if (months < 24) return `${months} month${months === 1 ? "" : "s"} old`;
-  return `${years} year${years === 1 ? "" : "s"} old`;
-};
-
 const MomProfile = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);

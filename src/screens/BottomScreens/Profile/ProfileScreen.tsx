@@ -46,10 +46,9 @@ const ProfileScreen = () => {
   const currentVaccines = useBabyStore((s) => s.currentVaccines) || [];
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle) || "N/A";
   const clearChildren = useBabyStore((s) => s.clearChildren);
-  const setActiveChildId = useBabyStore((s) => s.activeChildId);
   const { percent, done, total } = getProgressStats(currentVaccines);
   const nextDueVaccines = currentVaccines.filter((v) => !v.isDone);
-  if (!setActiveChildId) return;
+
   const nextVaccineNames =
     nextDueVaccines.length > 0
       ? nextDueVaccines
