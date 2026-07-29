@@ -115,8 +115,40 @@ const HomeScreen = () => {
           ) : (
             <View style={styles.emptyState}>
               <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-                No active baby found...
+                When did your baby last get vaccinated?
               </ThemedText>
+              <ThemedText type="text4">
+                HealthCard keeps every dose recorded, and reminds you before you
+                miss the next one.
+              </ThemedText>
+
+              <View style={styles.mascotContainer}>
+                <Image style={styles.mascotImage} source={images.mascot} />
+              </View>
+
+              <View style={{ alignItems: "center", width: "100%" }}>
+                <ThemedText
+                  type="text3bold"
+                  style={{ marginBottom: SIZES.padding / 2 }}
+                >
+                  Let's set up your baby's profile
+                </ThemedText>
+                <ThemedText
+                  type="text5"
+                  style={{
+                    marginBottom: -10,
+                    textAlign: "center",
+                    color: COLORS.gray,
+                  }}
+                >
+                  Takes less than a minute
+                </ThemedText>
+                <PrimaryButton
+                  title="Add Baby Profile"
+                  style={{ width: "90%" }}
+                  onPress={() => navigation.navigate("BabyForm")}
+                />
+              </View>
             </View>
           )}
         </ScrollView>
@@ -198,46 +230,6 @@ const HomeScreen = () => {
             <Ionicons name="notifications" size={24} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
-
-        {!hasBaby && (
-          <View style={styles.emptyState}>
-            <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-              When did your baby last get vaccinated?
-            </ThemedText>
-            <ThemedText type="text4">
-              HealthCard keeps every dose recorded, and reminds you before you
-              miss the next one.
-            </ThemedText>
-
-            <View style={styles.mascotContainer}>
-              <Image style={styles.mascotImage} source={images.mascot} />
-            </View>
-
-            <View style={{ alignItems: "center", width: "100%" }}>
-              <ThemedText
-                type="text3bold"
-                style={{ marginBottom: SIZES.padding / 2 }}
-              >
-                Let's set up your baby's profile
-              </ThemedText>
-              <ThemedText
-                type="text5"
-                style={{
-                  marginBottom: -10,
-                  textAlign: "center",
-                  color: COLORS.gray,
-                }}
-              >
-                Takes less than a minute
-              </ThemedText>
-              <PrimaryButton
-                title="Add Baby Profile"
-                style={{ width: "90%" }}
-                onPress={() => navigation.navigate("BabyForm")}
-              />
-            </View>
-          </View>
-        )}
 
         {hasBaby && (
           <>
@@ -594,6 +586,7 @@ const styles = StyleSheet.create({
   emptyState: {
     width: "100%",
     alignItems: "flex-start",
+    marginTop: SIZES.h3,
   },
   mascotContainer: {
     width: SCREEN_WIDTH * 0.8,

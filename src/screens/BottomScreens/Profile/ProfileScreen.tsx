@@ -284,7 +284,6 @@ const ProfileScreen = () => {
                   setIsLoggingOut(true);
                   try {
                     clearChildren();
-                    setActiveChildId;
                     logoutUser();
                   } catch (error) {
                     Alert.alert("Error", "Failed to logout. Please try again.");

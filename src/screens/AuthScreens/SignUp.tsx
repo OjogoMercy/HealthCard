@@ -43,9 +43,18 @@ const SignUp = () => {
     return emailRegex.test(email);
   };
   const SIGNUP_STAGES = [
-    "Creating your account",
-    "Personalizing your dashboard",
-    "Logging you in",
+    {
+      title: "Creating your account",
+      image: images.mascot,
+    },
+    {
+      title: "Personalizing your dashboard",
+      image: images.mascot,
+    },
+    {
+      title: "Logging you in",
+      image: images.logo,
+    },
   ];
   const MIN_STAGE_MS = 700;
 
