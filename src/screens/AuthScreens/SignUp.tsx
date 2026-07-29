@@ -46,16 +46,20 @@ const SignUp = () => {
     {
       title: "Creating your account",
       image: images.mascot,
+      bar: "Almost there...",
     },
     {
       title: "Personalizing your dashboard",
-      image: images.mascot,
+      image: images.mascotWaving,
+      bar: "Just a few more seconds",
     },
     {
       title: "Logging you in",
-      image: images.logo,
+      image: images.mascotLoved,
+      bar: "Everything is being prepared safely",
     },
   ];
+  const currentStage = SIGNUP_STAGES[stageIndex];
   const MIN_STAGE_MS = 700;
 
   const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -191,13 +195,13 @@ const SignUp = () => {
         <Image
           source={images.logo}
           style={{
-            height: SIZES.navTitle * 3,
-            width: SIZES.navTitle * 3,
+            height: SIZES.navTitle * 2,
+            width: SIZES.navTitle * 2,
             resizeMode: "contain",
           }}
         />
         <Image
-          source={images.mascot}
+          source={currentStage.image}
           style={{
             width: SCREEN_WIDTH * 0.7,
             height: SCREEN_HEIGHT * 0.4,
@@ -206,9 +210,7 @@ const SignUp = () => {
             resizeMode: "contain",
           }}
         />
-        <ThemedText type="text3green">
-          {SIGNUP_STAGES[stageIndex]}...
-        </ThemedText>
+        <ThemedText type="text3green">{currentStage.title}...</ThemedText>
         <View
           style={{
             width: "90%",
@@ -228,9 +230,7 @@ const SignUp = () => {
             }}
           />
         </View>
-        <ThemedText>
-          {Math.round(((stageIndex + 1) / SIGNUP_STAGES.length) * 100)}%
-        </ThemedText>
+        <ThemedText>{currentStage.bar}</ThemedText>
       </View>
     );
   }
