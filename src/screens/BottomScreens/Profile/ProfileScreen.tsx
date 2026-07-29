@@ -1,4 +1,5 @@
 import { logoutUser } from "@/BackendComm/APIClient";
+import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapView from "@/src/components/WrapView";
 import { getAgeLabel } from "@/src/constants/Functions";
 import { images } from "@/src/constants/images";
@@ -19,6 +20,7 @@ import {
   FlatList,
   Image,
   Modal,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -37,6 +39,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const getActiveChild = useBabyStore((s) => s.getActiveChild);
   const baby = getActiveChild();
@@ -46,6 +49,7 @@ const ProfileScreen = () => {
   const setActiveChildId = useBabyStore((s) => s.activeChildId);
   const { percent, done, total } = getProgressStats(currentVaccines);
   const nextDueVaccines = currentVaccines.filter((v) => !v.isDone);
+  if (!setActiveChildId) return;
   const nextVaccineNames =
     nextDueVaccines.length > 0
       ? nextDueVaccines
@@ -57,32 +61,6 @@ const ProfileScreen = () => {
           : "")
       : null;
   const allDone = currentVaccines.length > 0 && nextDueVaccines.length === 0;
-
-  const handleLogout = () => {
-    Alert.alert(
-      "Clear Profile",
-      "Are you sure you want to clear this baby's profile? All progress will be lost.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Clear",
-          style: "destructive",
-          onPress: async () => {
-            setIsLoggingOut(true);
-            try {
-              clearChildren();
-              setActiveChildId(null);
-              await logoutUser();
-            } catch (error) {
-              Alert.alert("Error", "Failed to logout. Please try again.");
-            } finally {
-              setIsLoggingOut(false);
-            }
-          },
-        },
-      ],
-    );
-  };
 
   const Data = [
     {
@@ -113,7 +91,7 @@ const ProfileScreen = () => {
       id: 4,
       iconName: "log-out-outline",
       title: isLoggingOut ? "Logging out..." : "Logout",
-      onPress: handleLogout,
+      onPress: () => setModalVisible(true),
       danger: true,
       disabled: isLoggingOut,
     },
@@ -275,6 +253,53 @@ const ProfileScreen = () => {
       </View>
 
       <Modal
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        transparent
+        animationType="fade"
+      >
+        <Pressable
+          style={styles.backDrop}
+          onPress={() => setModalVisible(false)}
+        >
+          <View style={styles.modal}>
+            <ThemedText type="text3green">
+              Are you sure you want to logout?
+            </ThemedText>
+            <Image
+              source={images.mascotCry}
+              style={{ width: "50%", height: "50%", resizeMode: "contain" }}
+            />
+            <View style={{ width: "90%" }}>
+              <PrimaryButton
+                title="Cancel"
+                onPress={() => setModalVisible(false)}
+                style={{ marginVertical: 0, backgroundColor: "white" }}
+                textStyle={{ color: COLORS.primary }}
+              />
+
+              <PrimaryButton
+                title="Logout"
+                onPress={() => {
+                  setIsLoggingOut(true);
+                  try {
+                    clearChildren();
+                    setActiveChildId;
+                    logoutUser();
+                  } catch (error) {
+                    Alert.alert("Error", "Failed to logout. Please try again.");
+                  } finally {
+                    setIsLoggingOut(false);
+                  }
+                }}
+                style={{ marginBottom: 0 }}
+              />
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
+
+      <Modal
         visible={showComingSoon}
         transparent
         animationType="fade"
@@ -315,6 +340,21 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  backDrop: {
+    backgroundColor: COLORS.opacity,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modal: {
+    backgroundColor: "white",
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_HEIGHT * 0.5,
+    borderRadius: SIZES.padding,
+    padding: SIZES.h1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   profileContainer: {
     borderRadius: SIZES.navTitle,
     alignItems: "center",

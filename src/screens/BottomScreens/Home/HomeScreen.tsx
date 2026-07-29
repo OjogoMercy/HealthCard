@@ -25,7 +25,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -116,7 +115,7 @@ const HomeScreen = () => {
           ) : (
             <View style={styles.emptyState}>
               <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
-                No active baby found
+                No active baby found...
               </ThemedText>
             </View>
           )}
@@ -452,34 +451,29 @@ const HomeScreen = () => {
           style={styles.backDrop}
           onPress={() => setModalVisible(false)}
         >
-          <TouchableWithoutFeedback>
-            <View style={styles.modal}>
-              <ThemedText type="text3green">Mark as Administered?</ThemedText>
-              <ThemedText style={{ textAlign: "center" }}>
-                Are you sure {selectedVaccine?.name} has been given to{" "}
-                <Text style={{ fontWeight: "bold" }}>{baby?.name}?</Text>
-                Only mark this if the vaccine was actually administered.
-              </ThemedText>
-              <View style={{ width: "100%" }}>
-                <PrimaryButton
-                  title="Mark Completed"
-                  onPress={confirmMarkDone}
-                />
-                <PrimaryButton
-                  title="Cancel"
-                  onPress={() => {
-                    setModalVisible(false);
-                    setSelectedVaccine(null);
-                  }}
-                  style={{
-                    backgroundColor: "white",
-                    marginVertical: 0,
-                  }}
-                  textStyle={{ color: COLORS.primary }}
-                />
-              </View>
+          <View style={styles.modal}>
+            <ThemedText type="text3green">Mark as Administered?</ThemedText>
+            <ThemedText style={{ textAlign: "center" }}>
+              Are you sure {selectedVaccine?.name} has been given to{" "}
+              <Text style={{ fontWeight: "bold" }}>{baby?.name}?</Text>
+              Only mark this if the vaccine was actually administered.
+            </ThemedText>
+            <View style={{ width: "100%" }}>
+              <PrimaryButton title="Mark Completed" onPress={confirmMarkDone} />
+              <PrimaryButton
+                title="Cancel"
+                onPress={() => {
+                  setModalVisible(false);
+                  setSelectedVaccine(null);
+                }}
+                style={{
+                  backgroundColor: "white",
+                  marginVertical: 0,
+                }}
+                textStyle={{ color: COLORS.primary }}
+              />
             </View>
-          </TouchableWithoutFeedback>
+          </View>
         </Pressable>
       </Modal>
     </CustomHeader>
