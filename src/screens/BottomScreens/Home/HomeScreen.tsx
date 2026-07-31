@@ -14,7 +14,7 @@ import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -58,9 +58,10 @@ const HomeScreen = () => {
   const progress = getProgressPercent(currentVaccines);
   const dueVaccines = currentVaccines.filter((v) => !v.isDone);
   const allDone = dueVaccines.length === 0 && currentVaccines.length > 0;
-
+  const [isInitialLoad, setIsInitialLoad] = useState(false);
   // Refresh function
   const onRefresh = useCallback(async () => {
+    if (refreshing) return;
     setRefreshing(true);
     setError(null);
     try {
@@ -76,6 +77,13 @@ const HomeScreen = () => {
       setRefreshing(false);
     }
   }, [fetchBabyData, fetchMomData]);
+
+  useEffect(() => {
+    if (isInitialLoad) {
+      onRefresh();
+      setIsInitialLoad(false);
+    }
+  }, [isInitialLoad, onRefresh]);
 
   // Retry function for error state
   const handleRetry = () => {
@@ -133,10 +141,7 @@ const HomeScreen = () => {
                   marginTop: SIZES.h1 * 2,
                 }}
               >
-                <ThemedText
-                  type="text2"
-                  style={{ marginBottom: SIZES.padding / 2 }}
-                >
+                <ThemedText type="text2" style={{ marginTop: SIZES.h1 * 2 }}>
                   Let's set up your baby's profile
                 </ThemedText>
                 <ThemedText
@@ -151,7 +156,7 @@ const HomeScreen = () => {
                 </ThemedText>
                 <PrimaryButton
                   title="Add Baby Profile"
-                  style={{ width: "90%", marginTop: SIZES.h1 * 2 }}
+                  style={{ width: "90%" }}
                   onPress={() => navigation.navigate("BabyForm")}
                 />
               </View>
@@ -179,8 +184,7 @@ const HomeScreen = () => {
       );
       setModalVisible(false);
       setSelectedVaccine(null);
-      // Optional: Refresh after marking done
-      // onRefresh();
+      onRefresh()
     } catch (err) {
       setError("Failed to mark vaccine as done");
       console.error("Mark done error:", err);
@@ -604,7 +608,7 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.6,
     height: SCREEN_HEIGHT * 0.35,
     resizeMode: "contain",
-    marginVertical: SIZES.h1,
+    marginTop: SIZES.h1 * 2.5,
   },
   allDoneCard: {
     width: SCREEN_WIDTH * 0.9,
