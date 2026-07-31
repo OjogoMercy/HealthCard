@@ -15,6 +15,8 @@ import {
   View,
 } from "react-native";
 
+import { useToast } from "@/src/components/ToastContext";
+
 const createChild = async (name: string, dateOfBirth: Date, gender: string) => {
   return {
     id: `child_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -36,10 +38,10 @@ const BabyForm = () => {
   const [gender, setGender] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const { showToast } = useToast();
   const handleSave = async () => {
     if (!name.trim() || !date || !gender) {
-      Alert.alert("Error", "Please enter the child's full details");
+      showToast("Please enter the child's full details", "error");
       return;
     }
 
@@ -53,9 +55,9 @@ const BabyForm = () => {
     );
 
     if (isDuplicate) {
-      Alert.alert(
-        "Duplicate Found",
+      showToast(
         "A child with this name and date of birth already exists",
+        "warning",
       );
       setIsSubmitting(false);
       return;
@@ -70,12 +72,7 @@ const BabyForm = () => {
       setGender(null);
       setShowPicker(false);
 
-      Alert.alert("Success", "Child record created successfully", [
-        {
-          text: "OK",
-          onPress: () => navigation.goBack(),
-        },
-      ]);
+      showToast("Child record created successfully", "success");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
       Alert.alert("Error", "Failed to create child record. Please try again.");
@@ -103,7 +100,7 @@ const BabyForm = () => {
             placeholder="e.g. Chidi or Amina"
             value={name}
             onChangeText={setName}
-            placeholderTextColor={COLORS.gray4}
+            placeholderTextColor={COLORS.gray + "90"}
           />
         </View>
 
@@ -116,7 +113,7 @@ const BabyForm = () => {
             onPress={() => setShowPicker(true)}
             activeOpacity={0.7}
           >
-            <ThemedText type="text3">
+            <ThemedText type="text3" style={{ color: COLORS.gray + "90" }}>
               {date.toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "long",
@@ -159,10 +156,10 @@ const BabyForm = () => {
               <Ionicons
                 name="male-outline"
                 size={24}
-                color={gender === "Male" ? COLORS.primary : COLORS.gray4}
+                color={gender === "Male" ? COLORS.primary : COLORS.gray}
               />
               <ThemedText
-                type="text4"
+                type="text3"
                 style={gender === "Male" && styles.genderTextSelected}
               >
                 Male
@@ -179,10 +176,10 @@ const BabyForm = () => {
               <Ionicons
                 name="female-outline"
                 size={24}
-                color={gender === "Female" ? COLORS.primary : COLORS.gray4}
+                color={gender === "Female" ? COLORS.primary : COLORS.gray}
               />
               <ThemedText
-                type="text4"
+                type="text3"
                 style={gender === "Female" && styles.genderTextSelected}
               >
                 Female
@@ -193,7 +190,7 @@ const BabyForm = () => {
 
         <View style={styles.buttonContainer}>
           <PrimaryButton
-            title={isSubmitting ? "Creating..." : "Create HealthCard"}
+            title={isSubmitting ? "Creating..." : "Create HealthRecord"}
             onPress={handleSave}
             loading={isSubmitting}
             style={{ width: SCREEN_WIDTH * 0.9 }}
@@ -203,7 +200,7 @@ const BabyForm = () => {
               {error}
             </ThemedText>
           )}
-          <ThemedText type="text4gray" style={styles.footerText}>
+          <ThemedText type="text4gray" style={{ textAlign: "center" }}>
             Don't worry, Ma. You can always change these details later in the
             Profile section.
           </ThemedText>
@@ -238,12 +235,12 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 55,
-    borderRadius: SIZES.base,
+    borderRadius: SIZES.h3,
     backgroundColor: "white",
     paddingHorizontal: SIZES.padding,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: COLORS.gray4,
+    borderColor: COLORS.gray2,
   },
   dateSelector: {
     flexDirection: "row",
@@ -251,11 +248,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: 55,
-    borderRadius: SIZES.base,
+    borderRadius: SIZES.h3,
     backgroundColor: "white",
     paddingHorizontal: SIZES.padding,
     borderWidth: 1,
-    borderColor: COLORS.gray4,
+    borderColor: COLORS.gray2,
   },
   genderContainer: {
     flexDirection: "row",
@@ -268,10 +265,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     height: 55,
-    borderRadius: SIZES.base,
+    borderRadius: SIZES.h3,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: COLORS.gray4,
+    borderColor: COLORS.gray2,
     marginHorizontal: 4,
     gap: 8,
   },
@@ -291,11 +288,6 @@ const styles = StyleSheet.create({
     color: "red",
     marginTop: SIZES.base,
     textAlign: "center",
-  },
-  footerText: {
-    marginTop: SIZES.padding,
-    textAlign: "center",
-    paddingHorizontal: SIZES.base,
   },
 });
 

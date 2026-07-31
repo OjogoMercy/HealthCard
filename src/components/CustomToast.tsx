@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import React, { useEffect, useRef } from "react";
 import { Animated, PanResponder, StyleSheet, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,10 +15,10 @@ const VARIANT_STYLES: Record<
   ToastMessage["variant"],
   { bg: string; icon: string }
 > = {
-  success: { bg: COLORS.primary, icon: "✓" },
-  error: { bg: "#C62828", icon: "✕" },
-  warning: { bg: "#B26A00", icon: "!" },
-  info: { bg: "#37474F", icon: "i" },
+  success: { bg: COLORS.primary, icon: "check-circle" },
+  error: { bg: COLORS.alert, icon: "x-circle" },
+  warning: { bg: COLORS.accent, icon: "alert-triangle" },
+  info: { bg: "#2563EB", icon: "info" },
 };
 
 const TOAST_HEIGHT = 56;
@@ -102,9 +103,7 @@ export default function CustomToast({ toast, index, onDismiss }: Props) {
         },
       ]}
     >
-      <Text style={[styles.icon, { color: variantStyle.bg }]}>
-        {variantStyle.icon}
-      </Text>
+      <Feather name={variantStyle.icon} size={24} color={variantStyle.bg} />
       <Text
         style={[styles.message, { color: variantStyle.bg }]}
         numberOfLines={2}
