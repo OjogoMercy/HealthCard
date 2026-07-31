@@ -22,7 +22,7 @@ import {
   SIZES,
 } from "../../../constants/THEME";
 
-const CheckIn = () => {
+const GrowthRecord = () => {
   const navigation = useNavigation<any>();
   const active = useBabyStore((s) => s.getActiveChild);
   const baby = active();
@@ -78,8 +78,10 @@ const CheckIn = () => {
           </ThemedText>
 
           <PrimaryButton
-            title="Create Baby Profile"
-            onPress={() => navigation.navigate("AgeCalc")}
+            title="Create Baby Record"
+            onPress={() =>
+              navigation.navigate("StackNav", { screen: "BabyForm" })
+            }
             style={{ width: SCREEN_WIDTH * 0.8 }}
           />
         </View>
@@ -616,4 +618,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckIn;
+export default GrowthRecord;

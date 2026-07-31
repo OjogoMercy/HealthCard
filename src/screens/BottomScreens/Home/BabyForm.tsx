@@ -1,4 +1,6 @@
+import { createChild } from "@/BackendComm/APIClient";
 import PrimaryButton from "@/src/components/PrimaryButton";
+import { useToast } from "@/src/components/ToastContext";
 import WrapView from "@/src/components/WrapView";
 import { COLORS, SCREEN_WIDTH, SIZES } from "@/src/constants/THEME";
 import { ThemedText } from "@/src/constants/ThemedText";
@@ -7,25 +9,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-
-import { useToast } from "@/src/components/ToastContext";
-
-const createChild = async (name: string, dateOfBirth: Date, gender: string) => {
-  return {
-    id: `child_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    name: name.trim(),
-    dateOfBirth: dateOfBirth.toISOString().split("T")[0],
-    gender: gender,
-    userId: "current-user-id",
-  };
-};
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 const BabyForm = () => {
   const navigation = useNavigation();
@@ -75,7 +59,7 @@ const BabyForm = () => {
       showToast("Child record created successfully", "success");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
-      Alert.alert("Error", "Failed to create child record. Please try again.");
+      showToast("Failed to create child record. Please try again.", "error");
     } finally {
       setIsSubmitting(false);
     }

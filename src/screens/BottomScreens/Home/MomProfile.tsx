@@ -1,6 +1,7 @@
 import { createChild, logoutUser } from "@/BackendComm/APIClient";
 import CustomInput from "@/src/components/CustomInput";
 import PrimaryButton from "@/src/components/PrimaryButton";
+import { useToast } from "@/src/components/ToastContext";
 import WrapScrollView from "@/src/components/WrapScrollView";
 import { getAgeLabel } from "@/src/constants/Functions";
 import { general } from "@/src/constants/General";
@@ -124,10 +125,10 @@ const MomProfile = () => {
   };
   const setChildren = useBabyStore((s) => s.setChildren);
   const children = useBabyStore((s) => s.children);
-
+  const { showToast } = useToast();
   const handleSave = async () => {
     if (!babyName.trim() || !date || !gender) {
-      Alert.alert("Please enter the child's full details");
+      showToast("Please enter the child's full details", "error");
       return;
     }
     setIsSubmitting(true);
@@ -139,7 +140,10 @@ const MomProfile = () => {
     );
 
     if (isDuplicate) {
-      Alert.alert("A child with this name and date of birth already exists");
+      showToast(
+        "A child with this name and date of birth already exists",
+        "error",
+      );
       return;
     }
 
@@ -148,7 +152,7 @@ const MomProfile = () => {
       setChildren([...children, newChild]);
       setFormActive(false);
 
-      Alert.alert("Child record created successfully");
+      showToast("Child record created successfully", "error");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
     } finally {

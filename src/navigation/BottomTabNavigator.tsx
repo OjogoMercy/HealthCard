@@ -11,7 +11,7 @@ import type { ColorValue } from "react-native";
 import { Platform } from "react-native";
 import { AnimatedIconWrapper } from "../components/AnimatedIconWrapper";
 import { COLORS } from "../constants/THEME";
-import CheckIn from "../screens/BottomScreens/CareScreens/CheckIn";
+import GrowthRecord from "../screens/BottomScreens/CareScreens/GrowthRecord";
 import ProfileScreen from "../screens/BottomScreens/Profile/ProfileScreen";
 import Immunisation from "../screens/BottomScreens/VaccineScreens/Immunisation";
 import StackNav from "./StackNav";
@@ -20,7 +20,7 @@ type RootTabParamList = {
   Home: undefined;
   Immunisation: undefined;
   Profile: undefined;
-  CheckIn: undefined;
+  GrowthRecord: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -81,7 +81,9 @@ export default function BottomTabNavigator() {
           return (
             <AnimatedIconWrapper focused={focused} glowColor="#a0f0a4ff">
               {route.name === "Home" && <Home {...iconProps} />}
-              {route.name === "CheckIn" && <ClipboardCheck {...iconProps} />}
+              {route.name === "GrowthRecord" && (
+                <ClipboardCheck {...iconProps} />
+              )}
               {route.name === "Immunisation" && <ShieldCheck {...iconProps} />}
               {route.name === "Profile" && <UserCircle {...iconProps} />}
             </AnimatedIconWrapper>
@@ -100,9 +102,9 @@ export default function BottomTabNavigator() {
         options={{ title: "Home" }}
       />
       <Tab.Screen
-        name="CheckIn"
-        component={CheckIn}
-        options={{ title: "Check-In" }}
+        name="GrowthRecord"
+        component={GrowthRecord}
+        options={{ title: "GrowthRecord" }}
       />
       <Tab.Screen
         name="Immunisation"
