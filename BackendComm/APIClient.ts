@@ -156,12 +156,17 @@ export const getGrowthRecords = async (childId: string, userId: string) => {
   return response.data;
 };
 
-export const createImmunisation = async (
-  vaccineId: string,
-  dueDate: Date,
-  childId: string,
-  userId: string,
-) => {
+export const createImmunisation = async ({
+  vaccineId,
+  dueDate,
+  childId,
+  userId,
+}: {
+  vaccineId: string;
+  dueDate: Date;
+  childId: string;
+  userId: string;
+}) => {
   console.log("Creating immunisation record");
   if (!userId || !childId) {
     throw new Error("User ID and Child ID are required to create immunisation");
