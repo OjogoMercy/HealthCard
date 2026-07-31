@@ -25,13 +25,36 @@ function NavigationGateKeeper() {
       return true;
     }
   };
+  const warmUpConnection = async () => {
+    try {
+      await Promise.race([
+        fetch("https://backend-healthCard.onrender.com", {
+          method: "HEAD",
+          headers: { "cache-control": "no-cache" },
+        }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("timeout")), 3000),
+        ),
+      ]);
+      console.log("connection warmed successfully");
+    } catch (e) {
+      console.log("warm up failed ", e);
+    }
+  };
   useEffect(() => {
     let isMounted = true;
     const getUserData = async () => {
       if (isLoading) return;
+      const hasNoActiveSession =
+        !session?.token || !session?.userId || isTokenExpired(session.token);
+
+      if (hasNoActiveSession) {
+        warmUpConnection(); // fire-and-forget, no await
+      }
 
       if (session?.token && isTokenExpired(session.token)) {
         console.log("[NavigationGateKeeper] Token expired");
+
         showToast("Session Expired , Please log in again", "error");
         await logoutAuth();
         clearChildren();

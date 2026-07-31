@@ -26,6 +26,7 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+APIClient
 # macOS
 .DS_Store
 *.pem
@@ -46,3 +47,4 @@ android/gradle.properties
 android/gradle.properties
 *.keystore
 android/keystore.properties
+
