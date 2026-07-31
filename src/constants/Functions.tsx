@@ -13,3 +13,24 @@ export const getAgeLabel = (dob: string): string => {
   if (months < 24) return `${months} month${months === 1 ? "" : "s"} old`;
   return `${years} year${years === 1 ? "" : "s"} old`;
 };
+
+export const calculatePercentile = (
+  value: number,
+  type: string,
+  ageInMonths: number,
+) => {
+  // This is a simplified mock - in production, use WHO growth charts
+  const percentiles = [
+    "<3rd",
+    "5th",
+    "10th",
+    "25th",
+    "50th",
+    "75th",
+    "90th",
+    "95th",
+    ">97th",
+  ];
+  const index = Math.floor(Math.random() * percentiles.length);
+  return percentiles[index];
+};

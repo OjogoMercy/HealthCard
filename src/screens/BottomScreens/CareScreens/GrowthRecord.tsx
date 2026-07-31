@@ -1,13 +1,15 @@
 import PrimaryButton from "@/src/components/PrimaryButton";
 import WrapView from "@/src/components/WrapView";
+import { calculatePercentile, getAgeLabel } from "@/src/constants/Functions";
 import { images } from "@/src/constants/images";
 import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+
+import { useToast } from "@/src/components/ToastContext";
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -35,8 +37,6 @@ const GrowthRecord = () => {
   // State for growth metrics
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const [headCircumference, setHeadCircumference] = useState("");
-  const [bmi, setBmi] = useState("");
   const [notes, setNotes] = useState("");
   const [selectedDate, setSelectedDate] = useState(date);
   const [isMetric, setIsMetric] = useState(true); // true for metric, false for imperial
@@ -53,7 +53,7 @@ const GrowthRecord = () => {
 
   // Get last recorded values
   const lastRecord = growthHistory[growthHistory.length - 1];
-
+  const { showToast } = useToast();
   if (!baby) {
     return (
       <WrapView screenTitle="Growth Record">
@@ -92,48 +92,28 @@ const GrowthRecord = () => {
     );
   }
   const handleSave = () => {
-    // Validation
-    if (!weight && !height && !headCircumference) {
-      Alert.alert("Error", "Please enter at least one measurement");
+    if (!weight && !height ) {
+      showToast("Please enter at least one measurement", "error");
       return;
     }
 
-    // In real app, save to store/backend
     const growthData = {
       date: selectedDate,
       weight: weight ? parseFloat(weight) : null,
       height: height ? parseFloat(height) : null,
-      headCircumference: headCircumference
-        ? parseFloat(headCircumference)
-        : null,
-      bmi: bmi ? parseFloat(bmi) : null,
-      notes: notes,
+            notes: notes,
       ageInMonths: ageInMonths,
     };
 
     console.log("Saving growth data:", growthData);
-    Alert.alert("Success", "Growth record saved successfully!", [
-      {
-        text: "OK",
-        onPress: () => {
-          // Reset form
-          setWeight("");
-          setHeight("");
-          setHeadCircumference("");
-          setBmi("");
-          setNotes("");
-        },
-      },
-    ]);
+    showToast("Growth record saved successfully!", "success");
   };
-
   return (
     <WrapView screenTitle="Growth Record">
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Baby Profile Header */}
         <View style={styles.row}>
           <TouchableOpacity style={styles.profileContainer} activeOpacity={0.5}>
             <Image source={images.baby} style={styles.profileImage} />
@@ -160,7 +140,6 @@ const GrowthRecord = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Last Recorded Stats */}
         {lastRecord && (
           <View style={styles.lastRecordContainer}>
             <ThemedText type="text4bold" style={{ marginBottom: 8 }}>
@@ -197,9 +176,8 @@ const GrowthRecord = () => {
           </View>
         )}
 
-        {/* Unit Toggle */}
         <View style={styles.unitToggleContainer}>
-          <ThemedText type="text4" style={{ marginRight: SIZES.base }}>
+          <ThemedText type="text4bold" style={{ marginRight: SIZES.base ,color:COLORS.primary}}>
             Units:
           </ThemedText>
           <TouchableOpacity
@@ -226,14 +204,12 @@ const GrowthRecord = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Growth Metrics Form */}
         <View style={styles.formContainer}>
           <View style={styles.rowBetween}>
-            <ThemedText type="text3bold">Record Measurements</ThemedText>
+            <ThemedText type="text3">Record Measurements</ThemedText>
             <ThemedText type="text4gray">{selectedDate}</ThemedText>
           </View>
 
-          {/* Weight */}
           <View style={styles.inputGroup}>
             <View style={styles.inputLabel}>
               <Ionicons
@@ -283,59 +259,8 @@ const GrowthRecord = () => {
               />
               <ThemedText type="text4gray">{isMetric ? "cm" : "in"}</ThemedText>
             </View>
-          </View>
+          </View>        
 
-          {/* Head Circumference */}
-          <View style={styles.inputGroup}>
-            <View style={styles.inputLabel}>
-              <Ionicons
-                name="analytics-outline"
-                size={20}
-                color={COLORS.primary}
-              />
-              <ThemedText type="text4bold" style={styles.inputLabelText}>
-                Head Circumference
-              </ThemedText>
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder={isMetric ? "e.g., 44" : "e.g., 17.3"}
-                keyboardType="decimal-pad"
-                value={headCircumference}
-                onChangeText={setHeadCircumference}
-                placeholderTextColor="#999"
-              />
-              <ThemedText type="text4gray">{isMetric ? "cm" : "in"}</ThemedText>
-            </View>
-          </View>
-
-          {/* BMI (Optional) */}
-          <View style={styles.inputGroup}>
-            <View style={styles.inputLabel}>
-              <Ionicons
-                name="calculator-outline"
-                size={20}
-                color={COLORS.primary}
-              />
-              <ThemedText type="text4bold" style={styles.inputLabelText}>
-                BMI (Optional)
-              </ThemedText>
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="e.g., 16.5"
-                keyboardType="decimal-pad"
-                value={bmi}
-                onChangeText={setBmi}
-                placeholderTextColor="#999"
-              />
-              <ThemedText type="text4gray">kg/m²</ThemedText>
-            </View>
-          </View>
-
-          {/* Notes */}
           <View style={styles.inputGroup}>
             <View style={styles.inputLabel}>
               <Ionicons
@@ -361,7 +286,7 @@ const GrowthRecord = () => {
 
           {/* Percentile Info */}
           <View style={styles.percentileContainer}>
-            <ThemedText type="text4bold" style={styles.percentileTitle}>
+            <ThemedText type="text3bold" style={styles.percentileTitle}>
               Growth Percentiles
             </ThemedText>
             <View style={styles.percentileGrid}>
@@ -389,18 +314,7 @@ const GrowthRecord = () => {
                     : "--"}
                 </ThemedText>
               </View>
-              <View style={styles.percentileItem}>
-                <ThemedText type="text4gray">Head</ThemedText>
-                <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
-                  {headCircumference
-                    ? calculatePercentile(
-                        parseFloat(headCircumference),
-                        "head",
-                        ageInMonths,
-                      )
-                    : "--"}
-                </ThemedText>
-              </View>
+            
             </View>
           </View>
 
@@ -416,7 +330,6 @@ const GrowthRecord = () => {
   );
 };
 
-// Helper Functions
 const getAgeInMonths = (dateOfBirth: string | number | Date) => {
   const birthDate = new Date(dateOfBirth);
   const today = new Date();
@@ -425,58 +338,10 @@ const getAgeInMonths = (dateOfBirth: string | number | Date) => {
   months += today.getMonth();
   return months <= 0 ? 0 : months;
 };
-
-const getAgeLabel = (dateOfBirth: string | number | Date) => {
-  const birthDate = new Date(dateOfBirth);
-  const today = new Date();
-  let years = today.getFullYear() - birthDate.getFullYear();
-  let months = today.getMonth() - birthDate.getMonth();
-  let days = today.getDate() - birthDate.getDate();
-
-  if (days < 0) {
-    months--;
-    const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
-    days += prevMonth.getDate();
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  if (years > 0) {
-    return `${years}y ${months}m`;
-  } else if (months > 0) {
-    return `${months}m ${days}d`;
-  } else {
-    return `${days}d`;
-  }
-};
-
-// Mock percentile calculation - replace with actual WHO growth data
-const calculatePercentile = (
-  value: number,
-  type: string,
-  ageInMonths: number,
-) => {
-  // This is a simplified mock - in production, use WHO growth charts
-  const percentiles = [
-    "<3rd",
-    "5th",
-    "10th",
-    "25th",
-    "50th",
-    "75th",
-    "90th",
-    "95th",
-    ">97th",
-  ];
-  const index = Math.floor(Math.random() * percentiles.length);
-  return percentiles[index];
-};
-
 const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: SIZES.padding * 2,
+    width:SCREEN_WIDTH*0.9
   },
   emptyContainer: {
     flex: 1,
@@ -489,36 +354,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.padding,
     paddingVertical: SIZES.base,
     backgroundColor: "white",
-    borderRadius: SIZES.radius,
-    marginBottom: SIZES.base,
+    borderRadius: SIZES.h3,
+    marginVertical: SIZES.h4,
   },
   profileContainer: {
     marginRight: SIZES.base,
   },
   profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: SIZES.h1 * 1.7,
+    height: SIZES.h1 * 1.7,
+    borderRadius: SIZES.h1,
     resizeMode: "cover",
+    borderColor: COLORS.primary,
+    borderWidth:2
   },
   historyButton: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: SIZES.base,
     paddingVertical: SIZES.base / 2,
-    backgroundColor: COLORS.primary + "10",
-    borderRadius: SIZES.radius,
+    backgroundColor: COLORS.primary + "20",
+    borderRadius: SIZES.h4,
   },
   lastRecordContainer: {
     backgroundColor: "white",
     padding: SIZES.padding,
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.h4,
     marginBottom: SIZES.base,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
+width:'98%'
   },
   lastRecordGrid: {
     flexDirection: "row",
@@ -533,14 +396,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
-    padding: SIZES.base,
-    borderRadius: SIZES.radius,
+    padding: SIZES.h5,
+    borderRadius: SIZES.h4,
     marginBottom: SIZES.base,
+    width:'98%'
   },
   unitToggle: {
     paddingHorizontal: SIZES.base * 1.5,
     paddingVertical: SIZES.base / 2,
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.h5,
     marginHorizontal: 4,
   },
   unitToggleActive: {
@@ -552,12 +416,9 @@ const styles = StyleSheet.create({
   formContainer: {
     backgroundColor: "white",
     padding: SIZES.padding,
-    borderRadius: SIZES.radius,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
+    borderRadius: SIZES.h4,
+    width:'98%',
+
   },
   rowBetween: {
     flexDirection: "row",
@@ -580,34 +441,35 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: SIZES.radius,
+    borderColor: COLORS.gray2,
+    borderRadius: SIZES.h4,
     paddingHorizontal: SIZES.base,
   },
   input: {
     flex: 1,
-    paddingVertical: SIZES.base,
+    paddingVertical: SIZES.h5,
     fontSize: 16,
     color: "#333",
   },
   textArea: {
-    height: 80,
+    height: SIZES.h1*4,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: SIZES.radius,
+    borderColor:COLORS.gray2,
+    borderRadius: SIZES.h5,
     paddingHorizontal: SIZES.base,
     paddingTop: SIZES.base,
   },
   percentileContainer: {
-    backgroundColor: COLORS.secondary + "10",
+    backgroundColor: COLORS.secondary + "20",
     padding: SIZES.padding,
-    borderRadius: SIZES.radius,
+    borderRadius: SIZES.h4,
     marginVertical: SIZES.base,
   },
   percentileTitle: {
     marginBottom: SIZES.base,
     textAlign: "center",
+    color:COLORS.primary
   },
   percentileGrid: {
     flexDirection: "row",
