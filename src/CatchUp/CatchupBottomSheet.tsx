@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
+  Image,
   Modal,
   PanResponder,
   Pressable,
@@ -12,7 +13,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { COLORS } from "../constants/THEME";
+import { images } from "../constants/images";
+import { COLORS, SCREEN_WIDTH } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
 import { useBabyStore } from "../store/useBabyStore";
 import { useMomStore } from "../store/useMomStore";
@@ -21,6 +23,7 @@ import {
   OpenCatchupGroup,
   returnApproximateTime,
 } from "./CatchUpDetection";
+import PrimaryButton from "../components/PrimaryButton";
 
 interface Props {
   groups: OpenCatchupGroup[];
@@ -65,19 +68,21 @@ export default function CatchupBottomSheet({
     }
   }, [visible, panY]);
 
-  const handleDismiss = useMemo(() => {
-    return () => {
-      Animated.spring(panY, {
-        toValue: BOTTOM_SHEET_HEIGHT,
-        useNativeDriver: true,
-        tension: 300,
-        friction: 30,
-      }).start(() => {
-        panY.setValue(0);
+const handleDismiss = useMemo(() => {
+  return () => {
+    Animated.spring(panY, {
+      toValue: BOTTOM_SHEET_HEIGHT,
+      useNativeDriver: true,
+      tension: 300,
+      friction: 30,
+    }).start(() => {
+      panY.setValue(0);
+      setTimeout(() => {
         onDismiss();
-      });
-    };
-  }, [panY, onDismiss]);
+      }, 1000);
+    });
+  };
+}, [panY, onDismiss]);
 
   const panResponder = useMemo(
     () =>
@@ -125,16 +130,21 @@ export default function CatchupBottomSheet({
                 <View style={styles.dragHandle} />
               </View>
               <View style={styles.container}>
-                <ThemedText type="text2bold">No vaccines available</ThemedText>
-                <TouchableOpacity
-                  style={styles.continueButton}
-                  onPress={handleDismiss}
-                >
-                  <Text style={styles.continueText}>Close</Text>
-                </TouchableOpacity>
+                <Image
+                  source={images.mascotCeleb}
+                  style={{
+                    height: SCREEN_HEIGHT * 0.25,
+                    width: SCREEN_WIDTH * 0.45,
+                    resizeMode: "contain",
+                    alignSelf:"center"
+                  }}
+                />
+                <ThemedText type="text2bold" style={{textAlign:'center'}}>No vaccines available</ThemedText>
+               <PrimaryButton title="Close" onPress={handleDismiss} style={{width:SCREEN_WIDTH*0.9}}/>
               </View>
             </View>
           </View>
+
         </TouchableWithoutFeedback>
       </Modal>
     );
