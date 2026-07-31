@@ -34,7 +34,7 @@ interface Props {
 type Selections = Record<string, ApproximateTime | undefined>;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
-const BOTTOM_SHEET_HEIGHT = SCREEN_HEIGHT * 0.6;
+const BOTTOM_SHEET_HEIGHT = SCREEN_HEIGHT * 0.65;
 
 export default function CatchupBottomSheet({
   groups,
