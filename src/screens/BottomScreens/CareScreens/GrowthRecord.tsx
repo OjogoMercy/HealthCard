@@ -72,7 +72,10 @@ const GrowthRecord = () => {
             Let's start your baby's journey
           </ThemedText>
 
-          <ThemedText type="text4gray" style={{ textAlign: "center" }}>
+          <ThemedText
+            type="text4gray"
+            style={{ textAlign: "center", marginVertical: SIZES.h5 }}
+          >
             Create a baby profile to begin tracking growth, vaccinations,
             nutrition, and developmental milestones.
           </ThemedText>
@@ -82,7 +85,7 @@ const GrowthRecord = () => {
             onPress={() =>
               navigation.navigate("StackNav", { screen: "BabyForm" })
             }
-            style={{ width: SCREEN_WIDTH * 0.8 }}
+            style={{ width: SCREEN_WIDTH * 0.8, marginBottom: -SIZES.h1 * 3 }}
           />
         </View>
       </WrapView>

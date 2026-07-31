@@ -57,6 +57,7 @@ const BabyForm = () => {
       setShowPicker(false);
 
       showToast("Child record created successfully", "success");
+      console.log(newChild);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add child");
       showToast("Failed to create child record. Please try again.", "error");

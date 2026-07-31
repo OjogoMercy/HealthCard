@@ -117,7 +117,7 @@ const HomeScreen = () => {
               <ThemedText type="text2bold" style={{ color: COLORS.primary }}>
                 When did your baby last get vaccinated?
               </ThemedText>
-              <ThemedText type="text4">
+              <ThemedText type="text4gray" style={{ marginTop: SIZES.h3 / 2 }}>
                 HealthCard keeps every dose recorded, and reminds you before you
                 miss the next one.
               </ThemedText>
@@ -126,15 +126,21 @@ const HomeScreen = () => {
                 <Image style={styles.mascotImage} source={images.mascot} />
               </View>
 
-              <View style={{ alignItems: "center", width: "100%" }}>
+              <View
+                style={{
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: SIZES.h1 * 2,
+                }}
+              >
                 <ThemedText
-                  type="text3bold"
+                  type="text2"
                   style={{ marginBottom: SIZES.padding / 2 }}
                 >
                   Let's set up your baby's profile
                 </ThemedText>
                 <ThemedText
-                  type="text5"
+                  type="text4"
                   style={{
                     marginBottom: -10,
                     textAlign: "center",
@@ -145,7 +151,7 @@ const HomeScreen = () => {
                 </ThemedText>
                 <PrimaryButton
                   title="Add Baby Profile"
-                  style={{ width: "90%" }}
+                  style={{ width: "90%", marginTop: SIZES.h1 * 2 }}
                   onPress={() => navigation.navigate("BabyForm")}
                 />
               </View>
@@ -595,10 +601,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mascotImage: {
-    width: "90%",
-    height: "90%",
+    width: SCREEN_WIDTH * 0.6,
+    height: SCREEN_HEIGHT * 0.35,
     resizeMode: "contain",
-    marginVertical: SIZES.padding,
+    marginVertical: SIZES.h1,
   },
   allDoneCard: {
     width: SCREEN_WIDTH * 0.9,
