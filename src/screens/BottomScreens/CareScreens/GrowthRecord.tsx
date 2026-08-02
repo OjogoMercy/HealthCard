@@ -41,14 +41,10 @@ const GrowthRecord = () => {
   const [selectedDate, setSelectedDate] = useState(date);
   const [isMetric, setIsMetric] = useState(true); // true for metric, false for imperial
 
-  // Baby's age in months for percentile calculations
-  const ageInMonths = baby ? getAgeInMonths(baby.dateOfBirth) : 0;
-
-  // Mock growth data - in real app, this would come from store
   const [growthHistory] = useState([
-    { date: "2024-12-01", weight: 8.5, height: 72, headCircumference: 44 },
-    { date: "2024-11-15", weight: 8.2, height: 71, headCircumference: 43.5 },
-    { date: "2024-11-01", weight: 7.9, height: 70, headCircumference: 43 },
+    { date: "2024-12-01", weight: 8.5, height: 72 },
+    { date: "2024-11-15", weight: 8.2, height: 71 },
+    { date: "2024-11-01", weight: 7.9, height: 70 },
   ]);
 
   // Get last recorded values
@@ -92,7 +88,7 @@ const GrowthRecord = () => {
     );
   }
   const handleSave = () => {
-    if (!weight && !height ) {
+    if (!weight && !height) {
       showToast("Please enter at least one measurement", "error");
       return;
     }
@@ -101,8 +97,7 @@ const GrowthRecord = () => {
       date: selectedDate,
       weight: weight ? parseFloat(weight) : null,
       height: height ? parseFloat(height) : null,
-            notes: notes,
-      ageInMonths: ageInMonths,
+      notes: notes,
     };
 
     console.log("Saving growth data:", growthData);
@@ -162,22 +157,15 @@ const GrowthRecord = () => {
                 />
                 <ThemedText type="text4bold">{lastRecord.height} cm</ThemedText>
               </View>
-              <View style={styles.lastRecordItem}>
-                <Ionicons
-                  name="analytics-outline"
-                  size={20}
-                  color={COLORS.primary}
-                />
-                <ThemedText type="text4bold">
-                  {lastRecord.headCircumference} cm
-                </ThemedText>
-              </View>
             </View>
           </View>
         )}
 
         <View style={styles.unitToggleContainer}>
-          <ThemedText type="text4bold" style={{ marginRight: SIZES.base ,color:COLORS.primary}}>
+          <ThemedText
+            type="text4bold"
+            style={{ marginRight: SIZES.base, color: COLORS.primary }}
+          >
             Units:
           </ThemedText>
           <TouchableOpacity
@@ -259,7 +247,7 @@ const GrowthRecord = () => {
               />
               <ThemedText type="text4gray">{isMetric ? "cm" : "in"}</ThemedText>
             </View>
-          </View>        
+          </View>
 
           <View style={styles.inputGroup}>
             <View style={styles.inputLabel}>
@@ -294,11 +282,7 @@ const GrowthRecord = () => {
                 <ThemedText type="text4gray">Weight</ThemedText>
                 <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
                   {weight
-                    ? calculatePercentile(
-                        parseFloat(weight),
-                        "weight",
-                        ageInMonths,
-                      )
+                    ? calculatePercentile(parseFloat(weight), "weight")
                     : "--"}
                 </ThemedText>
               </View>
@@ -306,15 +290,10 @@ const GrowthRecord = () => {
                 <ThemedText type="text4gray">Height</ThemedText>
                 <ThemedText type="text3bold" style={{ color: COLORS.primary }}>
                   {height
-                    ? calculatePercentile(
-                        parseFloat(height),
-                        "height",
-                        ageInMonths,
-                      )
+                    ? calculatePercentile(parseFloat(height), "height")
                     : "--"}
                 </ThemedText>
               </View>
-            
             </View>
           </View>
 
@@ -329,19 +308,10 @@ const GrowthRecord = () => {
     </WrapView>
   );
 };
-
-const getAgeInMonths = (dateOfBirth: string | number | Date) => {
-  const birthDate = new Date(dateOfBirth);
-  const today = new Date();
-  let months = (today.getFullYear() - birthDate.getFullYear()) * 12;
-  months -= birthDate.getMonth();
-  months += today.getMonth();
-  return months <= 0 ? 0 : months;
-};
 const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: SIZES.padding * 2,
-    width:SCREEN_WIDTH*0.9
+    width: SCREEN_WIDTH * 0.9,
   },
   emptyContainer: {
     flex: 1,
@@ -366,7 +336,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.h1,
     resizeMode: "cover",
     borderColor: COLORS.primary,
-    borderWidth:2
+    borderWidth: 2,
   },
   historyButton: {
     flexDirection: "row",
@@ -381,7 +351,7 @@ const styles = StyleSheet.create({
     padding: SIZES.padding,
     borderRadius: SIZES.h4,
     marginBottom: SIZES.base,
-width:'98%'
+    width: "98%",
   },
   lastRecordGrid: {
     flexDirection: "row",
@@ -399,7 +369,7 @@ width:'98%'
     padding: SIZES.h5,
     borderRadius: SIZES.h4,
     marginBottom: SIZES.base,
-    width:'98%'
+    width: "98%",
   },
   unitToggle: {
     paddingHorizontal: SIZES.base * 1.5,
@@ -417,8 +387,7 @@ width:'98%'
     backgroundColor: "white",
     padding: SIZES.padding,
     borderRadius: SIZES.h4,
-    width:'98%',
-
+    width: "98%",
   },
   rowBetween: {
     flexDirection: "row",
@@ -452,10 +421,10 @@ width:'98%'
     color: "#333",
   },
   textArea: {
-    height: SIZES.h1*4,
+    height: SIZES.h1 * 4,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor:COLORS.gray2,
+    borderColor: COLORS.gray2,
     borderRadius: SIZES.h5,
     paddingHorizontal: SIZES.base,
     paddingTop: SIZES.base,
@@ -469,7 +438,7 @@ width:'98%'
   percentileTitle: {
     marginBottom: SIZES.base,
     textAlign: "center",
-    color:COLORS.primary
+    color: COLORS.primary,
   },
   percentileGrid: {
     flexDirection: "row",

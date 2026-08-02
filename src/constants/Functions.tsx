@@ -14,11 +14,7 @@ export const getAgeLabel = (dob: string): string => {
   return `${years} year${years === 1 ? "" : "s"} old`;
 };
 
-export const calculatePercentile = (
-  value: number,
-  type: string,
-  ageInMonths: number,
-) => {
+export const calculatePercentile = (value: number, type: string) => {
   // This is a simplified mock - in production, use WHO growth charts
   const percentiles = [
     "<3rd",
