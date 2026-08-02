@@ -1,6 +1,6 @@
-# HealthCard 🏥👶
+# Ojiva 
 
-**HealthCard** is a mobile health (mHealth) application designed to bridge the gap in postnatal care and child nutrition monitoring in Nigeria. 
+**Ojiva** is a mobile health (mHealth) application designed to bridge the gap in postnatal care and child nutrition monitoring in Nigeria. 
 
 ###  Key Features
 * **Digital NPI Tracker:** A digital replacement for the physical immunization "Green Card" with automated due-date logic and local reminders.
@@ -15,4 +15,4 @@
 * **UI/UX:** Focused on iconography and slider-based data entry to reduce cognitive load.
 
 ### 📈 Research Goal
-To improve adherence to vaccination schedules and nutritional standards through accessible, digital-first reminders and simplified health education.
+Ojiva is trying to make it easier for Nigerian mothers to track their children's health, specifically immunisation schedules and growth ,so that important health information is always accessible and reminders don't get missed. 
