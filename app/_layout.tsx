@@ -15,7 +15,22 @@ function NavigationGateKeeper() {
   const clearChildren = useBabyStore((s) => s.clearChildren);
   const { session, isLoading, logoutAuth } = useAuth();
   const { showToast } = useToast();
-
+  const warmUpConnection = async () => {
+    try {
+      await Promise.race([
+        fetch("https://backend-healthCard.onrender.com", {
+          method: "HEAD",
+          headers: { "cache-control": "no-cache" },
+        }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("timeout")), 5000),
+        ),
+      ]);
+      console.log("connection warmed successfully");
+    } catch (e) {
+      console.log("warm up failed ", e);
+    }
+  };
   const isTokenExpired = (token: string): boolean => {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
@@ -25,22 +40,7 @@ function NavigationGateKeeper() {
       return true;
     }
   };
-  const warmUpConnection = async () => {
-    try {
-      await Promise.race([
-        fetch("https://backend-healthCard.onrender.com", {
-          method: "HEAD",
-          headers: { "cache-control": "no-cache" },
-        }),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("timeout")), 3000),
-        ),
-      ]);
-      console.log("connection warmed successfully");
-    } catch (e) {
-      console.log("warm up failed ", e);
-    }
-  };
+
   useEffect(() => {
     let isMounted = true;
     const getUserData = async () => {
@@ -125,7 +125,7 @@ function NavigationGateKeeper() {
     );
   }
 
-  console.log("[NavigationGateKeeper] Is user authenticated?:", !!session);
+  // console.log("[NavigationGateKeeper] Is user authenticated?:", !!session);
   return (
     <RootNavigator isAuthenticated={!!session} hasOnboarded={hasOnboarded} />
   );

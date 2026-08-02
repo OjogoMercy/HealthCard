@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import PrimaryButton from "../components/PrimaryButton";
 import { images } from "../constants/images";
 import { COLORS, SCREEN_WIDTH } from "../constants/THEME";
 import { ThemedText } from "../constants/ThemedText";
@@ -23,7 +24,6 @@ import {
   OpenCatchupGroup,
   returnApproximateTime,
 } from "./CatchUpDetection";
-import PrimaryButton from "../components/PrimaryButton";
 
 interface Props {
   groups: OpenCatchupGroup[];
@@ -66,23 +66,35 @@ export default function CatchupBottomSheet({
     if (visible) {
       panY.setValue(0);
     }
-  }, [visible, panY]);
-
-const handleDismiss = useMemo(() => {
-  return () => {
-    Animated.spring(panY, {
-      toValue: BOTTOM_SHEET_HEIGHT,
-      useNativeDriver: true,
-      tension: 300,
-      friction: 30,
-    }).start(() => {
-      panY.setValue(0);
-      setTimeout(() => {
-        onDismiss();
-      }, 1000);
+    const defaults: Selections = {};
+    let updatesNeeded = false;
+    if (!currentGroup?.dueDate) return;
+    currentGroup.vaccines.forEach((vaccine) => {
+      if (!selections[vaccine.id]) {
+        defaults[vaccine.id] = "on_time";
+        updatesNeeded = true;
+      }
     });
-  };
-}, [panY, onDismiss]);
+    if (updatesNeeded || Object.keys(defaults).length > 0) {
+      setSelections((prev) => ({ ...prev, ...defaults }));
+    }
+  }, [visible, panY, currentGroup, selections]);
+
+  const handleDismiss = useMemo(() => {
+    return () => {
+      Animated.spring(panY, {
+        toValue: BOTTOM_SHEET_HEIGHT,
+        useNativeDriver: true,
+        tension: 300,
+        friction: 30,
+      }).start(() => {
+        panY.setValue(0);
+        setTimeout(() => {
+          onDismiss();
+        }, 1000);
+      });
+    };
+  }, [panY, onDismiss]);
 
   const panResponder = useMemo(
     () =>
@@ -136,15 +148,20 @@ const handleDismiss = useMemo(() => {
                     height: SCREEN_HEIGHT * 0.25,
                     width: SCREEN_WIDTH * 0.45,
                     resizeMode: "contain",
-                    alignSelf:"center"
+                    alignSelf: "center",
                   }}
                 />
-                <ThemedText type="text2bold" style={{textAlign:'center'}}>No vaccines available</ThemedText>
-               <PrimaryButton title="Close" onPress={handleDismiss} style={{width:SCREEN_WIDTH*0.9}}/>
+                <ThemedText type="text2bold" style={{ textAlign: "center" }}>
+                  No vaccines available
+                </ThemedText>
+                <PrimaryButton
+                  title="Close"
+                  onPress={handleDismiss}
+                  style={{ width: SCREEN_WIDTH * 0.9 }}
+                />
               </View>
             </View>
           </View>
-
         </TouchableWithoutFeedback>
       </Modal>
     );

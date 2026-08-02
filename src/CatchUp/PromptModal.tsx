@@ -37,6 +37,14 @@ const PromptModal = ({ openVaccineCount, onPress, close, setClose }: Props) => {
   if (!baby) {
     return (
       <WrapView>
+        <Image
+          source={images.mascotSearch}
+          style={{
+            height: SCREEN_HEIGHT * 0.25,
+            width: SCREEN_WIDTH * 0.4,
+            resizeMode: "contain",
+          }}
+        />
         <ThemedText>Theres no baby yet</ThemedText>
       </WrapView>
     );
