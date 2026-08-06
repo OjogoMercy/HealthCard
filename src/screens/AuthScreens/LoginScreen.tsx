@@ -21,7 +21,7 @@ const LoginScreen = () => {
   const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const setMom = useMomStore((s) => s.setMom);
-    const { showToast } = useToast();
+  const { showToast } = useToast();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -75,22 +75,15 @@ const LoginScreen = () => {
       setIsLoading(false);
     }
   };
-
-  // if (loading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <ActivityIndicator size="large" color={COLORS.primary} />
-  //     </View>
-  //   );
-  // }
   return (
     <CustomHeader authScreen={true}>
       <Image
         source={images.logo}
         style={{
-          height: SIZES.navTitle * 3,
-          width: SIZES.navTitle * 3,
+          height: SIZES.navTitle * 2,
+          width: SIZES.navTitle * 2,
           resizeMode: "contain",
+          marginTop: SIZES.h3,
         }}
       />
       <View style={general.form}>
@@ -134,7 +127,7 @@ const LoginScreen = () => {
         Don't have an account?
         <ThemedText
           type="text3bold"
-          style={{ color: COLORS.primary }}
+          style={{ color: COLORS.primary ,      fontSize: 12,}}
           onPress={() => navigation.navigate("SignUp")}
         >
           SignUp

@@ -88,7 +88,7 @@ export const general = StyleSheet.create({
     borderRadius: SIZES.padding,
     resizeMode: "cover",
   },form: {
-    marginVertical: SIZES.padding,
+    marginVertical: SIZES.padding *1.5,
     backgroundColor: COLORS.primary + "20",
     borderRadius: SIZES.padding,
     paddingVertical: SIZES.padding,

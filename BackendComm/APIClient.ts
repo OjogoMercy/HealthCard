@@ -2,7 +2,7 @@
 import axios from "axios";
 import authStorage from "./authStorage";
 
-const BASE_URL = process.env.URL
+const BASE_URL = process.env.EXPO_PUBLIC_URL
 const apiClient = axios.create({
   baseURL: BASE_URL,
   timeout: 5000,
