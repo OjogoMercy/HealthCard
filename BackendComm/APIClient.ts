@@ -2,7 +2,7 @@
 import axios from "axios";
 import authStorage from "./authStorage";
 
-const BASE_URL = "https://backend-healthCard.onrender.com";
+const BASE_URL = process.env.URL
 const apiClient = axios.create({
   baseURL: BASE_URL,
   timeout: 5000,

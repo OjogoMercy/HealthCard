@@ -236,9 +236,9 @@ const HomeScreen = () => {
               {mom?.userName ?? "Mummy"}
             </ThemedText>
           </ThemedText>
-          <TouchableOpacity activeOpacity={0.5}>
+          {/* <TouchableOpacity activeOpacity={0.5}>
             <Ionicons name="notifications" size={24} color={COLORS.primary} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {hasBaby && (
