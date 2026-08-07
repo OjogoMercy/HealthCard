@@ -23,7 +23,7 @@ function NavigationGateKeeper() {
           headers: { "cache-control": "no-cache" },
         }),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("timeout")), 5000),
+          setTimeout(() => reject(new Error("timeout")), 10000),
         ),
       ]);
       console.log("connection warmed successfully");

@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: "center",
     backgroundColor: COLORS.background,
-    paddingVertical: SIZES.h3,
+    paddingVertical: SIZES.h2,
     paddingHorizontal: SIZES.h4,
   },
 });
