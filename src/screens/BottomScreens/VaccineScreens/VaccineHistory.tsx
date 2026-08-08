@@ -78,7 +78,7 @@ const VaccineHistory = () => {
     dismiss,
     onAllAnswered,
     openVaccineCount,
-  } = useCatchupPrompt(babyId || "", safeDate);
+  } = useCatchupPrompt(babyId || "", safeDate as Date);
   useFocusEffect(
     useCallback(() => {
       if (babyId && safeDate) {

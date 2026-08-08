@@ -1,4 +1,7 @@
-import { getUserProfile } from "@/BackendComm/APIClient";
+import {
+  getImmunisationsByChild,
+  getUserProfile,
+} from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
 import authStorage, { hasOnboarded } from "@/BackendComm/authStorage";
 import { ToastProvider, useToast } from "@/src/components/ToastContext";
@@ -13,6 +16,7 @@ import RootNavigator from "../src/navigation/RootNavigator";
 function NavigationGateKeeper() {
   const setChild = useBabyStore((s) => s.setChildren);
   const clearChildren = useBabyStore((s) => s.clearChildren);
+  const childId = useBabyStore((s) => s.activeChildId);
   const { session, isLoading, logoutAuth } = useAuth();
   const { showToast } = useToast();
   const warmUpConnection = async () => {
@@ -94,6 +98,8 @@ function NavigationGateKeeper() {
 
         if (profile.children && profile.children.length > 0) {
           setChild(profile.children);
+          await getImmunisationsByChild(childId as string, session.userId);
+
           console.log("child data stored successfully");
         } else {
           clearChildren();
@@ -125,7 +131,6 @@ function NavigationGateKeeper() {
     );
   }
 
-  // console.log("[NavigationGateKeeper] Is user authenticated?:", !!session);
   return (
     <RootNavigator isAuthenticated={!!session} hasOnboarded={hasOnboarded} />
   );

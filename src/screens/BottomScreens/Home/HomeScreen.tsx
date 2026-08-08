@@ -43,9 +43,8 @@ const HomeScreen = () => {
 
   // Store actions and data
   const getActiveChild = useBabyStore((s) => s.getActiveChild);
-  const fetchBabyData = useBabyStore((s) => s.refreshBabyData); // Assuming you have this action
-  const fetchMomData = useMomStore((s) => s.fetchMomFromStorage); // Assuming you have this action
-
+  const fetchBabyData = useBabyStore((s) => s.refreshBabyData); 
+  const fetchMomData = useMomStore((s) => s.fetchMomFromStorage); 
   const baby = getActiveChild();
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
