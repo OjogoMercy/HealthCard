@@ -75,7 +75,7 @@ const HomeScreen = () => {
       await useSyncQueueStore.getState().flush();
       const activeChildId = useBabyStore.getState().activeChildId;
       if (activeChildId && mom?.userId) {
-        console.log("reconciling...")
+        console.log("reconciling...");
         await reconcileVaccineState(activeChildId, mom?.userId);
       }
     } catch (err) {
@@ -84,7 +84,7 @@ const HomeScreen = () => {
     } finally {
       setRefreshing(false);
     }
-  }, [fetchBabyData, fetchMomData,mom?.userId]);
+  }, [fetchBabyData, fetchMomData, mom?.userId]);
 
   useEffect(() => {
     if (isInitialLoad) {
@@ -436,7 +436,9 @@ const HomeScreen = () => {
             </TouchableOpacity>
 
             {/* Last updated indicator */}
-            <ThemedText
+            <TouchableOpacity onPress={() => onRefresh()}>
+ <ThemedText
+              
               type="text5"
               style={{
                 textAlign: "center",
@@ -447,6 +449,8 @@ const HomeScreen = () => {
             >
               Pull down to refresh
             </ThemedText>
+            </TouchableOpacity>
+           
           </>
         )}
       </ScrollView>

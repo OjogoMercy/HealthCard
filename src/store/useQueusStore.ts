@@ -52,6 +52,7 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
               dueDate: new Date(entry.dueDate),
               userId: entry.userId,
             });
+            console.log("sync successful")
 
             // Remove successfully synced item
             set((state) => ({
@@ -63,7 +64,6 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
               entry.queueId
             );
             // Stop processing further items to preserve strict FIFO order
-            break;
           }
         }
 
