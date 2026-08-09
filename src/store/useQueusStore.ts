@@ -45,7 +45,7 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
               dueDate: entry.dueDate,
               userId: entry.userId,
             });
-            // success — remove just this entry
+            console.log("syncing")
             set((state) => ({
               pending: state.pending.filter((p) => p.queueId !== entry.queueId),
             }));

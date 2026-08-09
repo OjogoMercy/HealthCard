@@ -121,7 +121,7 @@ function NavigationGateKeeper() {
     return () => {
       isMounted = false;
     };
-  }, [clearChildren, isLoading, setChild, logoutAuth, session]);
+  }, [clearChildren, isLoading, setChild, logoutAuth, session,childId]);
 
   if (isLoading) {
     return (

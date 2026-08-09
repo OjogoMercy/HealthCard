@@ -289,7 +289,6 @@ export const useBabyStore = create<BabyStore>()(
         }
 
         try {
-          // Fetch the latest completed IDs from storage
           const completedIds = await fetchCompletedIdsFromStorage();
 
           // Update the state with the new vaccine data
