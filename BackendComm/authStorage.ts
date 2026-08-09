@@ -33,7 +33,7 @@ const storeUserData = async (userData: UserSession) => {
 const getUserData = async () => {
   try {
     const session = await AsyncStorage.getItem("User_Session");
-    console.log("[authStorage] Raw session data retrieved");
+    console.log("[authStorage]  session data retrieved");
     if (!session) {
       console.log("No user session found");
       return null;

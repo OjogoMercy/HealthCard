@@ -1,9 +1,7 @@
-import {
-  getImmunisationsByChild,
-  getUserProfile,
-} from "@/BackendComm/APIClient";
+import { getUserProfile } from "@/BackendComm/APIClient";
 import { AuthProvider, useAuth } from "@/BackendComm/AuthContext";
 import authStorage, { hasOnboarded } from "@/BackendComm/authStorage";
+import { reconcileVaccineState } from "@/src/CatchUp/reconcileVaccineState";
 import { ToastProvider, useToast } from "@/src/components/ToastContext";
 import { COLORS } from "@/src/constants/THEME";
 import { useBabyStore } from "@/src/store/useBabyStore";
@@ -16,7 +14,6 @@ import RootNavigator from "../src/navigation/RootNavigator";
 function NavigationGateKeeper() {
   const setChild = useBabyStore((s) => s.setChildren);
   const clearChildren = useBabyStore((s) => s.clearChildren);
-  const childId = useBabyStore((s) => s.activeChildId);
   const { session, isLoading, logoutAuth } = useAuth();
   const { showToast } = useToast();
   const warmUpConnection = async () => {
@@ -53,11 +50,10 @@ function NavigationGateKeeper() {
         !session?.token || !session?.userId || isTokenExpired(session.token);
 
       if (hasNoActiveSession) {
-        warmUpConnection(); // fire-and-forget, no await
+        warmUpConnection();
       }
 
       if (session?.token && isTokenExpired(session.token)) {
-        console.log("[NavigationGateKeeper] Token expired");
 
         showToast("Session Expired , Please log in again", "error");
         await logoutAuth();
@@ -80,7 +76,6 @@ function NavigationGateKeeper() {
           console.warn("[NavigationGateKeeper] No user data returned");
           return;
         }
-        console.log("[NavigationGateKeeper] User data received:");
 
         if (session?.token && session?.userId && session?.email) {
           await authStorage.storeUserData({
@@ -91,14 +86,23 @@ function NavigationGateKeeper() {
           });
         } else {
           console.warn(
-            "[NavigationGateKeeper] Cannot update user data - session missing required fields",
+            "[NavigationGateKeeper] Cannot update user data ",
           );
         }
         const profile = UserData.profile;
 
         if (profile.children && profile.children.length > 0) {
           setChild(profile.children);
-          await getImmunisationsByChild(childId as string, session.userId);
+
+          const currentActiveChildId = useBabyStore.getState().activeChildId;
+          if (currentActiveChildId) {
+            await reconcileVaccineState(currentActiveChildId, session.userId);
+            console.log("reconciled");
+          } else {
+            console.warn(
+              "[NavigationGateKeeper] No active child after setChild",
+            );
+          }
 
           console.log("child data stored successfully");
         } else {
@@ -121,7 +125,7 @@ function NavigationGateKeeper() {
     return () => {
       isMounted = false;
     };
-  }, [clearChildren, isLoading, setChild, logoutAuth, session,childId]);
+  }, [clearChildren, isLoading, setChild, logoutAuth, session]);
 
   if (isLoading) {
     return (

@@ -68,6 +68,7 @@ const HomeScreen = () => {
       await Promise.all([
         fetchBabyData?.() || Promise.resolve(),
         fetchMomData?.() || Promise.resolve(),
+        currentVaccines
       ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to refresh data");

@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { registerLogoutHandler } from "./APIClient";
 import authStorage, { UserSession } from "./authStorage";
+import { getIfOnboarded } from "./authStorage";
 
 interface AuthContextType {
   session: UserSession | null;
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const storedSession = await authStorage.getUserData();
         if (storedSession) {
           setSession(storedSession);
-          const onBoarded = await authStorage.getIfOnboarded();
+          const onBoarded = await getIfOnboarded();
           setIsOnboarded(onBoarded);
         }
       } catch (error) {
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ session, isLoading, loginAuth, logoutAuth, updateSession }}
+      value={{ session, isLoading, loginAuth, logoutAuth, updateSession,isOnboarded }}
     >
       {children}
     </AuthContext.Provider>
