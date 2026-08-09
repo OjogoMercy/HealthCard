@@ -1,3 +1,4 @@
+import { reconcileVaccineState } from "@/src/CatchUp/reconcileVaccineState";
 import CustomHeader from "@/src/components/CustomHeader";
 import PrimaryButton from "@/src/components/PrimaryButton";
 import { getAgeLabel } from "@/src/constants/Functions";
@@ -11,6 +12,7 @@ import { ThemedText } from "@/src/constants/ThemedText";
 import { images } from "@/src/constants/images";
 import { useBabyStore, Vaccine } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
+import { useSyncQueueStore } from "@/src/store/useQueusStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -43,8 +45,8 @@ const HomeScreen = () => {
 
   // Store actions and data
   const getActiveChild = useBabyStore((s) => s.getActiveChild);
-  const fetchBabyData = useBabyStore((s) => s.refreshBabyData); 
-  const fetchMomData = useMomStore((s) => s.fetchMomFromStorage); 
+  const fetchBabyData = useBabyStore((s) => s.refreshBabyData);
+  const fetchMomData = useMomStore((s) => s.fetchMomFromStorage);
   const baby = getActiveChild();
   const currentStageTitle = useBabyStore((s) => s.currentStageTitle);
   const currentVaccines = useBabyStore((s) => s.currentVaccines);
@@ -68,15 +70,21 @@ const HomeScreen = () => {
       await Promise.all([
         fetchBabyData?.() || Promise.resolve(),
         fetchMomData?.() || Promise.resolve(),
-        currentVaccines
       ]);
+
+      await useSyncQueueStore.getState().flush();
+      const activeChildId = useBabyStore.getState().activeChildId;
+      if (activeChildId && mom?.userId) {
+        console.log("reconciling...")
+        await reconcileVaccineState(activeChildId, mom?.userId);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to refresh data");
       console.error("Refresh error:", err);
     } finally {
       setRefreshing(false);
     }
-  }, [fetchBabyData, fetchMomData]);
+  }, [fetchBabyData, fetchMomData,mom?.userId]);
 
   useEffect(() => {
     if (isInitialLoad) {
@@ -184,7 +192,7 @@ const HomeScreen = () => {
       );
       setModalVisible(false);
       setSelectedVaccine(null);
-      onRefresh()
+      onRefresh();
     } catch (err) {
       setError("Failed to mark vaccine as done");
       console.error("Mark done error:", err);

@@ -381,14 +381,13 @@ const VaccineHistory = () => {
             setClose={() => setModalVisible(false)}
             close={modalVisible}
             onPress={() => {
-              console.log("Button Pressed here");
               setModalVisible(false);
               setVisible(true);
             }}
           />
           <CatchupBottomSheet
             groups={openGroups}
-            dob={safeDate}
+            dob={safeDate as Date}
             childId={babyId || ""}
             visible={visible}
             onDismiss={() => setVisible(false)}
