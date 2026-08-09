@@ -7,7 +7,7 @@ interface PendingImmunisation {
   queueId: string;
   vaccineId: string;
   childId: string;
-  dueDate: Date;
+  dueDate: string; 
   userId: string;
 }
 
@@ -29,31 +29,41 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
         set((state) => ({
           pending: [...state.pending, { ...entry, queueId }],
         }));
+
+        // Auto-trigger flush when a new item is added
+        if (!get().isSyncing) {
+          get().flush();
+        }
       },
 
       flush: async () => {
-        const { pending, isSyncing } = get();
+        const { isSyncing, pending } = get();
         if (isSyncing || pending.length === 0) return;
 
         set({ isSyncing: true });
 
-        for (const entry of pending) {
+        const queueToProcess = [...get().pending];
+
+        for (const entry of queueToProcess) {
           try {
             await createImmunisation({
               vaccineId: entry.vaccineId,
               childId: entry.childId,
-              dueDate: entry.dueDate,
+              dueDate: new Date(entry.dueDate),
               userId: entry.userId,
             });
-            console.log("syncing")
+
+            // Remove successfully synced item
             set((state) => ({
               pending: state.pending.filter((p) => p.queueId !== entry.queueId),
             }));
           } catch (e) {
             console.warn(
-              "[SyncQueue] Failed to sync entry, will retry later",
-              entry.queueId,
+              "[SyncQueue] Failed to sync entry, stopping batch to preserve order:",
+              entry.queueId
             );
+            // Stop processing further items to preserve strict FIFO order
+            break;
           }
         }
 
@@ -63,6 +73,6 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
     {
       name: "healthcard-sync-queue",
       storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
+    }
+  )
 );
