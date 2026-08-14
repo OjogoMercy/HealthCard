@@ -167,7 +167,6 @@ export const createImmunisation = async ({
   childId: string;
   userId: string;
 }) => {
-  console.log("Creating immunisation record");
   if (!userId || !childId) {
     throw new Error("User ID and Child ID are required to create immunisation");
   }

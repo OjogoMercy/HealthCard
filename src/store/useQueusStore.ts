@@ -7,7 +7,7 @@ interface PendingImmunisation {
   queueId: string;
   vaccineId: string;
   childId: string;
-  dueDate: string; 
+  dueDate: string;
   userId: string;
 }
 
@@ -52,19 +52,13 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
               dueDate: new Date(entry.dueDate),
               userId: entry.userId,
             });
-            console.log("sync successful")
+            console.log("sync successful");
 
             // Remove successfully synced item
             set((state) => ({
               pending: state.pending.filter((p) => p.queueId !== entry.queueId),
             }));
-          } catch (e) {
-            console.warn(
-              "[SyncQueue] Failed to sync entry, stopping batch to preserve order:",
-              entry.queueId
-            );
-            // Stop processing further items to preserve strict FIFO order
-          }
+          } catch (e) {}
         }
 
         set({ isSyncing: false });
@@ -73,6 +67,6 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
     {
       name: "healthcard-sync-queue",
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+    },
+  ),
 );

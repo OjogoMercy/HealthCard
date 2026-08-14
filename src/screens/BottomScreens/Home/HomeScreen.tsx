@@ -192,7 +192,7 @@ const HomeScreen = () => {
       );
       setModalVisible(false);
       setSelectedVaccine(null);
-      onRefresh();
+      // onRefresh();
     } catch (err) {
       setError("Failed to mark vaccine as done");
       console.error("Mark done error:", err);
