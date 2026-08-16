@@ -16,6 +16,7 @@ function NavigationGateKeeper() {
   const clearChildren = useBabyStore((s) => s.clearChildren);
   const { session, isLoading, logoutAuth } = useAuth();
   const { showToast } = useToast();
+  
   const warmUpConnection = async () => {
     try {
       await Promise.race([

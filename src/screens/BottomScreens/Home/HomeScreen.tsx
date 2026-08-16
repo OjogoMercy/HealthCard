@@ -14,7 +14,7 @@ import { useBabyStore, Vaccine } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
 import { useSyncQueueStore } from "@/src/store/useQueusStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -86,12 +86,14 @@ const HomeScreen = () => {
     }
   }, [fetchBabyData, fetchMomData, mom?.userId]);
 
-  useEffect(() => {
+useFocusEffect(
+  useCallback(() => {
     if (isInitialLoad) {
       onRefresh();
       setIsInitialLoad(false);
     }
-  }, [isInitialLoad, onRefresh]);
+  }, [isInitialLoad, onRefresh])
+);
 
   // Retry function for error state
   const handleRetry = () => {

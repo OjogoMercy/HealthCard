@@ -269,7 +269,7 @@ const ProfileScreen = () => {
               source={images.mascotCry}
               style={{ width: "50%", height: "50%", resizeMode: "contain" }}
             />
-            <View style={{ width: "90%" }}>
+            <View style={{ width: "100%" }}>
               <PrimaryButton
                 title="Cancel"
                 onPress={() => setModalVisible(false)}
