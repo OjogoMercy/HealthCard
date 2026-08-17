@@ -15,11 +15,9 @@ export async function reconcileVaccineState(childId: string, userId: string) {
       .filter((p) => p.childId === childId)
       .map((p) => p.vaccineId);
 
-    const completedIds = Array.from(
-      new Set([...administeredIds, ...pendingIds]),
-    );
+    const completedIds = Array.from(new Set([...administeredIds, ...pendingIds]));
 
-    useBabyStore.getState().setCompletedIds(completedIds);
+    useBabyStore.getState().setCompletedIds(childId, completedIds);
     return completedIds;
   } catch (e) {
     console.log(e);

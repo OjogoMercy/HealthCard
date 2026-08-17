@@ -195,7 +195,7 @@ export const getImmunisationsByChild = async (
   }
 
   const response = await apiClient.get(`/api/children/${childId}/immunisations`);
-  return response.data;
+  return response.data.immunisations;
 };
 
 export const updateImmunisation = async (

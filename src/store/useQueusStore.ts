@@ -7,7 +7,7 @@ interface PendingImmunisation {
   queueId: string;
   vaccineId: string;
   childId: string;
-  dueDate: string;
+  dueDate: Date;
   userId: string;
 }
 
