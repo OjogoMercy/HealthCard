@@ -36,33 +36,42 @@ export const useSyncQueueStore = create<SyncQueueStore>()(
         }
       },
 
-      flush: async () => {
-        const { isSyncing, pending } = get();
-        if (isSyncing || pending.length === 0) return;
+  flush: async () => {
+  const { isSyncing, pending } = get();
+  if (isSyncing || pending.length === 0) return;
 
-        set({ isSyncing: true });
+  set({ isSyncing: true });
 
-        const queueToProcess = [...get().pending];
+  const queueToProcess = [...get().pending];
 
-        for (const entry of queueToProcess) {
-          try {
-            await createImmunisation({
-              vaccineId: entry.vaccineId,
-              childId: entry.childId,
-              dueDate: new Date(entry.dueDate),
-              userId: entry.userId,
-            });
-            console.log("sync successful");
+  for (const entry of queueToProcess) {
+    try {
+      await createImmunisation({
+        vaccineId: entry.vaccineId,
+        childId: entry.childId,
+        dueDate: new Date(entry.dueDate),
+        userId: entry.userId,
+      });
 
-            // Remove successfully synced item
-            set((state) => ({
-              pending: state.pending.filter((p) => p.queueId !== entry.queueId),
-            }));
-          } catch (e) {}
-        }
+      set((state) => ({
+        pending: state.pending.filter((p) => p.queueId !== entry.queueId),
+      }));
+    } catch (e: any) {
+      const statusCode = e?.response?.status;
 
-        set({ isSyncing: false });
-      },
+      if (statusCode === 409) {
+        set((state) => ({
+          pending: state.pending.filter((p) => p.queueId !== entry.queueId),
+        }));
+      } else {
+        
+        console.log("sync failed, will retry:", entry.queueId, e?.message);
+      }
+    }
+  }
+
+  set({ isSyncing: false });
+},
     }),
     {
       name: "healthcard-sync-queue",

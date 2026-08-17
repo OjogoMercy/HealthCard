@@ -18,7 +18,6 @@ import {
 
 const Immunisation = () => {
   const navigation = useNavigation();
-  const age = "6";
   const [selected, setSelected] = useState<{
     id: string;
     name: string;
@@ -43,7 +42,7 @@ const Immunisation = () => {
           {" "}
           {baby?.name}{" "}
           <ThemedText type="text4">
-            | {getAgeLabel(baby?.dateOfBirth)}
+            | {getAgeLabel(baby?.dateOfBirth as string)}
           </ThemedText>
         </ThemedText>
         <TouchableOpacity activeOpacity={0.5}>
