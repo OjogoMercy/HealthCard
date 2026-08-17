@@ -191,9 +191,10 @@ export const getImmunisationsByChild = async (
   userId: string,
 ) => {
   if (!childId || !userId) {
-    throw new Error(" ID is required to fetch immunisations");
+    throw new Error("childId and userId are required to fetch immunisations");
   }
-  const response = await apiClient.get(`/api/children/immunisations`);
+
+  const response = await apiClient.get(`/api/children/${childId}/immunisations`);
   return response.data;
 };
 
