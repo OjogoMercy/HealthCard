@@ -115,7 +115,7 @@ export const logoutUser = () => {
 
 export const getUserProfile = async (userId: string) => {
   const response = await apiClient.get("/api/profile");
-  console.log("response for user profile", response.data);
+  console.log("response for user profile");
   if (!userId) {
     throw new Error("User ID is required to fetch profile");
   }

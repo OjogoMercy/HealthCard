@@ -4,8 +4,9 @@ import { useBabyStore } from "../store/useBabyStore";
 import { openCatchUpGroups } from "./CatchUpDetection";
 
 export function useCatchupPrompt(childId: string, dob: Date) {
-  const completedIds = useBabyStore((s) => s.completedIds);
-  const declinedIds = useBabyStore((s) => s.declinedIds);
+  const EMPTY_ARRAY: string[] = [];
+  const completedIds = useBabyStore((s) => s.completedIds[childId] ?? EMPTY_ARRAY);
+  const declinedIds = useBabyStore((s) => s.declinedIds[childId] ?? EMPTY_ARRAY);
   const [sheetVisible, setSheetVisible] = useState(false);
   const [hasAutoShown, setHasAutoShown] = useState<Record<string, boolean>>({});
 

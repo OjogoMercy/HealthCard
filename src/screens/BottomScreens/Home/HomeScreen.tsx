@@ -16,7 +16,7 @@ import { useSyncQueueStore } from "@/src/store/useQueusStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   FlatList,
   Image,
@@ -86,14 +86,14 @@ const HomeScreen = () => {
     }
   }, [fetchBabyData, fetchMomData, mom?.userId]);
 
-useFocusEffect(
-  useCallback(() => {
-    if (isInitialLoad) {
-      onRefresh();
-      setIsInitialLoad(false);
-    }
-  }, [isInitialLoad, onRefresh])
-);
+  useFocusEffect(
+    useCallback(() => {
+      if (isInitialLoad) {
+        onRefresh();
+        setIsInitialLoad(false);
+      }
+    }, [isInitialLoad, onRefresh]),
+  );
 
   // Retry function for error state
   const handleRetry = () => {
@@ -439,20 +439,18 @@ useFocusEffect(
 
             {/* Last updated indicator */}
             <TouchableOpacity onPress={() => onRefresh()}>
- <ThemedText
-              
-              type="text5"
-              style={{
-                textAlign: "center",
-                color: COLORS.gray,
-                marginTop: SIZES.base,
-                marginBottom: SIZES.padding,
-              }}
-            >
-              Pull down to refresh
-            </ThemedText>
+              <ThemedText
+                type="text5"
+                style={{
+                  textAlign: "center",
+                  color: COLORS.gray,
+                  marginTop: SIZES.base,
+                  marginBottom: SIZES.padding,
+                }}
+              >
+                Pull down to refresh
+              </ThemedText>
             </TouchableOpacity>
-           
           </>
         )}
       </ScrollView>

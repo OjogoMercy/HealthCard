@@ -136,7 +136,7 @@ interface BabyStore {
     dueDate: Date,
     userId: string,
   ) => void;
-  unMarkVaccine: (vaccineId: string,childId:string) => void;
+  unMarkVaccine: (vaccineId: string, childId: string) => void;
   clearChildren: () => void;
   clearCatchUpState: (childId: string) => void;
   markVaccineDeclined: (vaccineId: string, childId: string) => void;
@@ -210,6 +210,7 @@ export const useBabyStore = create<BabyStore>()(
         }
         const vaccineState = deriveVaccineState(
           activeChild.dateOfBirth,
+          childId,
           completedIds,
         );
 
@@ -425,7 +426,7 @@ export const useBabyStore = create<BabyStore>()(
           currentVaccines: [],
           upcomingStage: null,
           completedIds: {},
-          declinedIds: [],
+          declinedIds: {},
           refreshError: null,
         }),
 
