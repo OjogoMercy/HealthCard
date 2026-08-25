@@ -14,6 +14,7 @@ import { useBabyStore, Vaccine } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
 import { useSyncQueueStore } from "@/src/store/useQueusStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useState } from "react";
@@ -41,6 +42,7 @@ const HomeScreen = () => {
   const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageUri, setImageUri] = useState<string| null>(null)
   const navigation = useNavigation<any>();
 
   // Store actions and data
@@ -85,15 +87,26 @@ const HomeScreen = () => {
       setRefreshing(false);
     }
   }, [fetchBabyData, fetchMomData, mom?.userId]);
+  const PROFILE_PIC_KEY = "@profile_picture_uri";
 
+    const loadSavedImage = async () => {
+    try {
+      const savedUri = await AsyncStorage.getItem(PROFILE_PIC_KEY);
+      if (savedUri) setImageUri(savedUri);
+    } catch (err) {
+      console.error("Failed to load profile picture", err);
+    }
+  };
   useFocusEffect(
     useCallback(() => {
       if (isInitialLoad) {
         onRefresh();
         setIsInitialLoad(false);
+        loadSavedImage()
       }
     }, [isInitialLoad, onRefresh]),
   );
+
 
   // Retry function for error state
   const handleRetry = () => {
@@ -201,6 +214,7 @@ const HomeScreen = () => {
     }
   };
 
+
   return (
     <CustomHeader title="Home" authScreen={false} tabScreen={true}>
       <ScrollView
@@ -237,7 +251,7 @@ const HomeScreen = () => {
             activeOpacity={0.5}
             onPress={() => navigation.navigate("MomProfile")}
           >
-            <Image source={images.mom} style={styles.profileImage} />
+            <Image source={imageUri?  {uri:imageUri} : images.mom} style={styles.profileImage} />
           </TouchableOpacity>
           <ThemedText type="text2bold" style={{ marginRight: "auto" }}>
             {" "}

@@ -11,9 +11,11 @@ import { ThemedText } from "@/src/constants/ThemedText";
 import { useBabyStore } from "@/src/store/useBabyStore";
 import { useMomStore } from "@/src/store/useMomStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -24,11 +26,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 const MomProfile = () => {
   const navigation = useNavigation<any>();
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [comingSoonMessage, setComingSoonMessage] = useState("");
   const [formActive, setFormActive] = useState(false);
+  const [imageUri, setImageUri] = useState<string | null>(null);
 
   const mom = useMomStore((s) => s.mom);
   const clearMom = useMomStore((s) => s.clearMom);
@@ -37,6 +41,50 @@ const MomProfile = () => {
   const triggerComingSoon = (message: string) => {
     setComingSoonMessage(message);
     setShowComingSoon(true);
+  };
+
+  useEffect(() => {
+    loadSavedImage();
+  }, []);
+  const PROFILE_PIC_KEY = "@profile_picture_uri";
+  const loadSavedImage = async () => {
+    try {
+      const savedUri = await AsyncStorage.getItem(PROFILE_PIC_KEY);
+      if (savedUri) setImageUri(savedUri);
+    } catch (err) {
+      console.error("Failed to load profile picture", err);
+    }
+  };
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission needed",
+        "We need access to your photos to set a profile picture.",
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+    });
+
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+      setImageUri(uri);
+      await saveImage(uri);
+    }
+  };
+
+  const saveImage = async (uri: string) => {
+    try {
+      await AsyncStorage.setItem(PROFILE_PIC_KEY, uri);
+    } catch (err) {
+      console.error("Failed to save profile picture", err);
+    }
   };
 
   const handleLogout = () => {
@@ -163,8 +211,12 @@ const MomProfile = () => {
   return (
     <WrapScrollView screenTitle="Mom Profile">
       <View style={styles.profileCard}>
-        <TouchableOpacity style={styles.photoContainer} activeOpacity={0.7}>
-          <Image source={images.mom} style={styles.photo} />
+        <TouchableOpacity
+          style={styles.photoContainer}
+          activeOpacity={0.7}
+          onPress={pickImage}
+        >
+          <Image source={imageUri?  {uri:imageUri} : images.mom} style={styles.photo} />
           <View style={styles.cameraIcon}>
             <Ionicons name="camera" size={16} color={COLORS.white} />
           </View>
