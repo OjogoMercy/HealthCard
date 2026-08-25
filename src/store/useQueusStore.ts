@@ -10,7 +10,6 @@ interface PendingImmunisation {
   dueDate: Date;
   userId: string;
 }
-
 interface SyncQueueStore {
   pending: PendingImmunisation[];
   isSyncing: boolean;
