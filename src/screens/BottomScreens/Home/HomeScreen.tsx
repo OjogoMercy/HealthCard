@@ -42,7 +42,7 @@ const HomeScreen = () => {
   const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [imageUri, setImageUri] = useState<string| null>(null)
+  const [imageUri, setImageUri] = useState<string | null>(null);
   const navigation = useNavigation<any>();
 
   // Store actions and data
@@ -63,50 +63,42 @@ const HomeScreen = () => {
   const allDone = dueVaccines.length === 0 && currentVaccines.length > 0;
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   // Refresh function
-  const onRefresh = useCallback(async () => {
-    if (refreshing) return;
-    setRefreshing(true);
-    setError(null);
-    try {
-      // Fetch all required data
-      await Promise.all([
-        fetchBabyData?.() || Promise.resolve(),
-        fetchMomData?.() || Promise.resolve(),
-      ]);
-
-      await useSyncQueueStore.getState().flush();
-      const activeChildId = useBabyStore.getState().activeChildId;
-      if (activeChildId && mom?.userId) {
-        console.log("reconciling...");
-        await reconcileVaccineState(activeChildId, mom?.userId);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to refresh data");
-      console.error("Refresh error:", err);
-    } finally {
-      setRefreshing(false);
-    }
-  }, [fetchBabyData, fetchMomData, mom?.userId]);
   const PROFILE_PIC_KEY = "@profile_picture_uri";
+const onRefresh = useCallback(async () => {
+  if (refreshing) return;
+  setRefreshing(true);
+  setError(null);
+  try {
+    await Promise.all([
+      fetchBabyData?.() || Promise.resolve(),
+      fetchMomData?.() || Promise.resolve(),
+    ]);
 
-    const loadSavedImage = async () => {
-    try {
-      const savedUri = await AsyncStorage.getItem(PROFILE_PIC_KEY);
-      if (savedUri) setImageUri(savedUri);
-    } catch (err) {
-      console.error("Failed to load profile picture", err);
+    await useSyncQueueStore.getState().flush();
+
+    const savedUri = await AsyncStorage.getItem(PROFILE_PIC_KEY);
+    if (savedUri) setImageUri(savedUri);
+
+    const activeChildId = useBabyStore.getState().activeChildId;
+    if (activeChildId && mom?.userId) {
+      await reconcileVaccineState(activeChildId, mom?.userId);
     }
-  };
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Failed to refresh data");
+    console.error("Refresh error:", err);
+  } finally {
+    setRefreshing(false);
+  }
+}, [fetchBabyData, fetchMomData, mom?.userId]);
+
   useFocusEffect(
     useCallback(() => {
       if (isInitialLoad) {
         onRefresh();
         setIsInitialLoad(false);
-        loadSavedImage()
       }
     }, [isInitialLoad, onRefresh]),
   );
-
 
   // Retry function for error state
   const handleRetry = () => {
@@ -214,7 +206,6 @@ const HomeScreen = () => {
     }
   };
 
-
   return (
     <CustomHeader title="Home" authScreen={false} tabScreen={true}>
       <ScrollView
@@ -251,7 +242,10 @@ const HomeScreen = () => {
             activeOpacity={0.5}
             onPress={() => navigation.navigate("MomProfile")}
           >
-            <Image source={imageUri?  {uri:imageUri} : images.mom} style={styles.profileImage} />
+            <Image
+              source={imageUri ? { uri: imageUri } : images.mom}
+              style={styles.profileImage}
+            />
           </TouchableOpacity>
           <ThemedText type="text2bold" style={{ marginRight: "auto" }}>
             {" "}
